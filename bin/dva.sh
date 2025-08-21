@@ -1,18 +1,25 @@
 #!/bin/bash
 # DVA CLI - Developer Workflow Automation
+# Enhanced with colors, emojis, logging
 # MIT License (c) 2025 Nizam Uddin Shamrat
 
+# Set DVA home directory
+DVA_HOME="$HOME/.dva"
+
+# Colors
 GREEN="\033[1;32m"
 YELLOW="\033[1;33m"
 RED="\033[1;31m"
 BLUE="\033[1;34m"
 NC="\033[0m"
 
-mkdir -p "$(dirname "$0")/../logs"
-LOG_FILE="$(dirname "$0")/../logs/dva.log"
+# Log file
+LOG_FILE="$DVA_HOME/logs/dva.log"
+mkdir -p "$(dirname "$LOG_FILE")"
 
-source "$(dirname "$0")/../scripts/utils.sh"
-source "$(dirname "$0")/../scripts/tasks.sh"
+# Import tasks and helpers
+source "$DVA_HOME/scripts/utils.sh"
+source "$DVA_HOME/scripts/tasks.sh"
 
 function log_task() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOG_FILE"
