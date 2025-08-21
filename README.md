@@ -3,9 +3,11 @@
 **DVA** is a CLI tool to automate your daily developer tasks.
 
 ## Features
-- Start development environment
-- Clean project folders
-- Sync Git branches
+- 🚀 Start development environment
+- 🧹 Clean project folders (with confirmation)
+- 🔄 Sync Git branches
+- Colorful interactive menu
+- Logs all task executions (`logs/dva.log`)
 
 ## Installation
 ```bash
