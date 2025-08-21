@@ -1,5 +1,14 @@
-#!/bin/bash
-# Common helper functions
-# MIT License (c) 2025 Nizam Uddin Shamrat
+# Colors
+GREEN="\033[1;32m"
+YELLOW="\033[1;33m"
+RED="\033[1;31m"
+BLUE="\033[1;34m"
+NC="\033[0m"
 
-function confirm() { read -p "$1 (y/n): " choice; case "$choice" in y|Y) return 0;; *) return 1;; esac; }
+# Logs
+LOG_FILE="$HOME/.dva/logs/dva.log"
+mkdir -p "$(dirname "$LOG_FILE")"
+
+function log_task() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - $1" >> "$LOG_FILE"
+}

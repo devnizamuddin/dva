@@ -1,26 +1,42 @@
 #!/bin/bash
-# Installer for DVA CLI
+# ==============================================
+# DVA CLI Installer
 # MIT License (c) 2025 Nizam Uddin Shamrat
+# ==============================================
 
-# Set installation folder
+set -e
+
+# Target installation folder
 DVA_HOME="$HOME/.dva"
 
-echo "Installing DVA CLI in $DVA_HOME..."
+echo "🚀 Installing DVA CLI into $DVA_HOME..."
 
-# Create necessary directories
+# Create required directories
 mkdir -p "$DVA_HOME/bin"
-mkdir -p "$DVA_HOME/scripts"
+mkdir -p "$DVA_HOME/scripts/tasks"
 mkdir -p "$DVA_HOME/logs"
 
-# Copy scripts
+# Copy main CLI
 cp bin/dva.sh "$DVA_HOME/bin/"
-cp scripts/*.sh "$DVA_HOME/scripts/"
 
-# Make main CLI executable
+# Copy helper scripts
+cp scripts/*.sh "$DVA_HOME/scripts/" 2>/dev/null || true
+
+# Copy task scripts if available
+cp scripts/tasks/*.sh "$DVA_HOME/scripts/tasks/" 2>/dev/null || true
+
+# Make CLI executable
 chmod +x "$DVA_HOME/bin/dva.sh"
 
 # Create symlink for global access
-sudo ln -sf "$DVA_HOME/bin/dva.sh" /usr/local/bin/dva
+if [ -w /usr/local/bin ]; then
+    ln -sf "$DVA_HOME/bin/dva.sh" /usr/local/bin/dva
+else
+    echo "⚠️  /usr/local/bin requires sudo, creating symlink with sudo..."
+    sudo ln -sf "$DVA_HOME/bin/dva.sh" /usr/local/bin/dva
+fi
 
+echo ""
 echo "✅ DVA CLI installed successfully!"
-echo "Run 'dva' from anywhere."
+echo "👉 Run 'dva' from anywhere."
+echo "📂 Installed at: $DVA_HOME"
