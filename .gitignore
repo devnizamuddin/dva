@@ -1,0 +1,31 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/*.log
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node / npm (if ever used in future)
+node_modules/
+
+# Temporary / backup files
+*.bak
+*.tmp
+
+# Compiled binaries (if you ever compile scripts)
+bin/*.o
+bin/*.out
+
+# Ignore system files
+*.log~
+*.swp
+
+# Ignore Python caches (if any scripts use Python)
+__pycache__/
+*.pyc
