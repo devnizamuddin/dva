@@ -14,6 +14,7 @@ echo "🚀 Installing DVA CLI into $DVA_HOME..."
 # Create required directories
 mkdir -p "$DVA_HOME/bin"
 mkdir -p "$DVA_HOME/scripts/tasks"
+mkdir -p "$DVA_HOME/scripts/utils"
 mkdir -p "$DVA_HOME/scripts/presentation/screens"
 mkdir -p "$DVA_HOME/scripts/presentation/components"
 mkdir -p "$DVA_HOME/logs"
@@ -24,12 +25,19 @@ cp bin/dva.sh "$DVA_HOME/bin/"
 # Copy helper scripts
 cp scripts/*.sh "$DVA_HOME/scripts/" 2>/dev/null || true
 
+#* task
 # Copy task scripts if available
 cp scripts/tasks/*.sh "$DVA_HOME/scripts/tasks/" 2>/dev/null || true
 
-# Copy task scripts if available
+#* utils
+# Copy screens scripts if available
+cp scripts/utils/*.sh "$DVA_HOME/scripts/utils/" 2>/dev/null || true
+
+#* componets
+# Copy componets scripts if available
 cp scripts/presentation/components/*.sh "$DVA_HOME/scripts/presentation/components/" 2>/dev/null || true
 
+#* screens
 # Copy screens scripts if available
 cp scripts/presentation/screens/*.sh "$DVA_HOME/scripts/presentation/screens/" 2>/dev/null || true
 

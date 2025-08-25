@@ -6,28 +6,18 @@
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 #*
 
-source "$DVA_HOME/scripts/presentation/screens/main_welcome.sh"
-source "$DVA_HOME/scripts/utils/text_printer.sh"
+
 
 #*
 #* ┏==================================================================================================┓
-#* ┃                                   📖 Drawing Main Screen                                         ┃
+#* ┃                                   📖 Prints Line Gap                                             ┃
 #* ┗==================================================================================================┛
 #*
 
-
-
- function load_main_screen(){
-   
-   
-   #*
-   #* ✌️ Welcome User's
-   #*
-   
-   print_welcome_message
-
-
-
- }
-
-
+# Function to print line gaps
+line_gap() {
+    local lines=${1:-1}  # Default to 1 line if no argument given
+    for ((i=0; i<lines; i++)); do
+        echo -e ""
+    done
+}
