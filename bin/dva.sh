@@ -56,6 +56,7 @@ printMenuUi
 
 
 print_divider
+echo -e ""
 read -p "$(echo -e "${BOLD}👉 Select an option [0-2]: ${NC}") " choice
 
 

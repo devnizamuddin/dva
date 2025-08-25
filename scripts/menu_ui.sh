@@ -1,8 +1,9 @@
 #!/bin/bash
 
-local BLUE="\033[1;34m"
-local NC="\033[0m"
-local BOLD="\033[1m"
+ #* Text Style
+ 
+ NC="\033[0m" 
+ BOLD="\033[1m"
 
 
 
@@ -10,6 +11,7 @@ local BOLD="\033[1m"
 # * ---> Git
 # *
 function print_flutter_card() {
+  local BLUE="\033[1;34m"
   echo -e "${BLUE}${BOLD}┌───────────────────────────────────────────────┐${NC}"
   echo -e "${BLUE}${BOLD}│ ┌───────────────────────────────────────────┐ │${NC}"
   echo -e "${BLUE}${BOLD}│ │                                           │ │${NC}"
