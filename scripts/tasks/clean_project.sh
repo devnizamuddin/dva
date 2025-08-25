@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 🧹 Clean Project Tasks
 function clean_project_menu() {
   echo -e "${BLUE}--- Clean Project ---${NC}"

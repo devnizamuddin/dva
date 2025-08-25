@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 🚀 Start Dev Environment Tasks
 function start_dev_menu() {
   echo -e "${BLUE}--- Start Dev Environment ---${NC}"

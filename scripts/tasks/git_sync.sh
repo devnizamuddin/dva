@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # 🔄 Git Sync Tasks
 function git_sync_menu() {
   echo -e "${BLUE}--- Git Sync ---${NC}"
