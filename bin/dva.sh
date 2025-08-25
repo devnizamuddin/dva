@@ -57,7 +57,7 @@ printMenuUi
 
 print_divider
 echo -e ""
-read -p "$(echo -e "${BOLD}👉 Select an option [0-2]: ${NC}") " choice
+read -p "$(echo -e "${BOLD}👉 Select an option [0-3]: ${NC}") " choice
 
 
 #*
@@ -67,8 +67,9 @@ read -p "$(echo -e "${BOLD}👉 Select an option [0-2]: ${NC}") " choice
 #*
 
 case "$choice" in
-  1) flutter_menu ;;
-  2) flutter_menu ;;
+  1) print_flutter_task_list ;;
+  2) print_git_task_list ;;
+  3) flutter_menu ;;
   0) print_info "Goodbye!"; log_task "CLI exited"; exit 0 ;;
   *) print_error "Invalid option. Enter 0–4." ;;
 esac
