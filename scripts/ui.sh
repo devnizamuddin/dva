@@ -19,9 +19,11 @@ DIM="\033[2m"
 # ────────── ASCII Layout FUNCTIONS ────────── #
 
 function print_app_header() {
-  echo -e "${BLUE}${WHITE}${BOLD}┌────────────────────────────────────────────┐${NC}"
-  echo -e "${BLUE}${WHITE}${BOLD}│               🖥️  DVA CLI  🖥️               │${NC}"
-  echo -e "${BLUE}${WHITE}${BOLD}└────────────────────────────────────────────┘${NC}"
+  echo -e "${BLUE}${BOLD}┌──────────────────────────────────────────────┐${NC}"
+  echo -e "${BLUE}${BOLD}│ ┌────────────────────────────────────────────│${NC}"
+  echo -e "${BLUE}${BOLD}│ │               🖥️  𝙳𝚅𝙰 𝙲𝙻𝙸  🖥️                │${NC}"
+  echo -e "${BLUE}${BOLD}│ └────────────────────────────────────────────│${NC}"
+  echo -e "${BLUE}${BOLD}└──────────────────────────────────────────────┘${NC}"
 }
 
 # Print header banner
@@ -57,8 +59,75 @@ function print_success() {
 function print_error() {
   echo -e "${RED}✖ $1${NC}"
 }
+echo "s"
+
+function printFlutter(){
+ echo -e "00       00   00000000  00        00        "
+ echo -e "00   0   00   00        00        00        "
+ echo -e "00  000  00   00        00        00        "      
+ echo -e "00 00 00 00   00000     00        00        "      
+ echo -e "0000   0000   00        00        00        "      
+ echo -e "000     000   00        00        00        "      
+ echo -e "00       00   00000000  00000000 00000000  "
+ echo -e "--------------------------------------------"
+}
+
+function printWellcomeMessage(){
+  
+  echo -e " ____    __    ____  _______  __       __        ______    ______   .___  ___.  _______    _______  _______ ";
+  echo -e " \   \  /  \  /   / |   ____||  |     |  |      /      |  /  __  \  |   \/   | |   ____|  |       ||       |";
+  echo -e "  \   \/    \/   /  |  |__   |  |     |  |     |  ,----' |  |  |  | |  \  /  | |  |__     |_     _||   _   |";
+  echo -e "   \            /   |   __|  |  |     |  |     |  |      |  |  |  | |  |\/|  | |   __|      |   |  |  | |  |";
+  echo -e "    \    /\    /    |  |____ |  |____ |  |____ |  _____  |  ___'  | |  |  |  | |  |____     |   |  |  |_|  |";
+  echo -e "     \__/  \__/     |_______||_______||_______| \______|  \______/  |__|  |__| |_______|    |___|  |_______|";
+  echo -e "";
+
+  echo -e "                                                                                                                               
+                                                                                                                               
+DDDDDDDDDDDDD      VVVVVVVV           VVVVVVVV   AAA                            CCCCCCCCCCCCCLLLLLLLLLLL             IIIIIIIIII
+D::::::::::::DDD   V::::::V           V::::::V  A:::A                        CCC::::::::::::CL:::::::::L             I::::::::I
+D:::::::::::::::DD V::::::V           V::::::V A:::::A                     CC:::::::::::::::CL:::::::::L             I::::::::I
+DDD:::::DDDDD:::::DV::::::V           V::::::VA:::::::A                   C:::::CCCCCCCC::::CLL:::::::LL             II::::::II
+  D:::::D    D:::::DV:::::V           V:::::VA:::::::::A                 C:::::C       CCCCCC  L:::::L                 I::::I  
+  D:::::D     D:::::DV:::::V         V:::::VA:::::A:::::A               C:::::C                L:::::L                 I::::I  
+  D:::::D     D:::::D V:::::V       V:::::VA:::::A A:::::A              C:::::C                L:::::L                 I::::I  
+  D:::::D     D:::::D  V:::::V     V:::::VA:::::A   A:::::A             C:::::C                L:::::L                 I::::I  
+  D:::::D     D:::::D   V:::::V   V:::::VA:::::A     A:::::A            C:::::C                L:::::L                 I::::I  
+  D:::::D     D:::::D    V:::::V V:::::VA:::::AAAAAAAAA:::::A           C:::::C                L:::::L                 I::::I  
+  D:::::D     D:::::D     V:::::V:::::VA:::::::::::::::::::::A          C:::::C                L:::::L                 I::::I  
+  D:::::D    D:::::D       V:::::::::VA:::::AAAAAAAAAAAAA:::::A          C:::::C       CCCCCC  L:::::L         LLLLLL  I::::I  
+DDD:::::DDDDD:::::D         V:::::::VA:::::A             A:::::A          C:::::CCCCCCCC::::CLL:::::::LLLLLLLLL:::::LII::::::II
+D:::::::::::::::DD           V:::::VA:::::A               A:::::A          CC:::::::::::::::CL::::::::::::::::::::::LI::::::::I
+D::::::::::::DDD              V:::VA:::::A                 A:::::A           CCC::::::::::::CL::::::::::::::::::::::LI::::::::I
+DDDDDDDDDDDDD                  VVVAAAAAAA                   AAAAAAA             CCCCCCCCCCCCCLLLLLLLLLLLLLLLLLLLLLLLLIIIIIIIIII";
+
+
+
+}
+
 
 # Divider
 function print_divider() {
-  echo -e "${DIM}────────────────────────────────────────────${NC}"
-}
+  echo -e "${DIM}────────────────────────────────────────────${NC}";
+  }
+
+
+
+# echo -e "";
+# echo -e "DDDDDDDDDDDDD        VVVVVVVV           VVVVVVVV     AAA                            CCCCCCCCCCCCC LLLLLLLLLLL             IIIIIIIIII";
+# echo -e "D::::::::::::DDD     V::::::V           V::::::V    A:::A                        CCC::::::::::::C L:::::::::L             I::::::::I";
+# echo -e "D:::::::::::::::DD   V::::::V           V::::::V   A:::::A                     CC:::::::::::::::C L:::::::::L             I::::::::I";
+# echo -e "DDD:::::DDDDD:::::D  V::::::V           V::::::V  A:::::::A                   C:::::CCCCCCCC::::C LL:::::::LL             II::::::II";
+# echo -e "  D:::::D    D:::::D  V:::::V           V:::::V  A:::::::::A                 C:::::C       CCCCCC  L:::::L                  I::::I  ";
+# echo -e "  D:::::D     D:::::D  V:::::V         V:::::V  A:::::A:::::A               C:::::C                L:::::L                  I::::I  ";
+# echo -e "  D:::::D     D:::::D   V:::::V       V:::::V  A:::::A A:::::A              C:::::C                L:::::L                  I::::I  ";
+# echo -e "  D:::::D     D:::::D    V:::::V     V:::::V  A:::::A   A:::::A             C:::::C                L:::::L                  I::::I  ";
+# echo -e "  D:::::D     D:::::D     V:::::V   V:::::V  A:::::A     A:::::A            C:::::C                L:::::L                  I::::I  ";
+# echo -e "  D:::::D     D:::::D      V:::::V V:::::V  A:::::AAAAAAAAA:::::A           C:::::C                L:::::L                  I::::I  ";
+# echo -e "  D:::::D     D:::::D       V:::::V:::::V  A:::::::::::::::::::::A          C:::::C                L:::::L                  I::::I  ";
+# echo -e "  D:::::D    D:::::D         V:::::::::V  A:::::AAAAAAAAAAAAA:::::A          C:::::C       CCCCCC  L:::::L         LLLLLL   I::::I  ";
+# echo -e "DDD:::::DDDDD:::::D           V:::::::V  A:::::A             A:::::A          C:::::CCCCCCCC::::C LL:::::::LLLLLLLLL:::::L II::::::II";
+# echo -e "D:::::::::::::::DD            V:::::V   A:::::A               A:::::A          CC:::::::::::::::C L::::::::::::::::::::::L I::::::::I";
+# echo -e "D::::::::::::DDD               V:::V   A:::::A                 A:::::A           CCC::::::::::::C L::::::::::::::::::::::L I::::::::I";
+# echo -e "DDDDDDDDDDDDD                   VVV   AAAAAAA                   AAAAAAA             CCCCCCCCCCCCC LLLLLLLLLLLLLLLLLLLLLLLL IIIIIIIIII";
+# echo -e "";

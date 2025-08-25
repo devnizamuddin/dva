@@ -10,12 +10,12 @@ source "$DVA_HOME/scripts/ui.sh"
 source "$DVA_HOME/scripts/tasks.sh"
 
 clear
-print_app_header "DVA CLI"
+printWellcomeMessage "DVA CLI "
 
 # Grid-like cards
 print_card "1" "Start Dev Environment" "🚀" "$GREEN"
 print_card "2" "Clean Project" "🧹" "$YELLOW"
-print_card "3" "Flutter Tools" "⛩︎" "$MAGENTA"
+print_card "3" "𝔽𝕃𝕌𝕋𝕋𝔼ℝ" "⛩︎" "$MAGENTA"
 print_card "4" "Git Features" "🔄" "$CYAN"
 print_card "0" "Quit" "❌" "$RED"
 
