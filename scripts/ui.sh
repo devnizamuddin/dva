@@ -21,16 +21,22 @@ DIM="\033[2m"
 function print_app_header() {
   echo -e "${BLUE}${BOLD}┌──────────────────────────────────────────────┐${NC}"
   echo -e "${BLUE}${BOLD}│ ┌────────────────────────────────────────────│${NC}"
-  echo -e "${BLUE}${BOLD}│ │               🖥️  Header  🖥️                │${NC}"
+  echo -e "${BLUE}${BOLD}│ │                                            │${NC}"
+  echo -e "${BLUE}${BOLD}│ │               🖥️  FLUTTER  🖥️              │${NC}"
+  echo -e "${BLUE}${BOLD}│ │                                            │${NC}"
   echo -e "${BLUE}${BOLD}│ └────────────────────────────────────────────│${NC}"
   echo -e "${BLUE}${BOLD}└──────────────────────────────────────────────┘${NC}"
 }
 
 # Print header banner
-function print_header() {
-  echo -e "${BLUE}${WHITE}${BOLD}┌────────────────────────────────────────────┐${NC}"
-  echo -e "${BLUE}${WHITE}${BOLD}│        🖥️  $1  🖥️          │${NC}"
-  echo -e "${BLUE}${WHITE}${BOLD}└────────────────────────────────────────────┘${NC}"
+function print_flutter_card() {
+  echo -e "${BLUE}${BOLD}┌───────────────────────────────────────────────┐${NC}"
+  echo -e "${BLUE}${BOLD}│ ┌───────────────────────────────────────────┐ │${NC}"
+  echo -e "${BLUE}${BOLD}│ │                                           │ │${NC}"
+  echo -e "${BLUE}${BOLD}│ │              🖥️    FLUTTER    🖥️            │ │${NC}"
+  echo -e "${BLUE}${BOLD}│ │                                           │ │${NC}"
+  echo -e "${BLUE}${BOLD}│ └───────────────────────────────────────────┘ │${NC}"
+  echo -e "${BLUE}${BOLD}└───────────────────────────────────────────────┘${NC}"
 }
 
 # Print a card (menu option)
