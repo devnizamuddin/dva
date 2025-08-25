@@ -6,24 +6,27 @@ DVA_HOME="$HOME/.dva"
 
 # Import helpers
 source "$DVA_HOME/scripts/utils.sh"
+source "$DVA_HOME/scripts/ui.sh"
 source "$DVA_HOME/scripts/tasks.sh"
 
-echo -e "${BLUE}==============================="
-echo -e "         DVA CLI Menu           "
-echo -e "===============================${NC}"
+clear
+print_app_header "DVA CLI"
 
-while true; do
-  echo "0) ❌ Quit"
-  echo "1) 🚀 Start Dev Environment"
-  echo "2) 🧹 Clean Project"
-  echo "3) 🔄 Sync Git Branches"
-  read -p "Select an option [0-3]: " choice
+# Grid-like cards
+print_card "1" "Start Dev Environment" "🚀" "$GREEN"
+print_card "2" "Clean Project" "🧹" "$YELLOW"
+print_card "3" "Flutter Tools" "⛩︎" "$MAGENTA"
+print_card "4" "Git Features" "🔄" "$CYAN"
+print_card "0" "Quit" "❌" "$RED"
 
-  case "$choice" in
-    1) start_dev_menu ;;
-    2) clean_project_menu ;;
-    3) git_sync_menu ;;
-    0) echo -e "${YELLOW}Goodbye!${NC}"; log_task "CLI exited"; break ;;
-    *) echo -e "${RED}Invalid option. Enter 0–3.${NC}" ;;
-  esac
-done
+print_divider
+read -p "$(echo -e "${BOLD}👉 Select an option [0-4]: ${NC}") " choice
+
+case "$choice" in
+  1) start_dev_menu ;;
+  2) clean_project_menu ;;
+  3) flutter_menu ;;
+  4) git_sync_menu ;;
+  0) print_info "Goodbye!"; log_task "CLI exited"; exit 0 ;;
+  *) print_error "Invalid option. Enter 0–4." ;;
+esac
