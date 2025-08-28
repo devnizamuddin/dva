@@ -29,8 +29,8 @@ echo "🚀 Installing DVA CLI into $DVA_HOME..."
 mkdir -p "$DVA_HOME/bin"
 mkdir -p "$DVA_HOME/scripts/tasks"
 mkdir -p "$DVA_HOME/scripts/utils"
-mkdir -p "$DVA_HOME/scripts/presentation/screens"
-mkdir -p "$DVA_HOME/scripts/presentation/components"
+mkdir -p "$DVA_HOME/scripts/features/screens"
+mkdir -p "$DVA_HOME/scripts/features/components"
 mkdir -p "$DVA_HOME/logs"
 
 
@@ -72,14 +72,14 @@ cp scripts/utils/*.sh "$DVA_HOME/scripts/utils/" 2>/dev/null || true
 #* ✌️ Component scripts
 #*    - Reusable UI parts for menus or common views
 #*
-cp scripts/presentation/components/*.sh "$DVA_HOME/scripts/presentation/components/" 2>/dev/null || true
+cp scripts/features/components/*.sh "$DVA_HOME/scripts/features/components/" 2>/dev/null || true
 
 
 #*
 #* ✌️ Screen scripts
 #*    - Full-page CLI screens for structured navigation
 #*
-cp scripts/presentation/screens/*.sh "$DVA_HOME/scripts/presentation/screens/" 2>/dev/null || true
+cp scripts/features/screens/*.sh "$DVA_HOME/scripts/features/screens/" 2>/dev/null || true
 
 
 #*

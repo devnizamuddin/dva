@@ -6,10 +6,10 @@
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 #*
 
-source "$DVA_HOME/scripts/presentation/components/welcome_ui.sh"
-source "$DVA_HOME/scripts/presentation/components/main_menu_ui.sh"
+source "$DVA_HOME/scripts/features/components/welcome_ui.sh"
+source "$DVA_HOME/scripts/features/components/main_menu_ui.sh"
 
-source "$DVA_HOME/scripts/presentation/screens/flutter_screen.sh"
+source "$DVA_HOME/scripts/features/screens/flutter_screen.sh"
 
 #*
 #* ┏==================================================================================================┓

@@ -6,7 +6,7 @@
 #*
 
 source "$DVA_HOME/scripts/utils/text_printer.sh"
-source "$DVA_HOME/scripts/presentation/components/menu_ui.sh"  # optional if you have common menu functions
+source "$DVA_HOME/scripts/features/components/menu_ui.sh"  # optional if you have common menu functions
 
 #* ┏==================================================================================================┓
 #* ┃                           📖 Flutter Menu: Options & Actions                                    ┃

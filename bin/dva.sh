@@ -18,7 +18,7 @@ source "$DVA_HOME/scripts/ui.sh"
 source "$DVA_HOME/scripts/main_menu_ui.sh"
 source "$DVA_HOME/scripts/tasks.sh"
 source "$DVA_HOME/scripts/tasks/note_task.sh"
-source "$DVA_HOME/scripts/presentation/screens/main_screen.sh"
+source "$DVA_HOME/scripts/features/screens/main_screen.sh"
 
 
 clear
