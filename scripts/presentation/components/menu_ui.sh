@@ -1,9 +1,27 @@
 #!/bin/bash
 
+
+#*
+#* ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
+#* ║                                   💰 Imported Files                                              ║
+#* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
+#*
+
+source "$DVA_HOME/scripts/utils/text_printer.sh"
+
+
+
+#*
+#* ┏==================================================================================================┓
+#* ┃                                   📖 Printing Menu                                               ┃
+#* ┗==================================================================================================┛
+#*
+
+
 # Function: print_menu
 # Purpose : Draws the menu box with title and options
 # Usage   : print_menu "Menu Title" "Option 1" "Option 2" ...
-print_menu() {
+function print_menu() {
   local title="$1"
   shift
   local options=("$@")
@@ -48,7 +66,7 @@ print_menu() {
 # Function: menu_loop
 # Purpose : Handles menu interaction (loop, input, actions)
 # Usage   : menu_loop "Menu Title" "Option 1" "Option 2" ...
-menu_loop() {
+function menu_loop() {
   local title="$1"; shift
   local options=("$@")
 

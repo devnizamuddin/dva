@@ -1,17 +1,24 @@
 #!/bin/bash
-# Import the common menu UI functions
-# source ./scripts/presentation/components/menu_ui.sh
 
-# ===============================
-# Define Menu Data
-# ===============================
+#* ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
+#* ║                                   💰 Imported Files                                              ║
+#* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
+#*
 
-function run_flutter(){
-# Menu title
-TITLE="Flutter Features"
+source "$DVA_HOME/scripts/utils/text_printer.sh"
+source "$DVA_HOME/scripts/presentation/components/menu_ui.sh"  # optional if you have common menu functions
 
-# Menu options (list of strings)
-OPTIONS=(
+#* ┏==================================================================================================┓
+#* ┃                           📖 Flutter Menu: Options & Actions                                    ┃
+#* ┗==================================================================================================┛
+#*
+
+
+# Menu Title
+FLUTTER_TITLE="Flutter Features"
+
+# Menu Options
+FLUTTER_OPTIONS=(
   "Build Project"
   "Clean Project"
   "Release Android App"
@@ -20,21 +27,23 @@ OPTIONS=(
   "Create Project In MVVM Architecture"
 )
 
-# ===============================
-# Define Actions for Each Option
-# ===============================
-
-action_1() { echo "🚀 Building project..."; }
-action_2() { echo "🧹 Cleaning project..."; }
+# Action functions for each menu option
+action_1() { echo "🚀 Building Flutter project..."; }
+action_2() { echo "🧹 Cleaning Flutter project..."; }
 action_3() { echo "📦 Releasing Android app..."; }
 action_4() { echo "🍎 Releasing iOS app..."; }
 action_5() { echo "📂 Creating CLEAN Architecture project..."; }
 action_6() { echo "📂 Creating MVVM Architecture project..."; }
 
-# ===============================
-# Start Menu Loop
-# ===============================
-menu_loop "$TITLE" "${OPTIONS[@]}"
 
+#* ┏==================================================================================================┓
+#* ┃                                 📖 Flutter Menu Loop                                           ┃
+#* ┗==================================================================================================┛
+#*
+
+
+flutter_screen() {
+  # Call the generic menu loop function with your title and options
+  menu_loop "$FLUTTER_TITLE" "${FLUTTER_OPTIONS[@]}"
 }
 
