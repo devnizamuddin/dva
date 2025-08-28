@@ -7,6 +7,8 @@
 #*
 
 source "$DVA_HOME/scripts/presentation/components/welcome_ui.sh"
+source "$DVA_HOME/scripts/presentation/components/main_menu_ui.sh"
+
 source "$DVA_HOME/scripts/presentation/screens/flutter_screen.sh"
 
 #*
@@ -26,9 +28,9 @@ source "$DVA_HOME/scripts/presentation/screens/flutter_screen.sh"
    
    print_welcome_message
 
-   printMainMenuUi
+   main_menu
 
-  flutter_screen
+  # flutter_screen
 
  }
 
