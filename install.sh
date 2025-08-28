@@ -4,15 +4,10 @@
 # MIT License (c) 2025 Nizam Uddin Shamrat
 # ==============================================
 
-# Without set -e:
-# - If a command fails (returns non-zero), the script keeps running.
-# - This can sometimes hide errors and cause unexpected behavior.
-
+# set -e ensures:
+# - If any command fails (non-zero exit code), the script stops immediately.
+# - Prevents running dependent commands after a failure.
 set -e
-
-# With set -e:
-# - The script stops immediately when a command fails.
-# - Helps prevent running dependent commands after a failure.
 
 
 #*
@@ -22,7 +17,6 @@ set -e
 #*
 
 DVA_HOME="$HOME/.dva"
-
 echo "🚀 Installing DVA CLI into $DVA_HOME..."
 
 
@@ -47,46 +41,44 @@ mkdir -p "$DVA_HOME/logs"
 #*
 
 
-
 #*
-#* ✌️ main CLI
+#* ✌️ Main CLI entrypoint
 #*
-
 cp bin/dva.sh "$DVA_HOME/bin/"
 
 
 #*
-#* ✌️ helper scripts
+#* ✌️ General helper scripts
+#*    - These are common utility functions
 #*
-
 cp scripts/*.sh "$DVA_HOME/scripts/" 2>/dev/null || true
 
 
 #*
-#* ✌️ task scripts if available
+#* ✌️ Task scripts
+#*    - Handles project-level tasks (build, clean, release, etc.)
 #*
-
 cp scripts/tasks/*.sh "$DVA_HOME/scripts/tasks/" 2>/dev/null || true
 
 
 #*
-#* ✌️ screens scripts if available
+#* ✌️ Utility scripts
+#*    - Shared low-level helpers used across modules
 #*
-
 cp scripts/utils/*.sh "$DVA_HOME/scripts/utils/" 2>/dev/null || true
 
 
 #*
-#* ✌️ componets scripts if available
+#* ✌️ Component scripts
+#*    - Reusable UI parts for menus or common views
 #*
-
 cp scripts/presentation/components/*.sh "$DVA_HOME/scripts/presentation/components/" 2>/dev/null || true
 
 
 #*
-#* ✌️ screens scripts if available
+#* ✌️ Screen scripts
+#*    - Full-page CLI screens for structured navigation
 #*
-
 cp scripts/presentation/screens/*.sh "$DVA_HOME/scripts/presentation/screens/" 2>/dev/null || true
 
 

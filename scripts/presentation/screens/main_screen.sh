@@ -7,6 +7,7 @@
 #*
 
 source "$DVA_HOME/scripts/presentation/screens/main_welcome.sh"
+source "$DVA_HOME/scripts/presentation/screens/flutter_screen.sh"
 source "$DVA_HOME/scripts/utils/text_printer.sh"
 
 #*
@@ -21,13 +22,14 @@ source "$DVA_HOME/scripts/utils/text_printer.sh"
    
    
    #*
-   #* ✌️ Welcome User's
+   #* ✌️ Welcome User
    #*
    
-   print_welcome_message
+  print_welcome_message
 
-   printMainMenuUi
+  printMainMenuUi
 
+  flutter_screen
 
  }
 
