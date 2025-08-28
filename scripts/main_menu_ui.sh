@@ -52,7 +52,7 @@ function print_note_book_card() {
 }
 
 
-function printMenuUi(){
+function printMainMenuUi(){
 
     print_flutter_card
     echo -e "";

@@ -26,6 +26,7 @@ source "$DVA_HOME/scripts/utils/text_printer.sh"
    
    print_welcome_message
 
+   printMainMenuUi
 
 
  }
