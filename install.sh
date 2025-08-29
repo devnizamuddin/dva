@@ -27,10 +27,10 @@ echo "🚀 Installing DVA CLI into $DVA_HOME..."
 #*
 
 mkdir -p "$DVA_HOME/bin"
-mkdir -p "$DVA_HOME/scripts/tasks"
 mkdir -p "$DVA_HOME/scripts/utils"
-mkdir -p "$DVA_HOME/scripts/features/screens"
-mkdir -p "$DVA_HOME/scripts/features/components"
+mkdir -p "$DVA_HOME/scripts/tasks"
+mkdir -p "$DVA_HOME/scripts/features"
+mkdir -p "$DVA_HOME/scripts/components"
 mkdir -p "$DVA_HOME/logs"
 
 

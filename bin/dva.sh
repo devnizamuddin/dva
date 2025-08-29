@@ -12,20 +12,20 @@
 
 DVA_HOME="$HOME/.dva"
 
-# Import helpers
-# source "$DVA_HOME/scripts/utils.sh"
-# source "$DVA_HOME/scripts/ui.sh"
-# source "$DVA_HOME/scripts/main_menu_ui.sh"
-# source "$DVA_HOME/scripts/tasks.sh"
-# source "$DVA_HOME/scripts/tasks/note_task.sh"
-source "$DVA_HOME/scripts/dva_cli.sh"
+Import helpers
+source "$DVA_HOME/scripts/utils.sh"
+source "$DVA_HOME/scripts/ui.sh"
+source "$DVA_HOME/scripts/main_menu_ui.sh"
+source "$DVA_HOME/scripts/tasks.sh"
+source "$DVA_HOME/scripts/tasks/note_task.sh"
+source "$DVA_HOME/scripts/features/dva_cli.sh"
 
 # source "$DVA_HOME/scripts/utils/style.sh"
 # source "$DVA_HOME/scripts/utils/printer.sh"
 
 
 # clear
-
+/Users/devnizamuddin/.dva/scripts/features/dva_cli.sh
 
 #*
 #* ┏==================================================================================================┓
@@ -40,7 +40,7 @@ source "$DVA_HOME/scripts/dva_cli.sh"
 
 #  ======================================================================================================
 #  ======================================================================================================
-#* ====================================║ 📖 Example Codes ║=============================================
+#? ====================================║ 📖 Example Codes ║=============================================
 #  ======================================================================================================
 #  ======================================================================================================
 
