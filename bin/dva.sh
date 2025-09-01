@@ -15,8 +15,7 @@ DVA_HOME="$HOME/.dva"
 Import helpers
 source "$DVA_HOME/scripts/utils.sh"
 source "$DVA_HOME/scripts/ui.sh"
-source "$DVA_HOME/scripts/main_menu_ui.sh"
-source "$DVA_HOME/scripts/tasks.sh"
+source "$DVA_HOME/scripts/components/main_menu_ui.sh"
 source "$DVA_HOME/scripts/tasks/note_task.sh"
 source "$DVA_HOME/scripts/features/dva_cli.sh"
 
@@ -24,8 +23,7 @@ source "$DVA_HOME/scripts/features/dva_cli.sh"
 # source "$DVA_HOME/scripts/utils/printer.sh"
 
 
-# clear
-/Users/devnizamuddin/.dva/scripts/features/dva_cli.sh
+clear
 
 #*
 #* ┏==================================================================================================┓
@@ -34,7 +32,7 @@ source "$DVA_HOME/scripts/features/dva_cli.sh"
 #*
 
 
-    run_dva_cli
+    load_main_screen
 
 
 

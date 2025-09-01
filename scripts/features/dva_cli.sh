@@ -9,8 +9,6 @@
 source "$DVA_HOME/scripts/components/welcome_ui.sh"
 source "$DVA_HOME/scripts/components/main_menu_ui.sh"
 
-source "$DVA_HOME/scripts/features/flutter_screen.sh"
-
 #*
 #* ┏==================================================================================================┓
 #* ┃                                   📖 Drawing Main Screen                                         ┃
