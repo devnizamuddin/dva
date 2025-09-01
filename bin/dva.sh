@@ -19,10 +19,6 @@ source "$DVA_HOME/scripts/components/main_menu_ui.sh"
 source "$DVA_HOME/scripts/tasks/note_task.sh"
 source "$DVA_HOME/scripts/dva_cli.sh"
 
-# source "$DVA_HOME/scripts/utils/style.sh"
-# source "$DVA_HOME/scripts/utils/printer.sh"
-
-
 clear
 
 #*
