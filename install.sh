@@ -27,10 +27,11 @@ echo "🚀 Installing DVA CLI into $DVA_HOME..."
 #*
 
 mkdir -p "$DVA_HOME/bin"
-mkdir -p "$DVA_HOME/scripts/utils"
-mkdir -p "$DVA_HOME/scripts/tasks"
-mkdir -p "$DVA_HOME/scripts/features"
+mkdir -p "$DVA_HOME/scripts"
 mkdir -p "$DVA_HOME/scripts/components"
+mkdir -p "$DVA_HOME/scripts/features"
+mkdir -p "$DVA_HOME/scripts/tasks"
+mkdir -p "$DVA_HOME/scripts/utils"
 mkdir -p "$DVA_HOME/logs"
 
 
@@ -55,6 +56,20 @@ cp scripts/*.sh "$DVA_HOME/scripts/" 2>/dev/null || true
 
 
 #*
+#* ✌️ Component scripts
+#*    - Reusable UI parts for menus or common views
+#*
+cp scripts/components/*.sh "$DVA_HOME/scripts/components/" 2>/dev/null || true
+
+
+#*
+#* ✌️ Feature scripts
+#*    - Full-page CLI screens for structured navigation
+#*
+cp scripts/scripts/features/*.sh "$DVA_HOME/scripts/scripts/features/" 2>/dev/null || true
+
+
+#*
 #* ✌️ Task scripts
 #*    - Handles project-level tasks (build, clean, release, etc.)
 #*
@@ -66,20 +81,6 @@ cp scripts/tasks/*.sh "$DVA_HOME/scripts/tasks/" 2>/dev/null || true
 #*    - Shared low-level helpers used across modules
 #*
 cp scripts/utils/*.sh "$DVA_HOME/scripts/utils/" 2>/dev/null || true
-
-
-#*
-#* ✌️ Component scripts
-#*    - Reusable UI parts for menus or common views
-#*
-cp scripts/features/components/*.sh "$DVA_HOME/scripts/features/components/" 2>/dev/null || true
-
-
-#*
-#* ✌️ Screen scripts
-#*    - Full-page CLI screens for structured navigation
-#*
-cp scripts/features/screens/*.sh "$DVA_HOME/scripts/features/screens/" 2>/dev/null || true
 
 
 #*
