@@ -23,6 +23,8 @@ source "$DVA_HOME/scripts/components/main_menu_ui.sh"
    #*
    #* ✌️ Welcome User
    #*
+
+  log_task "Dev Cli Started"
    
    print_welcome_message
 

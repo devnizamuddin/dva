@@ -13,7 +13,7 @@
 DVA_HOME="$HOME/.dva"
 
 Import helpers
-source "$DVA_HOME/scripts/utils.sh"
+source "$DVA_HOME/scripts/logger.sh"
 source "$DVA_HOME/scripts/ui.sh"
 source "$DVA_HOME/scripts/components/main_menu_ui.sh"
 source "$DVA_HOME/scripts/tasks/note_task.sh"
