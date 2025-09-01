@@ -66,7 +66,7 @@ cp scripts/components/*.sh "$DVA_HOME/scripts/components/" 2>/dev/null || true
 #* ✌️ Feature scripts
 #*    - Full-page CLI screens for structured navigation
 #*
-cp scripts/scripts/features/*.sh "$DVA_HOME/scripts/scripts/features/" 2>/dev/null || true
+cp scripts/features/*.sh "$DVA_HOME/scripts/features/" 2>/dev/null || true
 
 
 #*
