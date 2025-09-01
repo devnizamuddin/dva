@@ -12,10 +12,14 @@
 
 DVA_HOME="$HOME/.dva"
 
-# Import helpers
+# Utils Import 
 source "$DVA_HOME/scripts/utils/logger.sh"
+source "$DVA_HOME/scripts/utils/printer.sh"
+# Components Import
 source "$DVA_HOME/scripts/components/main_menu_ui.sh"
+# Tasks Import
 source "$DVA_HOME/scripts/tasks/note_task.sh"
+#* Main CLI Import
 source "$DVA_HOME/scripts/dva_cli.sh"
 
 clear
