@@ -7,7 +7,7 @@
 #*
 
 source "$DVA_HOME/scripts/components/welcome_ui.sh"
-source "$DVA_HOME/scripts/components/main_menu_ui.sh"
+source "$DVA_HOME/scripts/components/dva_menu_ui.sh"
 
 #*
 #* ┏==================================================================================================┓
@@ -22,9 +22,7 @@ source "$DVA_HOME/scripts/components/main_menu_ui.sh"
 
   welcome_user
 
-  main_menu
-
-  # flutter_screen
+  show_dva_menu
 
  }
 

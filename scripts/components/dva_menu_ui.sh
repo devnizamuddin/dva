@@ -44,16 +44,18 @@ function print_note_book_card() {
 }
 
 #* ────────────── Main Menu UI + Chooser ──────────────
-function main_menu(){
+function show_dva_menu(){
 
-    clear
-    echo ""
+  
+    line_gap 2
+    
     print_flutter_card
-    echo -e "\n\n"
+    
     print_git_card
-    echo -e "\n\n"
+
     print_note_book_card
-    echo -e "\n\n"
+
+    line_gap 2
 
     #* Prompt user to choose
     while true; do
