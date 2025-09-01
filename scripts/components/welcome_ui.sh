@@ -6,36 +6,17 @@
 #* ┗==================================================================================================┛
 #*
 
-function print_welcome_message(){
+function welcome_user(){
   
-  echo -e "";
 
   print_welcome_text
 
-  echo -e "";
-  echo -e "";
-
   print_cli_name
-
-  echo -e "";
-  echo -e "";
 
   print_cli_name_full_form
 
-  echo -e "";
-  echo -e "";
-
-
-
-  echo -e "";
-  echo -e "";
-
   line_gap
   
-  
-  echo -e "";
-  echo -e "";
-
 }
 
 function print_welcome_text(){

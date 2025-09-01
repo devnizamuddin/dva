@@ -11,24 +11,18 @@ source "$DVA_HOME/scripts/components/main_menu_ui.sh"
 
 #*
 #* ┏==================================================================================================┓
-#* ┃                                   📖 Drawing Main Screen                                         ┃
+#* ┃                                   📖 Sarting DVA cli.                                            ┃
 #* ┗==================================================================================================┛
 #*
 
 
+ function run_dva_cli(){
 
- function load_main_screen(){
-   
-   
-   #*
-   #* ✌️ Welcome User
-   #*
+  log_task "Dva Cli Started"
 
-  log_task "Dev Cli Started"
-   
-   print_welcome_message
+  welcome_user
 
-   main_menu
+  main_menu
 
   # flutter_screen
 

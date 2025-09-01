@@ -31,5 +31,5 @@ clear
 #*
 
 
-    load_main_screen
+    run_dva_cli
 
