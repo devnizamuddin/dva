@@ -26,7 +26,9 @@ source "$DVA_HOME/scripts/components/dva_menu_ui.sh"
   
   multi_line_divider
 
-  show_dva_menu
+  line_gap 2
+
+  execute_dva_menu
 
  }
 
