@@ -1,8 +1,4 @@
-!/bin/bash
-==============================================
-Find Unused Dart Files in a Flutter Project
-MIT License (c) 2025
-==============================================
+#!/bin/bash
 
 set -e
 
