@@ -20,12 +20,12 @@ FLUTTER_OPTIONS=(
 )
 
 # Action functions for each menu option
-action_1() { echo "🚀 Building Flutter project..."; }
-action_2() { echo "🧹 Cleaning Flutter project..."; }
-action_3() { echo "📦 Releasing Android app..."; }
-action_4() { echo "🍎 Releasing iOS app..."; }
-action_5() { echo "📂 Creating CLEAN Architecture project..."; }
-action_6() { echo "📂 Creating MVVM Architecture project..."; }
+function flutter_action_1() { echo "🚀 Building Flutter project..."; }
+function flutter_action_2() { echo "🧹 Cleaning Flutter project..."; }
+function flutter_action_3() { echo "📦 Releasing Android app..."; }
+function flutter_action_4() { echo "🍎 Releasing iOS app..."; }
+function flutter_action_5() { echo "📂 Creating CLEAN Architecture project..."; }
+function flutter_action_6() { echo "📂 Creating MVVM Architecture project..."; }
 
 
 #* ┏==================================================================================================┓
@@ -35,7 +35,7 @@ action_6() { echo "📂 Creating MVVM Architecture project..."; }
 
 
 function execute_flutter_menu() {
-  # Call the generic menu loop function with your title and options
-  menu_loop "$FLUTTER_TITLE" "${FLUTTER_OPTIONS[@]}"
+  local ACTION_PREFIX="flutter"
+  menu_loop "$ACTION_PREFIX" "$FLUTTER_TITLE" "${FLUTTER_OPTIONS[@]}"
 }
 

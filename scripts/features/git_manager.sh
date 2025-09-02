@@ -24,38 +24,38 @@ GIT_OPTIONS=(
 #* ┗==================================================================================================┛
 #*
 
-action_1() {
+function git_action_1() {
   echo "📂 Checking Git status..."
   git status
 }
 
-action_2() {
+function git_action_2() {
   echo "➕ Adding all files..."
   git add .
   echo "✅ Files added"
 }
 
-action_3() {
+function git_action_3() {
   read -p "Enter commit message: " msg
   git commit -m "$msg"
 }
 
-action_4() {
+function git_action_4() {
   echo "⬆️  Pushing changes to remote..."
   git push
 }
 
-action_5() {
+function git_action_5() {
   echo "⬇️  Pulling latest changes..."
   git pull
 }
 
-action_6() {
+function git_action_6() {
   echo "📜 Showing Git log..."
   git log --oneline --graph --decorate --all | head -20
 }
 
-action_7() {
+function git_action_7() {
   echo "🔙 Going back to previous menu..."
   return 1   # Go back without exiting script
 }
@@ -66,5 +66,6 @@ action_7() {
 #*
 
 function run_git_commands() {
-  menu_loop "$GIT_TITLE" "${GIT_OPTIONS[@]}"
+  local ACTION_PREFIX="git"
+  menu_loop "$ACTION_PREFIX" "$GIT_TITLE" "${GIT_OPTIONS[@]}"
 }
