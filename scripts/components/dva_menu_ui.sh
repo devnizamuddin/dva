@@ -8,13 +8,13 @@
 #*
 
 
-source "$DVA_HOME/scripts/features/flutter_manager.sh"
+# source "$DVA_HOME/scripts/features/flutter_manager.sh"
 
 source "$DVA_HOME/scripts/features/text_case_converter.sh"
 
-source "$DVA_HOME/scripts/features/git_manager.sh"
+# source "$DVA_HOME/scripts/features/git_manager.sh"
 
-source "$DVA_HOME/scripts/features/notes_manager.sh"
+# source "$DVA_HOME/scripts/features/notes_manager.sh"
 
 #*
 #* ┏==================================================================================================┓

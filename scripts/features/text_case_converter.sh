@@ -16,7 +16,6 @@ TEXT_CASE_OPTIONS=(
   "Title Case (Abc Def)"
   "Snake Case (abc_def)"
   "Kebab Case (abc-def)"
-  "Back"
 )
 
 
@@ -25,34 +24,29 @@ TEXT_CASE_OPTIONS=(
 #* ┗==================================================================================================┛
 #*
 
-action_1() {
+text_case_action_1() {
   read -p "Enter your text: " input
   printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]'
 }
 
-action_2() {
+text_case_action_2() {
   read -p "Enter your text: " input
   printf '%s\n' "$input" | tr '[:upper:]' '[:lower:]'
 }
 
-action_3() {
+text_case_action_3() {
   read -p "Enter your text: " input
   printf '%s\n' "$input" | perl -pe "\$_=lc(\$_); s/(?<!')\b([[:alpha:]])/\\u\$1/g"
 }
 
-action_4() {
+text_case_action_4() {
   read -p "Enter your text: " input
   echo "$input" | tr '[:upper:]' '[:lower:]' | tr ' ' '_'
 }
 
-action_5() {
+text_case_action_5() {
   read -p "Enter your text: " input
   echo "$input" | tr '[:upper:]' '[:lower:]' | tr ' ' '-'
-}
-
-action_6() {
-  echo "🔙 Going back to previous menu..."
-  return 1   # This breaks out of menu_loop but doesn’t exit script
 }
 
 
@@ -62,5 +56,6 @@ action_6() {
 #*
 
 function run_text_case_converter() {
-  menu_loop "$TEXT_CASE_TITLE" "${TEXT_CASE_OPTIONS[@]}"
+  local ACTION_PREFIX="text_case"
+  menu_loop "$ACTION_PREFIX" "$TEXT_CASE_TITLE" "${TEXT_CASE_OPTIONS[@]}"
 }

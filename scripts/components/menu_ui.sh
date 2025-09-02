@@ -56,7 +56,9 @@ function print_menu() {
 # Purpose : Handles menu interaction (loop, input, actions)
 # Usage   : menu_loop "Menu Title" "Option 1" "Option 2" ...
 function menu_loop() {
-  local title="$1"; shift
+  local action_prefix="$1"; 
+  local title="$2"; 
+  shift 2
   local options=("$@")
 
   while true; do
@@ -74,7 +76,7 @@ function menu_loop() {
     # Check if input is a valid option number
     elif [[ "$choice" -ge 1 && "$choice" -le ${#options[@]} ]]; then
       # Find function with name "action_<choice>"
-      action_func="action_$choice"
+      action_func="${action_prefix}_action_$choice"
 
       # Run the action if defined
       if declare -f "$action_func" > /dev/null; then
