@@ -20,7 +20,11 @@ source "$DVA_HOME/scripts/components/dva_menu_ui.sh"
 
   log_task "Dva Cli Started"
 
+  multi_line_divider
+
   welcome_user
+  
+  multi_line_divider
 
   show_dva_menu
 

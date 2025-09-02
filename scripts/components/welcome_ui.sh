@@ -8,6 +8,7 @@
 
 function welcome_user(){
   
+  line_gap 2
 
   print_welcome_text
   
@@ -15,14 +16,12 @@ function welcome_user(){
 
   print_cli_name
   
-  line_gap 2
+  line_gap
 
   print_cli_name_full_form
 
   line_gap 2
 
-  divider
-  
 }
 
 function print_welcome_text(){
