@@ -59,22 +59,39 @@ function show_dva_menu(){
 
     #* Prompt user to choose
     while true; do
+
       read -p "Select an option [1-3] or 0 to Exit: " choice
+    
       case $choice in
         1) echo "🖥️  You selected FLUTTER"; flutter_screen ;;  # call your flutter screen function
+        
         2) echo "🖥️  You selected GIT"; git_screen ;;          # call your git screen function
+        
         3) echo "🖥️  You selected NOTE BOOK"; notebook_screen ;; # call your notebook screen
+        
         0) echo "👋 Exiting..."; break ;;
+        
         *) echo "❌ Invalid option, try again!" ;;
+      
       esac
+      
       echo -e "\nPress Enter to return to Main Menu..."
+      
       read
+      
       clear
+      
       print_flutter_card
+      
       echo -e "\n\n"
+      
       print_git_card
+      
       echo -e "\n\n"
+      
       print_note_book_card
+      
       echo -e "\n\n"
+      
     done
 }
