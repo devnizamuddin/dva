@@ -18,7 +18,6 @@ NOTE_OPTIONS=(
   "List Notes"
   "View Note"
   "Delete Note"
-  "Back"
 )
 
 #* ┏==================================================================================================┓
@@ -26,19 +25,19 @@ NOTE_OPTIONS=(
 #* ┗==================================================================================================┛
 #*
 
-action_1() {
+function note_action_1() {
   read -p "Enter note name: " note_name
   read -p "Enter note content: " note_content
   echo "$note_content" > "$NOTES_DIR/$note_name.txt"
   echo "✅ Note '$note_name' saved!"
 }
 
-action_2() {
+function note_action_2() {
   echo "📝 Listing all notes:"
   ls -1 "$NOTES_DIR"
 }
 
-action_3() {
+function note_action_3() {
   # Get list of notes
   local notes=("$NOTES_DIR"/*.txt)
   
@@ -73,7 +72,7 @@ action_3() {
 }
 
 
-action_4() {
+function note_action_4() {
   read -p "Enter note name to delete: " note_name
   if [[ -f "$NOTES_DIR/$note_name.txt" ]]; then
     rm "$NOTES_DIR/$note_name.txt"
@@ -83,16 +82,12 @@ action_4() {
   fi
 }
 
-action_5() {
-  echo "🔙 Going back to previous menu..."
-  return 1  # Go back to previous menu
-}
-
 #* ┏==================================================================================================┓
 #* ┃                               📖 Notes Menu Loop                                               ┃
 #* ┗==================================================================================================┛
 #*
 
 function run_note_menu() {
-  menu_loop "$NOTE_TITLE" "${NOTE_OPTIONS[@]}"
+  local ACTION_PREFIX="note"
+  menu_loop "$ACTION_PREFIX" "$NOTE_TITLE" "${NOTE_OPTIONS[@]}"
 }
