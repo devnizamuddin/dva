@@ -26,11 +26,24 @@ NOTE_OPTIONS=(
 #*
 
 function note_action_1() {
-  read -p "Enter note name: " note_name
-  read -p "Enter note content: " note_content
-  echo "$note_content" > "$NOTES_DIR/$note_name.txt"
-  echo "✅ Note '$note_name' saved!"
+    echo "📝 Create a New Note"
+    echo "───────────────────────────"
+
+    # Ask for note name
+    read -p "📌 Enter note name: " note_name
+    echo ""
+
+    # Ask for note content
+    echo "✍️  Enter note content (finish with Ctrl+D):"
+    echo "───────────────────────────"
+    note_content=$(</dev/stdin)
+    echo ""
+
+    # Save note
+    echo "$note_content" > "$NOTES_DIR/$note_name.txt"
+    echo "✅ Note '$note_name' saved successfully!"
 }
+
 
 function note_action_2() {
   echo "📝 Listing all notes:"
