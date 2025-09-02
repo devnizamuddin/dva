@@ -12,6 +12,9 @@ source "$DVA_HOME/scripts/features/flutter_manager.sh"
 
 source "$DVA_HOME/scripts/features/text_case_converter.sh"
 
+source "$DVA_HOME/scripts/features/git_manager.sh"
+
+source "$DVA_HOME/scripts/features/notes_manager.sh"
 
 #*
 #* ┏==================================================================================================┓
@@ -67,11 +70,11 @@ function execute_dva_menu(){
       read choice
     
       case $choice in
-        1) flutter_screen ;;  
+        1) run_git_commands ;;  
         
         2) execute_flutter_menu ;;      
         
-        3) notebook_screen ;;
+        3) run_note_menu ;;
 
         4) run_text_case_converter ;;
         
