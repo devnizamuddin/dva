@@ -24,27 +24,27 @@ TEXT_CASE_OPTIONS=(
 #* ┗==================================================================================================┛
 #*
 
-text_case_action_1() {
+function text_case_action_1() {
   read -p "Enter your text: " input
   printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]'
 }
 
-text_case_action_2() {
+function text_case_action_2() {
   read -p "Enter your text: " input
   printf '%s\n' "$input" | tr '[:upper:]' '[:lower:]'
 }
 
-text_case_action_3() {
+function text_case_action_3() {
   read -p "Enter your text: " input
   printf '%s\n' "$input" | perl -pe "\$_=lc(\$_); s/(?<!')\b([[:alpha:]])/\\u\$1/g"
 }
 
-text_case_action_4() {
+function text_case_action_4() {
   read -p "Enter your text: " input
   echo "$input" | tr '[:upper:]' '[:lower:]' | tr ' ' '_'
 }
 
-text_case_action_5() {
+function text_case_action_5() {
   read -p "Enter your text: " input
   echo "$input" | tr '[:upper:]' '[:lower:]' | tr ' ' '-'
 }
