@@ -39,14 +39,39 @@ action_2() {
 }
 
 action_3() {
-  read -p "Enter note name to view: " note_name
-  if [[ -f "$NOTES_DIR/$note_name.txt" ]]; then
-    echo "📄 Content of '$note_name':"
-    cat "$NOTES_DIR/$note_name.txt"
-  else
-    echo "❌ Note '$note_name' not found!"
+  # Get list of notes
+  local notes=("$NOTES_DIR"/*.txt)
+  
+  # Check if any notes exist
+  if [ ${#notes[@]} -eq 0 ]; then
+    echo "❌ No notes found!"
+    return
   fi
+
+  echo "📝 Notes List:"
+  local i=1
+  for note in "${notes[@]}"; do
+    echo "$i) $(basename "$note" .txt)"
+    ((i++))
+  done
+
+  # Prompt user to select by number
+  read -p "Enter note number to view: " choice
+
+  # Validate input
+  if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#notes[@]} )); then
+    echo "❌ Invalid choice!"
+    return
+  fi
+
+  # Show selected note
+  local selected_note="${notes[$((choice-1))]}"
+  echo "📄 Content of '$(basename "$selected_note" .txt)':"
+  echo "-------------------------"
+  cat "$selected_note"
+  echo "-------------------------"
 }
+
 
 action_4() {
   read -p "Enter note name to delete: " note_name
