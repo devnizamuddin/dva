@@ -16,7 +16,7 @@ TEXT_CASE_OPTIONS=(
   "Title Case (Abc Def)"
   "Snake Case (abc_def)"
   "Kebab Case (abc-def)"
-  "Exit"
+  "Back"
 )
 
 
@@ -51,8 +51,8 @@ action_5() {
 }
 
 action_6() {
-  echo "👋 Bye!"
-  return 1   # signal exit from menu loop
+  echo "🔙 Going back to previous menu..."
+  return 1   # This breaks out of menu_loop but doesn’t exit script
 }
 
 

@@ -63,7 +63,7 @@ function execute_dva_menu(){
     
     while true; do
 
-      printf "Select an option [${GREEN}1-3${NC}] or ${RED}0${NC} to Exit: "
+      printf "Select an option [${GREEN}1-4${NC}] or ${RED}0${NC} to Exit: "
       read choice
     
       case $choice in
