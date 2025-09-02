@@ -57,3 +57,4 @@ function showActiveBranches() {
     done
     echo ""
 }
+

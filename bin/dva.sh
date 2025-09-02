@@ -18,7 +18,7 @@ source "$DVA_HOME/scripts/sources/utils_source.sh"
 # Tasks Import
 source "$DVA_HOME/scripts/sources/tasks_source.sh"
 # Components Import
-source "$DVA_HOME/scripts/components/main_menu_ui.sh"
+source "$DVA_HOME/scripts/components/menu_ui.sh"
 #* Main CLI Import
 source "$DVA_HOME/scripts/dva_cli.sh"
 
