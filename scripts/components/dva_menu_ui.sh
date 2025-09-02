@@ -8,7 +8,9 @@
 #*
 
 
-source "$DVA_HOME/scripts/features/flutter_features.sh"
+source "$DVA_HOME/scripts/features/flutter_manager.sh"
+
+source "$DVA_HOME/scripts/features/text_case_converter.sh"
 
 
 #*
@@ -21,8 +23,6 @@ source "$DVA_HOME/scripts/features/flutter_features.sh"
 
 #* ────────────── Flutter Card ──────────────
 function show_dva_menu() {
-  sleep 2 
-  clear
   echo -e "${BG_LIGHT_BLUE}${BOLD}┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓${NC}"
   echo -e "${BG_LIGHT_BLUE}${BOLD}┃ ┌───────────────────────────────────────────┐ ┃${NC}"
   echo -e "${BG_LIGHT_BLUE}${BOLD}┃ │                                           │ ┃${NC}"
@@ -37,6 +37,11 @@ function show_dva_menu() {
   echo -e "${BG_LIGHT_BLUE}${BOLD}┃ ┌───────────────────────────────────────────┐ ┃${NC}"
   echo -e "${BG_LIGHT_BLUE}${BOLD}┃ │                                           │ ┃${NC}"
   echo -e "${BG_LIGHT_BLUE}${BOLD}┃ │             3. 📝 NOTE BOOK               │ ┃${NC}"
+  echo -e "${BG_LIGHT_BLUE}${BOLD}┃ │                                           │ ┃${NC}"
+  echo -e "${BG_LIGHT_BLUE}${BOLD}┃ └───────────────────────────────────────────┘ ┃${NC}"
+  echo -e "${BG_LIGHT_BLUE}${BOLD}┃ ┌───────────────────────────────────────────┐ ┃${NC}"
+  echo -e "${BG_LIGHT_BLUE}${BOLD}┃ │                                           │ ┃${NC}"
+  echo -e "${BG_LIGHT_BLUE}${BOLD}┃ │       4. 🔠  TEXT CASE CONVERTER          │ ┃${NC}"
   echo -e "${BG_LIGHT_BLUE}${BOLD}┃ │                                           │ ┃${NC}"
   echo -e "${BG_LIGHT_BLUE}${BOLD}┃ └───────────────────────────────────────────┘ ┃${NC}"
   echo -e "${BG_LIGHT_BLUE}${BOLD}┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛${NC}"
@@ -67,6 +72,8 @@ function execute_dva_menu(){
         2) execute_flutter_menu ;;      
         
         3) notebook_screen ;;
+
+        4) run_text_case_converter ;;
         
         0) echo "👋 Exiting..."; break ;;
         
