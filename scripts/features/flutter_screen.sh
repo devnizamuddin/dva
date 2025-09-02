@@ -34,7 +34,7 @@ action_6() { echo "📂 Creating MVVM Architecture project..."; }
 #*
 
 
-flutter_screen() {
+function execute_flutter_menu() {
   # Call the generic menu loop function with your title and options
   menu_loop "$FLUTTER_TITLE" "${FLUTTER_OPTIONS[@]}"
 }
