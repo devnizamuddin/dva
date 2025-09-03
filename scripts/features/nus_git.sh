@@ -315,49 +315,6 @@ function printUnimplementedMessage() {
 #_|_|                                                                                                                                                       
 
 
-
-#*                                                                             Main Activities - Helper Function # 4
-#* Take number list by (comma separation) as input from numbered list
-#! UnStage number list and display 
-#*
-#* =====================================================================================================
-#*
-function inputFileNumbersToUnStageAndDisplay(){
-  
-      echo -e "\n📌 ${BOLD}${CYAN}Enter the numbers of files to unstage (comma-separated):${RESET}"
-      echo -e "${BOLD}${CYAN}Example:${RESET} 1,3,5"
-      echo -e "\n➡️ Your selection: \c"
-      read -r selected_numbers
-
-      # Convert input to an array
-      IFS=',' read -ra selected_indices <<< "$selected_numbers"
-
-      # Stage selected files
-      for index in "${selected_indices[@]}"; do
-          file_to_unstage="${staged_list[$((index-1))]}"
-          if [[ -n "$file_to_unstage" ]]; then
-              git reset "$file_to_unstage"
-              files_to_remove+=("$file_to_unstage")
-          fi
-      done
-
-      # Check if any files were selected
-      if [ ${#files_to_remove[@]} -eq 0 ]; then
-          echo -e "${RED}❌ No files selected. Exiting...${RESET}"
-          exit 1
-      fi
-
-  # Display the list of files that were added
-  echo ""
-  echo -e "\n📚 ${BOLD}${CYAN}UnStaged Files:${RESET}\n"
-  echo -e "${BOLD}${CYAN}═════════════════════════════════════════════════════════════════════${RESET}"
-  for file in "${files_to_remove[@]}"; do
-      echo -e "${GREEN}  - $file${RESET}"
-  done
-}
-
-
-
 #*                                                                             Main Activities - Helper Function # 7
 #* Show Branch Updates By Comparing Mine
 #*
@@ -401,37 +358,6 @@ function showBranchUpdatesByComparingMine() {
 }
 
 
-#*                                                                             Main Activities - Helper Function # 8
-#* Execute the git pull operation
-#* =====================================================================================================
-#*
-function showActiveBranches() {
-    echo ""
-    echo -e "${YELLOW}🔄 Fetching active branches...${RESET}"
-    echo ""
-    git fetch --prune 
-
-    BRANCHES=($(git branch -r | grep -v '\->' | sed 's/origin\///'))
-
-    if [ ${#BRANCHES[@]} -eq 0 ]; then
-        echo -e "${RED}❌ No remote branches found!${RESET}"
-        exit 1
-    fi
-    echo ""
-    echo -e "${BOLD}${CYAN}📂 Available Active Branches:${RESET}"
-    echo -e "${BOLD}${CYAN}═════════════════════════════════════════════════════════════════════${RESET}"
-    echo ""
-    COLUMN_WIDTH=20
-    for i in "${!BRANCHES[@]}"; do
-        printf "%-2d. %-*s" "$(($i + 1))" "$COLUMN_WIDTH" "${BRANCHES[$i]}"
-        if (( ($i + 1) % 2 == 0 )); then
-            echo "" 
-            echo "" 
-        fi
-    done
-    echo ""
-}
-
 function selectBranch(){
 
   read -p "$(echo -e "\n${GREEN}✅ Enter the branch number: ${RESET}")" CHOICE
@@ -466,53 +392,6 @@ function selectBranch(){
 #_|_|                                                                                                                                                       
 
 
-
-#?
-#? ╔-Function of Main Activities-═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-#?
-
-
-
-
-#*                                                                                    Main Activity # 1
-#* Show all files by category
-#* Stage files from user input
-#
-# =====================================================================================================
-#
-function stage_choosen_files () {
-  showAllFileChangesAsNumberedList
-
-  if [ ${#unstaged_list[@]} -eq 0 ]; then
-    echo -e "\n${RED}❌  No file to stage...${RESET}\n"
-  else
-    inputFileNumbersToStageAndDisplay
-  fi
-}
-
-
-#*                                                                                   Main Activity # 3a
-#* Execute the git commit and push operation at a time
-#
-# =====================================================================================================
-#
-function commit_and_push() {
-  commit_changes
-  git_push
-}
-
-
-#*                                                                                    Main Activity # 4
-#* Execute pull and push operation at a time
-#
-# =====================================================================================================
-#
-function pull_and_push() {
-  git_pull
-  git_push
-}
-
-
 #*                                                                                    Main Activity # 4m
 #* Execute merge
 #
@@ -540,20 +419,6 @@ function git_diff_branches() {
 
   echo "Showing diff between $source_branch and $target_branch..."
   git diff "$source_branch" "$target_branch"
-}
-
-
-#* git_log()
-#*                                                                                    Main Activity # 6
-#* Show the commit history
-# =====================================================================================================
-#
-
-function git_log() {
-  echo "Showing the commit history..."
-  # git log --pretty=oneline
-  git log --oneline --graph --decorate \
-  --pretty=format:"%C(yellow)%ad%Creset %C(cyan)$(git branch --contains | grep -v 'HEAD' | sed 's/^[[:space:]]*//')%Creset %C(green)* %an%n%n%Creset%s%n%n" --date=format:'%Y-%m-%d %I:%M %p'
 }
 
 
@@ -612,53 +477,6 @@ function git_hard_reset() {
 }
 
 
-#!
-#! ╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════-Function of Main Activities-╝
-#!
-
-
-
-#* main()
-#*                                                                                       # Main - Start
-#* Main function that runs the script
-# =====================================================================================================
-#
-
-function run_git_operation(){
-    
-  showAllFileChangesAsNumberedList
-
-  local main_choice=-1
-
-  while [[ "$main_choice" != "0" ]]; do
-    
-    show_options
-
-    read -p "$(echo -e "\n${BOLD}${GREEN}🖌   Enter your choice (1-11)${RESET} || ${BOLD}${RED}0 to Exit: ${RESET}")" main_choice
-    echo ""
-
-    exetcute_choosen_git_operation $main_choice
-
-  done
-
-  exit 0
-
-}
-
-
-#* exit_script()
-#*                                                                                       # Main - Exit
-#* Exits the script
-# =====================================================================================================
-#
-
-
-#* show_options()
-#*                                                                                       # Main - View
-#* Shows all available options to the user
-# =====================================================================================================
-#
-
 function show_options() {
   echo -e "${BOLD}${BG_BLUE}                                                                                                           ${RESET}"
   echo -e "${BOLD}${BG_BLUE}                                     ╔══════════════════════════════╗                                      ${RESET}"
@@ -684,36 +502,14 @@ function show_options() {
 }
 
 
-#* exetcute_choosen_git_operation()
-#*                                                                                     # Main Execution
-#* Executes the chosen git operation
-# =====================================================================================================
-#
-
 
 function exetcute_choosen_git_operation() {
-  local choice="$1"
 
-  if [[ "$choice" =~ ^[0-9a-zA-Z]+$ ]]; then
-
-    case $choice in
-      0)
-         exit_script
-        ;;
-      3p)
-        commit_and_push
-        ;;
-      4)
-        pull_and_push
-        ;;
       4m)
         merge_branch
         ;;
       5)
         git_diff_branches
-        ;;
-      6)
-        git_log
         ;;
       7)
         show_commit_changes
@@ -727,22 +523,5 @@ function exetcute_choosen_git_operation() {
       9)
         utilitiesTask
         ;;
-      *)
-        echo -e "${GOLDEN}Option not recognized${RESET}"
-        echo ""
-        ;;
-    esac
-  else
-    echo ""
-    echo -e "${RED}Invalid option. Please select a valid option.${RESET}"
-    echo ""
-  exit 0
-  fi
+        
 }
-
-run_git_operation
-
-
-#→                                                                                                                                                           
-#→ ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════-Main Activities Execution End-╝  
-#→                                                                                                                                                           

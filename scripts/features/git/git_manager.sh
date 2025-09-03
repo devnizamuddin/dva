@@ -5,10 +5,16 @@
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 
 source "$DVA_HOME/scripts/features/git/stage_manager.sh"
+
 source "$DVA_HOME/scripts/features/git/commit_manager.sh"
+
 source "$DVA_HOME/scripts/features/git/push_manager.sh"
+
 source "$DVA_HOME/scripts/features/git/pull_manager.sh"
+
 source "$DVA_HOME/scripts/features/git/branch_manager.sh"
+
+source "$DVA_HOME/scripts/features/git/history_manager.sh"
 
 #* ┏==================================================================================================┓
 #* ┃                                  🔧 Git Menu: Options & Actions                                 ┃
@@ -27,6 +33,7 @@ GIT_OPTIONS=(
   "Commit All Staged Files"
   "Push Unpushed Commits"
   "Pull From Choosen Branch"
+  "Show Commit History"
 )
 
 #* ┏==================================================================================================┓
@@ -60,6 +67,10 @@ function git_action_6() {
 
 function git_action_7() {
   pull_from_choosen_branch
+}
+
+function git_action_8() {
+  show_commit_history
 }
 
 #* ┏==================================================================================================┓
