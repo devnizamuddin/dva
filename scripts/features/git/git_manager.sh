@@ -7,6 +7,7 @@
 
 
 source "$DVA_HOME/scripts/features/git/stage_manager.sh"
+source "$DVA_HOME/scripts/features/git/commit_manager.sh"
 
 #* ┏==================================================================================================┓
 #* ┃                                  🔧 Git Menu: Options & Actions                                 ┃
@@ -20,10 +21,10 @@ GIT_TITLE="Git Commands"
 GIT_OPTIONS=(
   "Stage Choosen Files"
   "Stage All Files"
-  "UnStage Choosen Files"
-  "UnStage All File"
-  "Git Pull"
-  "Git Log"
+  "Unstage Choosen Files"
+  "Unstage All File"
+  "Commit All Staged Files"
+  "Push Unpushed Commits"
   "Back"
 )
 
@@ -49,13 +50,11 @@ function git_action_4() {
 }
 
 function git_action_5() {
-  echo "⬇️  Pulling latest changes..."
-  git pull
+  commit_all_staged_files
 }
 
 function git_action_6() {
-  echo "📜 Showing Git log..."
-  git log --oneline --graph --decorate --all | head -20
+  push_unpushed_commits
 }
 
 function git_action_7() {
