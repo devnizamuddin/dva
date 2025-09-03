@@ -6,7 +6,7 @@
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 
 
-source "$DVA_HOME/scripts/features/nus_git.sh"
+source "$DVA_HOME/scripts/features/git/stage_manager.sh"
 
 #* ┏==================================================================================================┓
 #* ┃                                  🔧 Git Menu: Options & Actions                                 ┃
@@ -18,10 +18,10 @@ GIT_TITLE="Git Commands"
 
 # Menu Options
 GIT_OPTIONS=(
-  "Git Status"
+  "Stage Choosen Files"
   "Git Add (all)"
-  "UnStage "
-  "Git Push"
+  "UnStage Choosen Files"
+  "UnStage All File"
   "Git Pull"
   "Git Log"
   "Back"
@@ -33,23 +33,19 @@ GIT_OPTIONS=(
 #*
 
 function git_action_1() {
-  echo "📂 Checking Git status..."
-  run_git_operation
+  stage_choosen_files
 }
 
 function git_action_2() {
-  echo "➕ Adding all files..."
-  git add .
-  echo "✅ Files added"
+  stage_all_files
 }
 
 function git_action_3() {
-  echo "➕ Adding all files..."
+  unstage_choosen_files
 }
 
 function git_action_4() {
-  echo "⬆️  Pushing changes to remote..."
-  git push
+  unstage_all_files
 }
 
 function git_action_5() {

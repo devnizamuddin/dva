@@ -1230,7 +1230,7 @@ function exetcute_choosen_git_operation() {
   fi
 }
 
-
+run_git_operation
 
 
 #→                                                                                                                                                           
