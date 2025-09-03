@@ -167,43 +167,7 @@ function exetcute_choosen_utilities(){
 
 
 # Function: Show progress dots with colored text while running a command
-show_progress_dots() {
-  local message="${1}"
-  shift
-  local cmd=("$@")  # Command passed as arguments
 
-  local delay=0.5
-  local count=0
-
-  # Hide cursor during animation
-  tput civis
-  echo ""
-  echo ""
-
-  # Start spinner in background
-  (
-    while :; do
-      count=$(( (count + 1) % 4 ))
-      dots=$(printf "%*s" "$count" | tr ' ' '.')
-      printf "\r${CYAN}${BOLD}⏳ %s${dots}${RESET}" "$message"
-      sleep "$delay"
-    done
-  ) &
-  local spinner_pid=$!
-
-  # Run the actual command silently
-  "${cmd[@]}" >/dev/null 2>&1
-
-  # Stop spinner
-  kill "$spinner_pid" >/dev/null 2>&1
-  wait "$spinner_pid" 2>/dev/null
-
-  # Clean up output and print done message
-  printf "\r${GREEN}✅ %s... Done!${RESET}\n" "$message"
-  echo ""
-  echo ""
-  tput cnorm  # Show cursor again
-}
 
 #* print_generated_file_header()
 #*                                                                                        Utilities # 1
@@ -349,113 +313,6 @@ function printUnimplementedMessage() {
 #_|_|                                                                                                                                                       
 #_|_| ╔-Main Activities - Helper Function-══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗  
 #_|_|                                                                                                                                                       
-
-
-
-#*                                                                             Main Activities - Helper Function # 4
-#* Take number list by (comma separation) as input from numbered list
-#! UnStage number list and display 
-#*
-#* =====================================================================================================
-#*
-function inputFileNumbersToUnStageAndDisplay(){
-  
-      echo -e "\n📌 ${BOLD}${CYAN}Enter the numbers of files to unstage (comma-separated):${RESET}"
-      echo -e "${BOLD}${CYAN}Example:${RESET} 1,3,5"
-      echo -e "\n➡️ Your selection: \c"
-      read -r selected_numbers
-
-      # Convert input to an array
-      IFS=',' read -ra selected_indices <<< "$selected_numbers"
-
-      # Stage selected files
-      for index in "${selected_indices[@]}"; do
-          file_to_unstage="${staged_list[$((index-1))]}"
-          if [[ -n "$file_to_unstage" ]]; then
-              git reset "$file_to_unstage"
-              files_to_remove+=("$file_to_unstage")
-          fi
-      done
-
-      # Check if any files were selected
-      if [ ${#files_to_remove[@]} -eq 0 ]; then
-          echo -e "${RED}❌ No files selected. Exiting...${RESET}"
-          exit 1
-      fi
-
-  # Display the list of files that were added
-  echo ""
-  echo -e "\n📚 ${BOLD}${CYAN}UnStaged Files:${RESET}\n"
-  echo -e "${BOLD}${CYAN}═════════════════════════════════════════════════════════════════════${RESET}"
-  for file in "${files_to_remove[@]}"; do
-      echo -e "${GREEN}  - $file${RESET}"
-  done
-}
-
-
-#*                                                                             Main Activities - Helper Function # 5
-#* Execute the git push operation
-#* =====================================================================================================
-#*
-
-
-
-#*                                                                             Main Activities - Helper Function # 6
-#* Execute the git pull operation
-#* =====================================================================================================
-#*
-function git_pull() {
-
-    # local variables 
-    local chose_branch=-1
-
-    # Fetch all branches from the remote
-    show_progress_dots "Fetching active branches" git fetch --prune
-
-    BRANCHES=($(git branch -r | grep -v '\->' | sed 's/origin\///'))
-
-    if [ ${#BRANCHES[@]} -eq 0 ]; then
-    #!---------------------------> No remote branches found! <---------------------------
-    
-        echo -e "${RED}❌ No remote branches found!${RESET}"
-        exit 1
-    fi
-
-    #---------------------------> Having remote branches found! <---------------------------
-
-    echo -e "\n${CYAN}📂 Available Active Branches:${RESET}"
-    echo -e "${BOLD}${CYAN}═════════════════════════════════════════════════════════════════════${RESET}"
-    echo ""
-
-    COLUMN_WIDTH=20
-    for i in "${!BRANCHES[@]}"; do
-        printf "%-2d. %-*s" "$(($i + 1))" "$COLUMN_WIDTH" "${BRANCHES[$i]}"
-        if (( ($i + 1) % 2 == 0 )); then
-            echo "" 
-            echo "" 
-        fi
-    done
-    echo ""
-
-    #*---------------------------> Taking user input(number) to select branch  <---------------------------
-
-    read -p "$(echo -e "\n${GREEN}🖌   Enter the branch number: ${RESET}")" chose_branch
-
-
-    if ! [[ "$chose_branch" =~ ^[0-9]+$ ]] || [ "$chose_branch" -lt 1 ] || [ "$chose_branch" -gt "${#BRANCHES[@]}" ]; then
-        echo ""
-        echo -e "${RED}❌ Invalid selection! Please enter a valid number.${RESET}"
-        echo ""
-        exit 1
-    fi
-
-    SELECTED_BRANCH="${BRANCHES[$((chose_branch - 1))]}"
-
-
-    #*---------------------------> Pulling commits from selected branch  <---------------------------
-    show_progress_dots "Pulling latest changes from ${SELECTED_BRANCH}" git pull origin "$SELECTED_BRANCH"
-    echo ""
-}
 
 
 #*                                                                             Main Activities - Helper Function # 7
@@ -751,22 +608,7 @@ function run_git_operation(){
 #* Exits the script
 # =====================================================================================================
 #
-function exit_script() {
-  echo -e "\n${RED}============================================${RESET}"
-  echo -e "${RED}        -                                     ${RESET}"
-  echo -e "${RED}       / \\                                   ${RESET}"
-  echo -e "${RED}      /   \\                                  ${RESET}"
-  echo -e "${RED}     /     \\        Exiting now...           ${RESET}"
-  echo -e "${RED}    /_______\\                                ${RESET}"
-  echo -e "${RED}    |       |                                 ${RESET}"
-  echo -e "${RED}    |       |            o                    ${RESET}"
-  echo -e "${RED}    |  Git  |          /|\\  -- -- -- -- - -  ${RESET}"
-  echo -e "${RED}    |       |          / \\  -- -- -- - - -   ${RESET}"
-  echo -e "${RED}    |_______|  -- -- -- -- -- -- -- - - -     ${RESET}"
-  echo -e "${RED}==============================================${RESET}"
-  echo ""
-  exit 0
-}
+
 
 #* show_options()
 #*                                                                                       # Main - View

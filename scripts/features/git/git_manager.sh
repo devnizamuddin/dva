@@ -5,10 +5,10 @@
 #* ║                                   💰 Imported Files                                              ║
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 
-
 source "$DVA_HOME/scripts/features/git/stage_manager.sh"
 source "$DVA_HOME/scripts/features/git/commit_manager.sh"
 source "$DVA_HOME/scripts/features/git/push_manager.sh"
+source "$DVA_HOME/scripts/features/git/pull_manager.sh"
 
 #* ┏==================================================================================================┓
 #* ┃                                  🔧 Git Menu: Options & Actions                                 ┃
@@ -26,7 +26,7 @@ GIT_OPTIONS=(
   "Unstage All File"
   "Commit All Staged Files"
   "Push Unpushed Commits"
-  "Back"
+  "Pull From Choosen Branch"
 )
 
 #* ┏==================================================================================================┓
@@ -59,8 +59,7 @@ function git_action_6() {
 }
 
 function git_action_7() {
-  echo "🔙 Going back to previous menu..."
-  return 1   # Go back without exiting script
+  pull_from_choosen_branch
 }
 
 #* ┏==================================================================================================┓
@@ -76,4 +75,28 @@ function run_git_commands() {
 
   local ACTION_PREFIX="git"
   menu_loop "$ACTION_PREFIX" "$GIT_TITLE" "${GIT_OPTIONS[@]}"
+}
+
+
+
+#* ┏==================================================================================================┓
+#* ┃                            📖 Exit script added for upcomming use                                ┃
+#* ┗==================================================================================================┛
+
+
+function exit_script() {
+  echo -e "\n${RED}============================================${RESET}"
+  echo -e "${RED}        -                                     ${RESET}"
+  echo -e "${RED}       / \\                                   ${RESET}"
+  echo -e "${RED}      /   \\                                  ${RESET}"
+  echo -e "${RED}     /     \\        Exiting now...           ${RESET}"
+  echo -e "${RED}    /_______\\                                ${RESET}"
+  echo -e "${RED}    |       |                                 ${RESET}"
+  echo -e "${RED}    |       |            o                    ${RESET}"
+  echo -e "${RED}    |  Git  |          /|\\  -- -- -- -- - -  ${RESET}"
+  echo -e "${RED}    |       |          / \\  -- -- -- - - -   ${RESET}"
+  echo -e "${RED}    |_______|  -- -- -- -- -- -- -- - - -     ${RESET}"
+  echo -e "${RED}==============================================${RESET}"
+  echo ""
+  exit 0
 }
