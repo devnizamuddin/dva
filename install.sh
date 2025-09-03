@@ -112,7 +112,22 @@ else
     sudo ln -sf "$DVA_HOME/bin/dva.sh" /usr/local/bin/dva
 fi
 
-echo ""
-echo "✅ DVA CLI installed successfully!"
+#*
+#* ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
+#* ║                                   💰 Imported Files                                              ║
+#* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
+#*
+
+source "$DVA_HOME/scripts/components/welcome_ui.sh"
+
+line_gap
+multi_line_divider
+welcome_user
+multi_line_divider
+line_gap
 echo "👉 Run 'dva' from anywhere."
+line_gap
 echo "📂 Installed at: $DVA_HOME"
+line_gap
+multi_line_divider
+line_gap
