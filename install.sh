@@ -30,6 +30,7 @@ mkdir -p "$DVA_HOME/bin"
 mkdir -p "$DVA_HOME/scripts"
 mkdir -p "$DVA_HOME/scripts/components"
 mkdir -p "$DVA_HOME/scripts/features"
+mkdir -p "$DVA_HOME/scripts/features/git"
 mkdir -p "$DVA_HOME/scripts/sources"
 mkdir -p "$DVA_HOME/scripts/tasks"
 mkdir -p "$DVA_HOME/scripts/utils"
@@ -68,7 +69,7 @@ cp scripts/features/*.sh "$DVA_HOME/scripts/features/" 2>/dev/null || true
 #* ✌️ GIT Feature scripts
 #*    - Full-page CLI screens for structured navigation
 #*
-cp scripts/features/*.sh "$DVA_HOME/scripts/features/git/" 2>/dev/null || true
+cp scripts/features/git/*.sh "$DVA_HOME/scripts/features/git/" 2>/dev/null || true
 
 #*
 #* ✌️ Sources scripts
