@@ -22,7 +22,6 @@ function print_menu() {
   local border_empty="┃$(printf ' %.0s' $(seq 1 $width))┃"
   local border_bottom="┗$(printf '=%.0s' $(seq 1 $width))┛"
 
-  clear
   echo "$border_top"
   echo "$border_empty"
 

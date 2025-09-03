@@ -19,7 +19,7 @@ GIT_TITLE="Git Commands"
 # Menu Options
 GIT_OPTIONS=(
   "Stage Choosen Files"
-  "Git Add (all)"
+  "Stage All Files"
   "UnStage Choosen Files"
   "UnStage All File"
   "Git Pull"
@@ -69,6 +69,11 @@ function git_action_7() {
 #*
 
 function run_git_commands() {
+
+  show_all_file_changes_as_numbered_list
+  # printf "${RESET} "
+  line_gap
+
   local ACTION_PREFIX="git"
   menu_loop "$ACTION_PREFIX" "$GIT_TITLE" "${GIT_OPTIONS[@]}"
 }
