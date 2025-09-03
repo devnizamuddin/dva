@@ -43,31 +43,32 @@ mkdir -p "$DVA_HOME/logs"
 #*
 
 
-#*
 #* ✌️ Main CLI entrypoint
 #*
 cp bin/dva.sh "$DVA_HOME/bin/"
 
 
-#*
 #* ✌️ General helper scripts
 #*    - These are common utility functions
 #*
 cp scripts/*.sh "$DVA_HOME/scripts/" 2>/dev/null || true
 
 
-#*
 #* ✌️ Component scripts
 #*    - Reusable UI parts for menus or common views
 #*
 cp scripts/components/*.sh "$DVA_HOME/scripts/components/" 2>/dev/null || true
 
 
-#*
 #* ✌️ Feature scripts
 #*    - Full-page CLI screens for structured navigation
 #*
 cp scripts/features/*.sh "$DVA_HOME/scripts/features/" 2>/dev/null || true
+
+#* ✌️ GIT Feature scripts
+#*    - Full-page CLI screens for structured navigation
+#*
+cp scripts/features/*.sh "$DVA_HOME/scripts/features/git/" 2>/dev/null || true
 
 #*
 #* ✌️ Sources scripts

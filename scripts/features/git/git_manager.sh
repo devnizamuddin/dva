@@ -20,7 +20,7 @@ GIT_TITLE="Git Commands"
 GIT_OPTIONS=(
   "Git Status"
   "Git Add (all)"
-  "Git Commit"
+  "UnStage "
   "Git Push"
   "Git Pull"
   "Git Log"
@@ -44,8 +44,7 @@ function git_action_2() {
 }
 
 function git_action_3() {
-  read -p "Enter commit message: " msg
-  git commit -m "$msg"
+  echo "➕ Adding all files..."
 }
 
 function git_action_4() {
