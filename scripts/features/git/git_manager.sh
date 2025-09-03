@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #* ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
 #* ║                                   💰 Imported Files                                              ║
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
@@ -9,6 +8,7 @@ source "$DVA_HOME/scripts/features/git/stage_manager.sh"
 source "$DVA_HOME/scripts/features/git/commit_manager.sh"
 source "$DVA_HOME/scripts/features/git/push_manager.sh"
 source "$DVA_HOME/scripts/features/git/pull_manager.sh"
+source "$DVA_HOME/scripts/features/git/branch_manager.sh"
 
 #* ┏==================================================================================================┓
 #* ┃                                  🔧 Git Menu: Options & Actions                                 ┃

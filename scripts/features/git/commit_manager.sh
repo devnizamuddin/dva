@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 function commit_all_staged_files() {
     # Get staged file list
     staged_files=$(git diff --name-only --cached)

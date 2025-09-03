@@ -315,6 +315,49 @@ function printUnimplementedMessage() {
 #_|_|                                                                                                                                                       
 
 
+
+#*                                                                             Main Activities - Helper Function # 4
+#* Take number list by (comma separation) as input from numbered list
+#! UnStage number list and display 
+#*
+#* =====================================================================================================
+#*
+function inputFileNumbersToUnStageAndDisplay(){
+  
+      echo -e "\n📌 ${BOLD}${CYAN}Enter the numbers of files to unstage (comma-separated):${RESET}"
+      echo -e "${BOLD}${CYAN}Example:${RESET} 1,3,5"
+      echo -e "\n➡️ Your selection: \c"
+      read -r selected_numbers
+
+      # Convert input to an array
+      IFS=',' read -ra selected_indices <<< "$selected_numbers"
+
+      # Stage selected files
+      for index in "${selected_indices[@]}"; do
+          file_to_unstage="${staged_list[$((index-1))]}"
+          if [[ -n "$file_to_unstage" ]]; then
+              git reset "$file_to_unstage"
+              files_to_remove+=("$file_to_unstage")
+          fi
+      done
+
+      # Check if any files were selected
+      if [ ${#files_to_remove[@]} -eq 0 ]; then
+          echo -e "${RED}❌ No files selected. Exiting...${RESET}"
+          exit 1
+      fi
+
+  # Display the list of files that were added
+  echo ""
+  echo -e "\n📚 ${BOLD}${CYAN}UnStaged Files:${RESET}\n"
+  echo -e "${BOLD}${CYAN}═════════════════════════════════════════════════════════════════════${RESET}"
+  for file in "${files_to_remove[@]}"; do
+      echo -e "${GREEN}  - $file${RESET}"
+  done
+}
+
+
+
 #*                                                                             Main Activities - Helper Function # 7
 #* Show Branch Updates By Comparing Mine
 #*
