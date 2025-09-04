@@ -17,10 +17,10 @@ function print_menu() {
   local width=49
 
   # Borders
-  local border_top="┏$(printf '=%.0s' $(seq 1 $width))┓"
+  local border_top="┏$(printf '━%.0s' $(seq 1 $width))┓"
   local border_sep="┃$(printf '─%.0s' $(seq 1 $width))┃"
   local border_empty="┃$(printf ' %.0s' $(seq 1 $width))┃"
-  local border_bottom="┗$(printf '=%.0s' $(seq 1 $width))┛"
+  local border_bottom="┗$(printf '━%.0s' $(seq 1 $width))┛"
 
   echo "$border_top"
   echo "$border_empty"
@@ -58,12 +58,12 @@ function menu_loop() {
 
     # Ask input below menu (outside box)
     echo
-    read -p "👉 Select an option [0-${#options[@]}] (0 = Exit): " choice
+    read -p "👉 Select an option [0-${#options[@]}] (0 = Back): " choice
 
     # Exit if 0
     if [[ "$choice" -eq 0 ]]; then
       echo "👋 Exiting..."
-      exit 0
+      exit 1
 
     # Valid choice
     elif [[ "$choice" -ge 1 && "$choice" -le ${#options[@]} ]]; then
