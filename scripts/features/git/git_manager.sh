@@ -26,14 +26,14 @@ GIT_TITLE="Git Commands"
 
 # Menu Options
 GIT_OPTIONS=(
-  "Stage Choosen Files"
-  "Stage All Files"
-  "Unstage Choosen Files"
-  "Unstage All File"
-  "Commit All Staged Files"
-  "Push Unpushed Commits"
-  "Pull From Choosen Branch"
-  "Show Commit History"
+  "Stage Choosen Files" # MENU_1
+  "Stage All Files" # MENU_2
+  "Unstage Choosen Files" # MENU_3
+  "Unstage All File" # MENU_4
+  "Commit All Staged Files" # MENU_5
+  "Push Unpushed Commits" # MENU_6
+  "Pull From Choosen Branch" # MENU_7
+  "Show Commit History" # MENU_8
 )
 
 #* ┏==================================================================================================┓
