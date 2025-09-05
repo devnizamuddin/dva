@@ -58,7 +58,7 @@ function menu_loop() {
 
     # Ask input below menu (outside box)
     echo
-    read -p "👉 Select an option [0-${#options[@]}] (0 = Back): " choice
+    read -p "👉 Select an option [1-${#options[@]}] (0 = Back): " choice
 
     # Exit if 0
     if [[ "$choice" -eq 0 ]]; then
