@@ -505,23 +505,23 @@ function show_options() {
 
 function exetcute_choosen_git_operation() {
 
-      4m)
-        merge_branch
-        ;;
-      5)
-        git_diff_branches
-        ;;
-      7)
-        show_commit_changes
-        ;;
-      8s)
-        git_soft_reset
-        ;;
-      8h)
-        git_hard_reset
-        ;;
-      9)
-        utilitiesTask
-        ;;
+      # 4m)
+      #   merge_branch
+      #   ;;
+      # 5)
+      #   git_diff_branches
+      #   ;;
+      # 7)
+      #   show_commit_changes
+      #   ;;
+      # 8s)
+      #   git_soft_reset
+      #   ;;
+      # 8h)
+      #   git_hard_reset
+      #   ;;
+      # 9)
+      #   utilitiesTask
+      #   ;;
         
 }
