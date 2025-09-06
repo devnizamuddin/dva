@@ -28,18 +28,27 @@ echo "🚀 Installing DVA CLI into $DVA_HOME..."
 #* ┗==================================================================================================┛
 #*
 
+#*================================┃ Bin, Scripts, Components, Features ┃=======================================
 mkdir -p "$DVA_HOME/bin"
 mkdir -p "$DVA_HOME/scripts"
 mkdir -p "$DVA_HOME/scripts/components"
 mkdir -p "$DVA_HOME/scripts/features"
-mkdir -p "$DVA_HOME/scripts/features/git"
-mkdir -p "$DVA_HOME/scripts/features/flutter"
-mkdir -p "$DVA_HOME/scripts/features/note"
-mkdir -p "$DVA_HOME/scripts/features/text"
+#===================================================┃==========================================================
+
+#*==========================================┃ Feature Folders ┃================================================
+mkdir -p "$DVA_FEATURES/git"
+mkdir -p "$DVA_FEATURES/flutter"
+mkdir -p "$DVA_FEATURES/note"
+mkdir -p "$DVA_FEATURES/text"
+mkdir -p "$DVA_FEATURES/mac_os"
+#==================================================┃============================================================
+
+#*=======================================┃Source, Tasks, Utils, Logs┃============================================
 mkdir -p "$DVA_HOME/scripts/sources"
 mkdir -p "$DVA_HOME/scripts/tasks"
 mkdir -p "$DVA_HOME/scripts/utils"
 mkdir -p "$DVA_HOME/logs"
+#==================================================┃============================================================
 
 
 #*
@@ -66,30 +75,48 @@ cp scripts/*.sh "$DVA_HOME/scripts/" 2>/dev/null || true
 cp scripts/components/*.sh "$DVA_HOME/scripts/components/" 2>/dev/null || true
 
 
-#* ✌️ Feature scripts
-#*    - Full-page CLI screens for structured navigation
+#* ============================================== ✌️ Feature scripts ===============================================
 #*
+#* - Full-page CLI screens for structured navigation
+# ==================================================================================================================
+
 cp scripts/features/*.sh "$DVA_HOME/scripts/features/" 2>/dev/null || true
 
-#* ✌️ Flutter Feature scripts
-#*    - Full-page CLI screens for structured navigation
+#* ============================================== 💙 Flutter scripts ===============================================
 #*
+#* - Full-page CLI screens for flutter functions
+# ==================================================================================================================
+
 cp scripts/features/flutter/*.sh "$DVA_HOME/scripts/features/flutter/" 2>/dev/null || true
 
-#* ✌️ GIT Feature scripts
-#*    - Full-page CLI screens for structured navigation
+#* ============================================== 🗂️ GIT scripts ===================================================
 #*
+#* - Full-page CLI screens for git functions
+# ==================================================================================================================
+
 cp scripts/features/git/*.sh "$DVA_HOME/scripts/features/git/" 2>/dev/null || true
 
-#* ✌️ Note Feature scripts
-#*    - Full-page CLI screens for structured navigation
+#* ============================================= 📝 Note Feature scripts ==========================================
 #*
+#* - Full-page CLI screens for note functions
+# ==================================================================================================================
+
 cp scripts/features/note/*.sh "$DVA_HOME/scripts/features/note/" 2>/dev/null || true
 
-#* ✌️ Text Feature scripts
-#*    - Full-page CLI screens for structured navigation
+#* ============================================== 🔠 Text Feature scripts ===============================================
 #*
+#* - Full-page CLI screens for text functions
+# ==================================================================================================================
+
 cp scripts/features/text/*.sh "$DVA_HOME/scripts/features/text/" 2>/dev/null || true
+
+#* ============================================= 🍎 MacOS Feature scripts ==========================================
+#*
+#* - Full-page CLI screens for macOS functions
+# ==================================================================================================================
+
+cp scripts/features/mac_os/*.sh "$DVA_HOME/scripts/features/mac_os/" 2>/dev/null || true
+
 
 #*
 #* ✌️ Sources scripts
