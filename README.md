@@ -2,12 +2,14 @@
 
 **DVA** is a CLI tool to automate your daily developer tasks.
 
+**Latest Version: 1.0.1**
+
 ## Features
-- 🚀 Start development environment
-- 🧹 Clean project folders (with confirmation)
-- 🔄 Sync Git branches
-- Colorful interactive menu
-- Logs all task executions (`logs/dva.log`)
+- 🗂️ Git Version Management
+- 💙 Flutter Project Helper
+- 📝 Note Book Manager
+- 🔠 TextCase Converter
+- 🍎 MacOS Task Helper
 
 ## Installation
 
