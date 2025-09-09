@@ -34,7 +34,7 @@ clear
 #*
 
 # Metadata
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 # Help function
 function show_help() {
