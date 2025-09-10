@@ -66,6 +66,11 @@ case "${1:-}" in
     shift
     run_git_commands
     ;;
+  commit)
+    shift
+    stage_all_files
+    commit_all_staged_files
+    ;;
   text)
     shift
     run_text_case_converter
