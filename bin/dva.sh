@@ -70,6 +70,7 @@ case "${1:-}" in
     shift
     stage_all_files
     commit_all_staged_files
+    push_unpushed_commits
     ;;
   text)
     shift
