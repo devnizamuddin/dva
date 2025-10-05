@@ -101,16 +101,23 @@ function run_git_commands() {
 # ==========================================
 
 function launch_source() {
-  # Read the remote URL from git config
-  GIT_URL=$(git config --get remote.origin.url)
+  # Read optional branch argument
+  BRANCH_NAME="$1"
 
-  # Check if inside a git repo
-  if [ -z "$GIT_URL" ]; then
-    echo "❌ Not a git repository or no remote origin found."
-    exit 1
+  # Ensure inside a git repo
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "❌ Not a git repository!"
+    return 1
   fi
 
-  # Convert SSH to HTTPS if needed
+  # Get remote repo URL
+  GIT_URL=$(git config --get remote.origin.url)
+  if [ -z "$GIT_URL" ]; then
+    echo "❌ No remote origin found!"
+    return 1
+  fi
+
+  # Convert SSH → HTTPS if needed
   if [[ "$GIT_URL" == git@* ]]; then
     GIT_URL=$(echo "$GIT_URL" | sed -E 's#git@(.*):(.*)#https://\1/\2#')
   fi
@@ -118,13 +125,18 @@ function launch_source() {
   # Remove .git suffix
   GIT_URL=${GIT_URL%.git}
 
+  # If branch provided, append to URL
+  if [ -n "$BRANCH_NAME" ]; then
+    GIT_URL="${GIT_URL}/tree/${BRANCH_NAME}"
+  fi
+
   echo "🌐 Opening: $GIT_URL"
 
-  # Open in default browser (macOS/Linux compatible)
+  # Open in default browser (macOS/Linux)
   if command -v open >/dev/null 2>&1; then
-    open "$GIT_URL"          # macOS
+    open "$GIT_URL"
   elif command -v xdg-open >/dev/null 2>&1; then
-    xdg-open "$GIT_URL"      # Linux
+    xdg-open "$GIT_URL"
   else
     echo "⚠️ Please open manually: $GIT_URL"
   fi

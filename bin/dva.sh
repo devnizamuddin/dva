@@ -56,7 +56,7 @@ function show_help() {
 case "${1:-}" in
   source)
     shift
-    launch_source
+    launch_source "$1"
     ;;
   flutter)
     shift
