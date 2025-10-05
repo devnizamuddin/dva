@@ -54,6 +54,10 @@ function show_help() {
 
 # Subcommand dispatcher
 case "${1:-}" in
+  source)
+    shift
+    launch_source
+    ;;
   flutter)
     shift
     execute_flutter_menu

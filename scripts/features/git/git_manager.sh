@@ -94,6 +94,46 @@ function run_git_commands() {
 #* ┃                            📖 Exit script added for upcomming use                                ┃
 #* ┗==================================================================================================┛
 
+#!/bin/bash
+
+# ==========================================
+# 🚀 Launch Project Git URL in Browser
+# ==========================================
+
+function launch_source() {
+  # Read the remote URL from git config
+  GIT_URL=$(git config --get remote.origin.url)
+
+  # Check if inside a git repo
+  if [ -z "$GIT_URL" ]; then
+    echo "❌ Not a git repository or no remote origin found."
+    exit 1
+  fi
+
+  # Convert SSH to HTTPS if needed
+  if [[ "$GIT_URL" == git@* ]]; then
+    GIT_URL=$(echo "$GIT_URL" | sed -E 's#git@(.*):(.*)#https://\1/\2#')
+  fi
+
+  # Remove .git suffix
+  GIT_URL=${GIT_URL%.git}
+
+  echo "🌐 Opening: $GIT_URL"
+
+  # Open in default browser (macOS/Linux compatible)
+  if command -v open >/dev/null 2>&1; then
+    open "$GIT_URL"          # macOS
+  elif command -v xdg-open >/dev/null 2>&1; then
+    xdg-open "$GIT_URL"      # Linux
+  else
+    echo "⚠️ Please open manually: $GIT_URL"
+  fi
+}
+
+# Run function
+
+
+
 
 function exit_script() {
   echo -e "\n${RED}============================================${RESET}"
