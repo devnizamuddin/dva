@@ -2,7 +2,7 @@
 
 **DVA** is a CLI tool to automate your daily developer tasks.
 
-**Latest Version: 1.0.1**
+**Latest Version: 1.0.6**
 
 ## Features
 - 🗂️ Git Version Management
