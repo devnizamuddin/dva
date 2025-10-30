@@ -1,12 +1,12 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 
 merge_branches() {
   local SOURCE_BRANCH=$1
   local TARGET_BRANCH=$2
 
-  if [[ -z "$SOURCE_BRANCH" || -z "$TARGET_BRANCH" ]]; then
-    echo "❌ Usage: $0 <source_branch> <target_branch>"
+  # Check for fzf
+  if ! command -v fzf &>/dev/null; then
+    echo "❌ 'fzf' is required for interactive branch selection. Install it first (e.g., 'brew install fzf')."
     exit 1
   fi
 
@@ -16,12 +16,38 @@ merge_branches() {
     exit 1
   fi
 
-  echo "📥 Fetching latest changes..."
-  git fetch origin
+  # Get current branch
+  CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+  # Fetch all remote branches
+  echo "📥 Fetching latest branches from origin..."
+  git fetch origin --prune
+
+  # Get list of remote branches, remove HEAD and duplicates
+  BRANCHES=($(git branch -r | grep -v HEAD | sed 's|origin/||' | sort -u))
+
+  # ===== TARGET BRANCH =====
+  if [[ -z "$TARGET_BRANCH" ]]; then
+    echo "⚡ Select the target branch (default: current branch $CURRENT_BRANCH):"
+    TARGET_BRANCH=$(printf "%s\n" "${BRANCHES[@]}" | fzf --prompt="Target branch: " --height=10 --border)
+    # If user pressed Enter without selection, use current branch
+    TARGET_BRANCH=${TARGET_BRANCH:-$CURRENT_BRANCH}
+  fi
+
+  # ===== SOURCE BRANCH =====
+  if [[ -z "$SOURCE_BRANCH" ]]; then
+    echo "⚡ Select the source branch to merge from:"
+    # exclude target branch
+    SOURCE_OPTIONS=()
+    for b in "${BRANCHES[@]}"; do
+      [[ "$b" != "$TARGET_BRANCH" ]] && SOURCE_OPTIONS+=("$b")
+    done
+    SOURCE_BRANCH=$(printf "%s\n" "${SOURCE_OPTIONS[@]}" | fzf --prompt="Source branch: " --height=10 --border)
+  fi
 
   echo "🌿 Switching to target branch: $TARGET_BRANCH"
   if ! git checkout "$TARGET_BRANCH"; then
-    echo "❌ Target branch '$TARGET_BRANCH' does not exist!"
+    echo "❌ Target branch '$TARGET_BRANCH' does not exist locally!"
     exit 1
   fi
 
@@ -30,12 +56,16 @@ merge_branches() {
 
   echo "🌿 Ensuring source branch exists: $SOURCE_BRANCH"
   if ! git rev-parse --verify "$SOURCE_BRANCH" >/dev/null 2>&1; then
-    echo "❌ Source branch '$SOURCE_BRANCH' does not exist!"
-    exit 1
+    echo "⚡ Source branch does not exist locally. Checking out from origin..."
+    git checkout -b "$SOURCE_BRANCH" "origin/$SOURCE_BRANCH" || {
+      echo "❌ Source branch '$SOURCE_BRANCH' does not exist remotely!"
+      exit 1
+    }
+  else
+    git checkout "$SOURCE_BRANCH"
   fi
 
   echo "⬇️ Pulling latest changes for $SOURCE_BRANCH..."
-  git checkout "$SOURCE_BRANCH"
   git pull origin "$SOURCE_BRANCH"
 
   echo "🔄 Switching back to target branch: $TARGET_BRANCH"
