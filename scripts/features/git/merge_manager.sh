@@ -115,4 +115,4 @@ merge_branches() {
   echo "✅ Branch pushed successfully!"
 }
 
-merge_branches "$1" "$2"
+
