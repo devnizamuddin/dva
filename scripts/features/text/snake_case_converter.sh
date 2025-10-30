@@ -4,16 +4,19 @@ function convert_to_snake_case() {
     echo ""
     read -p "Enter your text: " input
     echo ""
+
+    # 1️⃣ Normalize input
     # Replace dashes and spaces with underscores
     local temp="${input//[- ]/_}"
 
-    # Insert underscore before uppercase letters (for camelCase/PascalCase)
-    # and convert everything to lowercase
-    local snake_case=$(echo "$temp" | awk '
-    {
-        gsub(/([A-Z])/, "_\\1");  # add underscore before capital letters
-        print tolower($0);         # convert to lowercase
-    }' | sed 's/^_//')  # remove leading underscore if present
+    # 2️⃣ Insert underscore before uppercase letters (camelCase or PascalCase)
+    temp=$(echo "$temp" | sed -E 's/([a-z0-9])([A-Z])/\1_\2/g')
 
-    echo "$snake_case"
+    # 3️⃣ Convert to lowercase
+    local snake_case=$(echo "$temp" | tr '[:upper:]' '[:lower:]')
+
+    # 4️⃣ Remove leading/trailing underscores and compress multiple ones
+    snake_case=$(echo "$snake_case" | sed -E 's/^_+//;s/_+$//;s/_+/_/g')
+
+    echo "🔤 Snake case: $snake_case"
 }
