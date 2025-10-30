@@ -76,6 +76,10 @@ case "${1:-}" in
     commit_all_staged_files
     push_unpushed_commits
     ;;
+  merge)
+    shift
+    merge_branches "$1" "$2"
+    ;;
   text)
     shift
     run_text_case_converter
