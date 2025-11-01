@@ -26,15 +26,15 @@ function commit_all_staged_files() {
     echo -e "\n📌${BOLD}${CYAN} Choose a commit prefix${RESET} || ${RED}0 → Back${RESET} \n"
     echo -e "${BOLD}${CYAN}═══════════════════════════════════════════════════════════════════════════${RESET}"
     echo ""
-    echo "  1 → ✨ Feat      - New Impl                     2 → 🐛 Fix       - Bug fixes"
+    echo "  1 → 🚀 Add       - New Implementation           2 → 🔧 Fix       - Bug Solving"
     echo ""
-    echo "  3 → ⏪ Revert    - Changing Impl                4 → 🔨 Refactor  - Improving Impl"
+    echo "  3 → 🔨 Refactor  - Better Implementation        4 → ⏪ Revert    - Back to Previous"
     echo ""
-    echo "  5 → 🎨 Style     - Format Code                  6 → 🧹 Chore     - Non-functional"
+    echo "  5 → 🧹 Cleanup   - Formatting Code              6 → ⚙️  Config    - Project Config"
     echo ""
-    echo "  7 → 📚 Docs      - Documentation                8 → ✅ Test      - Testing code"
+    echo "  7 → 📚 Docs      - Project Documentation        8 → ✅ Test      - Testing code"
     echo ""
-    echo "  9 → 🚀 Deploy    - Deployment                   * → © Custom     - Custom Prefix"
+    echo "  9 → 📲 Deploy    - Apps Deployment              * → © Custom     - Custom Prefix"
     echo ""
     echo ""
     echo -e "👉 ${GREEN}Enter your choice (1-9)${RESET} || ${GOLDEN}✏️ Custom (Any)${RESET}: \c"
@@ -50,15 +50,15 @@ function commit_all_staged_files() {
 
       # Set the prefix based on user choice
       case $prefix_choice in
-          1) prefix="✨ Feat" ;;
-          2) prefix="🐛 Fix" ;;
-          3) prefix="⏪ Revert" ;;
-          4) prefix="🔨 Refactor" ;;
-          5) prefix="🎨 Style" ;;
-          6) prefix="🧹 Chore" ;;
+          1) prefix="🚀 Add" ;;
+          2) prefix="🔧 Fix" ;;
+          3) prefix="🔨 Refactor" ;;
+          4) prefix="⏪ Revert" ;;
+          5) prefix="🧹 Cleanup" ;;
+          6) prefix="⚙️ Config" ;;
           7) prefix="📚 Docs" ;;
           8) prefix="✅ Test" ;;
-          9) prefix="🚀 Deploy" ;;
+          9) prefix="📲 Deploy" ;;
           *)
             read -p "$(echo -e "\n${GOLDEN}✏️ Enter custom prefix: ${RESET}")" prefix
             echo ""
