@@ -16,8 +16,6 @@ DVA_HOME="$HOME/.dva"
 #* ==========================> 🧾 All Source Files
 # Utils Import 
 source "$DVA_HOME/scripts/sources/utils_source.sh"
-# Tasks Import
-source "$DVA_HOME/scripts/sources/tasks_source.sh"
 # Components Import
 source "$DVA_HOME/scripts/components/menu_ui.sh"
 # Components Import
