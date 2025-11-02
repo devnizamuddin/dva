@@ -4,8 +4,7 @@
 #* ┗==================================================================================================┛
 
 
-function upgradeProjectVersion(){
-
+function upgradeProjectVersion() {
   # Extract the current version from pubspec.yaml
   current_version=$(grep '^version:' pubspec.yaml | awk '{print $2}')
 
@@ -28,4 +27,6 @@ function upgradeProjectVersion(){
 
   echo -e "\n✅ Version updated to: $new_version_name+$new_version_code"
 
+  # Return the new version string
+  echo "$new_version_name"
 }

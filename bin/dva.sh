@@ -2,16 +2,13 @@
 # DVA CLI - Developer Workflow Automation
 # MIT License (c) 2025 Nizam Uddin Shamrat
 
-
 #*
 #* ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
 #* ║                                   💰 Imported Files                                              ║
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 #*
 
-
 DVA_HOME="$HOME/.dva"
-
 
 #* ==========================> 🧾 All Source Files
 # Utils Import 
@@ -42,12 +39,28 @@ function show_help() {
   echo ""
   echo "Commands:"
   echo "  flutter    Manage Flutter tasks"
+  echo "  build      Build Flutter targets (web, apk, ios)"
   echo "  note       Manage notes"
   echo "  git        Git related tasks"
+  echo "  commit     Commit all changes and push"
+  echo "  merge      Merge branches"
   echo "  text       Text related tasks"
   echo "  help       Show this help"
   echo ""
   echo "👉 Try: dva flutter build"
+}
+
+function deployingWeb() {
+  # Upgrade version in pubspec.yaml
+  new_version=$(upgradeProjectVersion)
+
+  # Create a git tag based on the new version
+  git add pubspec.yaml
+  git commit -m "Deploy: release $new_version"
+  git tag "release-$new_version"
+  git push origin "release-$new_version"
+
+  echo -e "\n🚀 Deployed Flutter Web with tag: release-$new_version"
 }
 
 # Subcommand dispatcher
@@ -59,6 +72,26 @@ case "${1:-}" in
   flutter)
     shift
     execute_flutter_menu
+    ;;
+  build)
+    shift
+    case "${1:-}" in
+      web)
+        echo "🚀 Building Flutter Web..."
+        # flutter build web
+        ;;
+      apk)
+        echo "🚀 Building Flutter APK..."
+        # flutter build apk
+        ;;
+      ios)
+        echo "🚀 Building Flutter iOS..."
+        # flutter build ios
+        ;;
+      *)
+        echo "⚠️ Unknown build target. Available: web, apk, ios"
+        ;;
+    esac
     ;;
   note)
     shift
@@ -95,7 +128,3 @@ case "${1:-}" in
     exit 1
     ;;
 esac
-
-
-    
-
