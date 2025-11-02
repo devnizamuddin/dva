@@ -27,6 +27,7 @@ function upgradeProjectVersion() {
   # Update pubspec.yaml with the new version
   sed -i '' "s/^version: .*/version: $new_version_name+$new_version_code/" pubspec.yaml
 
-  echo -e "\n✅ Version updated to: $new_version_name+$new_version_code"
+  echo ""
+  echo -e "⬆️ Version updated to: $new_version_name+$new_version_code"
 
 }

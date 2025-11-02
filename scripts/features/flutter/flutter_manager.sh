@@ -7,6 +7,7 @@
 
 source "$DVA_HOME/scripts/features/flutter/file_manager.sh"
 source "$DVA_HOME/scripts/features/flutter/asset_manager.sh"
+source "$DVA_HOME/scripts/features/flutter/deploy_manager.sh"
 source "$DVA_HOME/scripts/features/flutter/config_manager.sh"
 
 #* ┏==================================================================================================┓

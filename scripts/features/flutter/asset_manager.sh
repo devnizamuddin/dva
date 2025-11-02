@@ -1,6 +1,6 @@
 #!/bin/bash
 
-create_asset_constants() {
+function create_asset_constants() {
   local PROJECT_DIR=$(pwd)
   local CONSTANTS_DIR="$PROJECT_DIR/lib/app/core/constants"
   local FILE_NAME="asset_path.dart"

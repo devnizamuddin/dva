@@ -50,32 +50,6 @@ function show_help() {
   echo "👉 Try: dva flutter build"
 }
 
-function deployingWeb() {
-  upgradeProjectVersion
-
-  current_version=$(grep '^version:' pubspec.yaml | awk '{print $2}')
-
-  version_name=$(echo "$current_version" | cut -d'+' -f1)
-  version_code=$(echo "$current_version" | cut -d'+' -f2)
-  echo ""
-  echo "🆕 Commit files git"
-  echo ""
-  git add .
-  git commit -m "📲 Deploy: v-$version_name+$version_code"
-  echo ""
-  echo "🏷️  Adding Tag-$version_name"
-  echo ""
-  git tag "release-$version_name"
-  echo ""
-  echo "🚀 Pushing commit and tag to origin"
-  echo ""
-  git push origin HEAD         # push the commit
-  git push origin "release-$version_name"  # push the tag
-  echo ""
-  echo -e "✅ Pushed Flutter Web with tag: release-$version_name"
-  echo ""
-}
-
 
 # Subcommand dispatcher
 case "${1:-}" in
@@ -94,8 +68,7 @@ case "${1:-}" in
         deployingWeb
         ;;
       apk)
-        echo "🚀 Building Flutter APK..."
-        # flutter build apk
+        deployingAndroid
         ;;
       ios)
         echo "🚀 Building Flutter iOS..."
