@@ -1,34 +1,60 @@
 #!/bin/bash
 
 function create_asset_constants() {
-  local PROJECT_DIR=$(pwd)
-  local CONSTANTS_DIR="$PROJECT_DIR/lib/app/core/constants"
-  local FILE_NAME="asset_path.dart"
-  local ASSETS_DIR="$PROJECT_DIR/assets"
+    OUTPUT_FILE="lib/core/constants/asset_path.dart"
+    ASSETS_DIR="assets"
 
-  # Ensure directory exists
-  mkdir -p "$CONSTANTS_DIR"
+    # Create directory if missing
+    mkdir -p "$(dirname "$OUTPUT_FILE")"
 
-  # Start Dart file
-  echo "/// Auto-generated Asset Path constants" > "$CONSTANTS_DIR/$FILE_NAME"
-  echo "/// Do not edit manually" >> "$CONSTANTS_DIR/$FILE_NAME"
-  echo "" >> "$CONSTANTS_DIR/$FILE_NAME"
-  echo "class AssetPath {" >> "$CONSTANTS_DIR/$FILE_NAME"
+    echo "class AssetPath {" > $OUTPUT_FILE
+    echo "" >> $OUTPUT_FILE
 
-  # Loop through all asset files
-  find "$ASSETS_DIR" -type f | while read -r file; do
-    rel_path="${file#$PROJECT_DIR/}"
+    for folder in $(find $ASSETS_DIR -type d | sort); do
+        if [[ "$folder" == "$ASSETS_DIR" ]]; then
+            continue
+        fi
 
-    # Build constant name
-    const_name=$(echo "$rel_path" \
-      | sed -E 's/assets\///; s/\.[^.]+$//' \        # remove extension
-      | sed -E 's/[^a-zA-Z0-9]/_/g' \
-      | tr '[:lower:]' '[:upper:]')
+        folder_name=$(basename "$folder")
+        title=$(echo "$folder_name" | sed -E 's/_/ /g' | awk '{for(i=1;i<=NF;i++)$i=toupper(substr($i,1,1)) substr($i,2)}1')
 
-    echo "  static const String $const_name = '$rel_path';" >> "$CONSTANTS_DIR/$FILE_NAME"
-  done
+        cat >> $OUTPUT_FILE <<EOF
+  /*
+   * ┏==================================================================================================┓
+   * ┃                                      $title Resources                                            ┃
+   * ┗==================================================================================================┛
+   */
+EOF
 
-  echo "}" >> "$CONSTANTS_DIR/$FILE_NAME"
+        while IFS= read -r file; do
+            file_name=$(basename "$file")
 
-  echo "✅ AssetPath file created at: $CONSTANTS_DIR/$FILE_NAME"
+            # Remove extension → make camelCase
+            base_name=$(echo "$file_name" | sed -E 's/\.[^.]+$//')
+
+            # Convert invalid chars to space → camelCase
+            camel=$(echo "$base_name" | \
+                sed -E 's/[^a-zA-Z0-9]+/ /g' | \
+                awk '{ 
+                    for(i=1;i<=NF;i++){
+                        if(i==1) {
+                            $i=tolower($i)
+                        } else {
+                            $i=toupper(substr($i,1,1)) substr($i,2)
+                        }
+                    }
+                    printf "%s", $1
+                    for(i=2;i<=NF;i++) printf "%s", $i
+                }')
+
+            echo "  static const String $camel = '$file';" >> $OUTPUT_FILE
+
+        done < <(find "$folder" -maxdepth 1 -type f | sort)
+
+        echo "" >> $OUTPUT_FILE
+    done
+
+    echo "}" >> $OUTPUT_FILE
+
+    echo "✅ asset_path.dart generated → $OUTPUT_FILE"
 }
