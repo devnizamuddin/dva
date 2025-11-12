@@ -53,6 +53,6 @@ function deployingAndroid() {
   git push origin HEAD         # push the commit
   git push origin "release-$version_name"  # push the tag
   echo ""
-  echo -e "✅ Pushed Flutter Web with tag: release-$version_name"
+  echo -e "✅ Pushed Flutter Android with tag: release-$version_name"
   echo ""
 }
