@@ -13,50 +13,43 @@ source "$DVA_HOME/scripts/features/clean/add_feature.sh"
 CLEAN_TITLE="CLEAN Architecture"
 
 CLEAN_OPTIONS=(
-  "Clean Unnecessary Resources"
-  "Upgrade Project Version"
-  "Release Android App"
-  "Release iOS App"
-  "Create Project in CLEAN Architecture"
-  "Create Project in MVVM Architecture"
-  "Create Asset Constants"
+  "Add Feature"
+  "Add Data Source"
+  "Add Domain"
+  "Add Presentation"
+  "Add Shared"
+  "Add UI"
+  "Add Asset Constants"
 )
 
 #* ======================================== Action Functions ========================================
 
 clean_action_1() {
-  echo "🧹 Cleaning unnecessary resources..."
-  clean_unnessery_resources
+  generate_feature_structure
 }
 
-clean_action_1() {
-  echo "⚙️ Upgrading project version..."
-  upgradeProjectVersion
+clean_action_2() {
+  echo "Add Data Source"
 }
 
-clean_action_1() {
-  echo "📦 Releasing Android app..."
-  # call your android release logic here
+clean_action_3() {
+  echo "Add Domain"
 }
 
-clean_action_1() {
-  echo "🍎 Releasing iOS app..."
-  # call your iOS release logic here
+clean_action_4() {
+  echo "Add Presentation"
 }
 
-clean_action_1() {
-  echo "📂 Creating CLEAN Architecture project..."
-  # call project creation logic here
+clean_action_5() {
+  echo "Add Shared"
 }
 
-clean_action_1() {
-  echo "📂 Creating MVVM Architecture project..."
-  # call project creation logic here
+clean_action_6() {
+  echo "Add UI"
 }
 
-clean_action_1() {
-  echo "🎨 Creating asset constants..."
-  create_asset_constants
+clean_action_7() {
+  echo "Add Asset Constants"
 }
 
 #* ======================================== Menu Dispatcher ========================================
