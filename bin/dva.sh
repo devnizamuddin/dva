@@ -51,7 +51,10 @@ function show_help() {
 }
 
 
-# Subcommand dispatcher
+#* ┏==================================================================================================┓
+#* ┃                                 📖 Subcommand dispatcher                                         ┃
+#* ┗==================================================================================================┛
+
 case "${1:-}" in
   source)
     shift
@@ -72,7 +75,6 @@ case "${1:-}" in
         ;;
       ios)
         echo "🚀 Building Flutter iOS..."
-        # flutter build ios
         ;;
       *)
         echo "⚠️ Unknown build target. Available: web, apk, ios"
