@@ -36,6 +36,7 @@ mkdir -p "$DVA_HOME/scripts/features"
 #===================================================┃==========================================================
 
 #*==========================================┃ Feature Folders ┃================================================
+mkdir -p "$DVA_FEATURES/clean"
 mkdir -p "$DVA_FEATURES/git"
 mkdir -p "$DVA_FEATURES/flutter"
 mkdir -p "$DVA_FEATURES/note"
@@ -82,7 +83,14 @@ cp scripts/components/*.sh "$DVA_HOME/scripts/components/" 2>/dev/null || true
 
 cp scripts/features/*.sh "$DVA_HOME/scripts/features/" 2>/dev/null || true
 
-#* ============================================== 💙 Flutter scripts ===============================================
+#* ============================================== 💙 CLEAN scripts ===============================================
+#*
+#* - Full-page CLI screens for clean functions
+# ==================================================================================================================
+
+cp scripts/features/clean/*.sh "$DVA_HOME/scripts/features/clean/" 2>/dev/null || true
+
+#* ============================================== 💙 Flutter scripts ===============================================    
 #*
 #* - Full-page CLI screens for flutter functions
 # ==================================================================================================================
