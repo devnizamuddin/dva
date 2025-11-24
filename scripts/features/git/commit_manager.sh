@@ -55,7 +55,7 @@ function commit_all_staged_files() {
           3) prefix="🔨 Refactor" ;;
           4) prefix="⏪ Revert" ;;
           5) prefix="🧹 Cleanup" ;;
-          6) prefix="⚙️ Config" ;;
+          6) prefix="⚙️  Config" ;;
           7) prefix="📚 Docs" ;;
           8) prefix="✅ Test" ;;
           9) prefix="📲 Deploy" ;;
