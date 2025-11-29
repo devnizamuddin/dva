@@ -28,7 +28,7 @@ CLEAN_OPTIONS=(
 
 
 function clean_action_1() {
-  generate_feature_structure
+  add_feature_structure
 }
 
 function clean_action_2() {

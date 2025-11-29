@@ -1,10 +1,10 @@
 #!/bin/bash
 
-function generate_feature_structure() {
-  local FEATURE_NAME="$1"
+function add_feature_structure() {
+  read -p "Enter your desired feature name: " FEATURE_NAME
 
   if [ -z "$FEATURE_NAME" ]; then
-    echo "Usage: generate_feature_structure <feature_name>"
+    echo "Feature name is required to generate feature structure!"
     return 1
   fi
 
@@ -20,7 +20,7 @@ function generate_feature_structure() {
 
   mkdir -p "$BASE_DIR/data/datasources" \
            "$BASE_DIR/data/models" \
-           "$BASE_DIR/data/repositories_impl" \
+           "$BASE_DIR/data/repositories" \
            "$BASE_DIR/domain/entities" \
            "$BASE_DIR/domain/repositories" \
            "$BASE_DIR/domain/usecases" \
@@ -76,7 +76,7 @@ class ${FEATURE_NAME_CAPITALIZED}RemoteDataSourceImpl extends ${FEATURE_NAME_CAP
 }
 EOL
 
-  cat <<EOL > "$BASE_DIR/data/repositories_impl/${FEATURE_NAME_LOWER}_repository_impl.dart"
+  cat <<EOL > "$BASE_DIR/data/repositories/${FEATURE_NAME_LOWER}_repository_impl.dart"
 import '../../domain/repositories/${FEATURE_NAME_LOWER}_repository.dart';
 import '../datasources/${FEATURE_NAME_LOWER}_remote_datasource.dart';
 
@@ -141,5 +141,3 @@ EOL
   echo "Feature $FEATURE_NAME_LOWER structure created successfully!"
 }
 
-# Example usage:
-# generate_feature_structure "auth"
