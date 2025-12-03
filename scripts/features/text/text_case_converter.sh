@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #* ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
 #* ║                                   💰 Imported Files                                              ║
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
@@ -39,43 +38,60 @@ TEXT_CASE_OPTIONS=(
 
 function text_case_action_1() {
   read -p "Enter your text: " input
-  printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]'
+  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  copy_and_print "$output"
 }
 
 function text_case_action_2() {
   read -p "Enter your text: " input
-  printf '%s\n' "$input" | tr '[:upper:]' '[:lower:]'
+  output=$(printf '%s\n' "$input" | tr '[:upper:]' '[:lower:]')
+  copy_and_print "$output"
 }
 
 function text_case_action_3() {
-  convert_to_title_case
+  read -p "Enter your text: " input
+  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  copy_and_print "$output"
 }
 
 function text_case_action_4() {
-  convert_to_snake_case
+  read -p "Enter your text: " input
+  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  copy_and_print "$output"
 }
 
 function text_case_action_5() {
-  convert_to_kebab_case
+  read -p "Enter your text: " input
+  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  copy_and_print "$output"
 }
 
 function text_case_action_6() {
-  convert_to_camel_case
+  read -p "Enter your text: " input
+  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  copy_and_print "$output"
 }
 
 function text_case_action_7() {
-  convert_to_pascal_case
+  read -p "Enter your text: " input
+  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  copy_and_print "$output"
 }
 
 
 
-#* ┏==================================================================================================┓
-#* ┃                               📖 Text Case Menu Loop                                            ┃
-#* ┗==================================================================================================┛
-#*
+# * ┏==================================================================================================┓
+# * ┃                               📖 Text Case Menu Loop                                             ┃
+# * ┗==================================================================================================┛
 
 function run_text_case_converter() {
   local ACTION_PREFIX="text_case"
   
   menu_loop "$ACTION_PREFIX" "$TEXT_CASE_TITLE" "${TEXT_CASE_OPTIONS[@]}"
+}
+
+
+function copy_and_print() {
+  local text="$1"
+  printf "%s\n" "$text" | tee >(pbcopy)
 }
