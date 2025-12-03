@@ -5,6 +5,7 @@
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 
 source "$DVA_HOME/scripts/features/clean/add_feature.sh"
+source "$DVA_HOME/scripts/features/clean/add_usecase.sh"
 
 #* ┏==================================================================================================┓
 #* ┃                           📖 Clean Menu: Options & Actions                                      ┃
@@ -14,7 +15,7 @@ CLEAN_TITLE="CLEAN Architecture"
 
 CLEAN_OPTIONS=(
   "Add Feature"
-  "Add Data Source"
+  "Add UseCase"
   "Add Domain"
   "Add Presentation"
   "Add Shared"
@@ -32,7 +33,7 @@ function clean_action_1() {
 }
 
 function clean_action_2() {
-  echo "Add Data Source"
+  add_usecase_structure
 }
 
 function clean_action_3() {
