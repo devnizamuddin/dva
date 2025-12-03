@@ -26,14 +26,14 @@ GIT_TITLE="Git Commands"
 
 # Menu Options
 GIT_OPTIONS=(
-  "Stage Choosen Files" # MENU_1
+  "Stage Files" # MENU_1
   "Stage All Files" # MENU_2
-  "Unstage Choosen Files" # MENU_3
+  "Unstage Files" # MENU_3
   "Unstage All File" # MENU_4
-  "Commit All Staged Files" # MENU_5
-  "Push Unpushed Commits" # MENU_6
-  "Pull From Choosen Branch" # MENU_7
-  "Show Commit History" # MENU_8
+  "Commit Staged Files" # MENU_5
+  "Push Commits" # MENU_6
+  "Pull From Branch" # MENU_7
+  "Commit History" # MENU_8
 )
 
 #* ┏==================================================================================================┓
@@ -90,14 +90,14 @@ function run_git_commands() {
 
 
 
-#* ┏==================================================================================================┓
-#* ┃                            📖 Exit script added for upcomming use                                ┃
-#* ┗==================================================================================================┛
+# * ┏==================================================================================================┓
+# * ┃                            📖 Exit script added for upcomming use                                ┃
+# * ┗==================================================================================================┛
 
 #!/bin/bash
 
 # ==========================================
-# 🚀 Launch Project Git URL in Browser
+# * 🚀 Launch Project Git URL in Browser
 # ==========================================
 
 function launch_source() {
