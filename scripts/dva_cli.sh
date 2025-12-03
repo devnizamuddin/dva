@@ -61,6 +61,11 @@ animate_menu() {
             case "$key2" in
                 "[A") ((selected--)); ((selected<0)) && selected=$((${#options[@]}-1)) ;;
                 "[B") ((selected++)); ((selected>=${#options[@]})) && selected=0 ;;
+                "[C") key="";; # Right arrow -> Enter
+                "[D") # Left arrow -> Exit
+                    printf "\n\n👋 Exiting DVA CLI...\n"
+                    exit 0
+                    ;;
             esac
         elif [[ $key == "" ]]; then
             # Enter pressed, execute selected function
