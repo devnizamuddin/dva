@@ -38,31 +38,31 @@ function text_case_action_2() {
 
 function text_case_action_3() {
   read -p "Enter your text: " input
-  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  output=$(printf '%s\n' "$input" | perl -pe 's/\b(\w)/\u$1/g')
   copy_and_print "$output"
 }
 
 function text_case_action_4() {
   read -p "Enter your text: " input
-  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  output=$(printf '%s\n' "$input" | tr '[:upper:]' '[:lower:]' | tr ' ' '_')
   copy_and_print "$output"
 }
 
 function text_case_action_5() {
   read -p "Enter your text: " input
-  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  output=$(printf '%s\n' "$input" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
   copy_and_print "$output"
 }
 
 function text_case_action_6() {
   read -p "Enter your text: " input
-  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  output=$(printf '%s\n' "$input" | tr '[:upper:]' '[:lower:]' | perl -pe 's/ (\w)/\u$1/g')
   copy_and_print "$output"
 }
 
 function text_case_action_7() {
   read -p "Enter your text: " input
-  output=$(printf '%s\n' "$input" | tr '[:lower:]' '[:upper:]')
+  output=$(printf '%s\n' "$input" | perl -pe 's/\b(\w)/\u$1/g; s/ //g')
   copy_and_print "$output"
 }
 
