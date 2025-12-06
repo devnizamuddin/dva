@@ -28,6 +28,25 @@ clear
 # Metadata
 VERSION="1.0.5"
 
+
+function run_script() {
+    local script_path="$1"
+
+    # Check if file exists
+    if [ ! -f "$script_path" ]; then
+        echo "❌ Error: File '$script_path' does not exist."
+        return 1
+    fi
+
+    # Give execute permission
+    chmod +x "$script_path"
+
+    # Run the script
+    echo "▶️ Running $script_path"
+    "$script_path"
+}
+
+
 # Help function
 function show_help() {
   echo "✨ DVA CLI v$VERSION ✨"
@@ -99,6 +118,10 @@ case "${1:-}" in
   text)
     shift
     run_text_case_converter
+    ;;
+  run)
+    shift
+    run_script "$1"
     ;;
   help)
     show_help
