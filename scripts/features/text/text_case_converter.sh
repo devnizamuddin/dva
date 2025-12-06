@@ -44,7 +44,7 @@ function text_case_action_3() {
 
 function text_case_action_4() {
   read -p "Enter your text: " input
-  output=$(printf '%s\n' "$input" | tr '[:upper:]' '[:lower:]' | tr ' ' '_')
+  output=$(printf '%s\n' "$input" | sed 's/\([a-z]\)\([A-Z]\)/\1_\2/g' | tr ' ' '_' | tr '[:upper:]' '[:lower:]')
   copy_and_print "$output"
 }
 
