@@ -1,6 +1,17 @@
 #!/bin/bash
 
 function add_feature_structure() {
+
+  
+  
+  #* ╔==================================================================================================╗
+  #* ║                                      Start From Here                                             ║
+  #* ╚==================================================================================================╝
+  
+  #*
+  #* 🧾 Taking feature name as user Input
+  #*
+  
   read -p "Enter your desired feature name: " FEATURE_NAME
 
   if [ -z "$FEATURE_NAME" ]; then
@@ -8,14 +19,21 @@ function add_feature_structure() {
     return 1
   fi
 
-  # Convert to lowercase and capitalize first letter
+  
+  #*
+  #* 🧾 Convert to lowercase and capitalize first letter
+  #*
+  
   local FEATURE_NAME_LOWER=$(echo "$FEATURE_NAME" | tr '[:upper:]' '[:lower:]')
   local FEATURE_NAME_CAPITALIZED=$(echo "${FEATURE_NAME_LOWER:0:1}" | tr '[:lower:]' '[:upper:]')${FEATURE_NAME_LOWER:1}
 
-  # Base directory
+  
+  #*
+  #* 🧾 Create folders
+  #*
+  
   local BASE_DIR="lib/features/$FEATURE_NAME_LOWER"
 
-  # Create folders
   echo "Creating folder structure for feature: $FEATURE_NAME_LOWER"
 
   mkdir -p "$BASE_DIR/data/datasources" \
@@ -30,7 +48,11 @@ function add_feature_structure() {
 
   echo "Folders created successfully!"
 
-  #* ---------------------------------------------------------------------- Domain Layer ----------------------------------------------------------------------
+  
+  #* ╔==================================================================================================╗
+  #* ║                                      Domain Layer                                                ║
+  #* ╚==================================================================================================╝
+  
   cat <<EOL > "$BASE_DIR/domain/entities/${FEATURE_NAME_LOWER}_entity.dart"
 class ${FEATURE_NAME_CAPITALIZED}Entity {
   // Add properties and methods here
@@ -57,7 +79,11 @@ class Get${FEATURE_NAME_CAPITALIZED} {
 }
 EOL
 
-  #* ---------------------------------------------------------------------- Data Layer ----------------------------------------------------------------------
+  
+  #* ╔==================================================================================================╗
+  #* ║                                      Data Layer                                                  ║
+  #* ╚==================================================================================================╝
+  
   cat <<EOL > "$BASE_DIR/data/models/${FEATURE_NAME_LOWER}_model.dart"
 import '../../domain/entities/${FEATURE_NAME_LOWER}_entity.dart';
 
@@ -89,7 +115,11 @@ class ${FEATURE_NAME_CAPITALIZED}RepositoryImpl implements ${FEATURE_NAME_CAPITA
 }
 EOL
 
-  #* ---------------------------------------------------------------------- Presentation Layer ----------------------------------------------------------------------
+
+#* ╔==================================================================================================╗
+#* ║                                      Presentation Layer                                          ║
+#* ╚==================================================================================================╝
+
   cat <<EOL > "$BASE_DIR/presentation/blocs/${FEATURE_NAME_LOWER}_bloc.dart"
 import 'package:flutter_bloc/flutter_bloc.dart';
 
