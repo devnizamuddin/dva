@@ -27,7 +27,6 @@ CLEAN_OPTIONS=(
 #* ┃                                   📖 Fuction for Options                                         ┃
 #* ┗==================================================================================================┛
 
-
 function clean_action_1() {
   add_feature_structure
 }
@@ -60,8 +59,7 @@ function clean_action_7() {
 #* ┃                                 📖 Clean Menu Loop                                               ┃
 #* ┗==================================================================================================┛
 
-function  execute_clean_manager() {
+function execute_clean_manager() {
   local ACTION_PREFIX="clean"
   menu_loop "$ACTION_PREFIX" "$CLEAN_TITLE" "${CLEAN_OPTIONS[@]}"
 }
-

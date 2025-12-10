@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Define the directory where this script resides to locate utilities relative to it
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../../utils/text_utils.sh"
+
 function add_usecase_structure() {
   read -p "Enter your desired feature name: " FEATURE_NAME
   read -p "Enter your desired usecase name: " USECASE_NAME
@@ -14,12 +18,12 @@ function add_usecase_structure() {
     return 1
   fi
 
-  # Convert to lowercase and capitalize first letter
-  local FEATURE_NAME_LOWER=$(echo "$FEATURE_NAME" | tr '[:upper:]' '[:lower:]')
-  local FEATURE_NAME_CAPITALIZED=$(echo "${FEATURE_NAME_LOWER:0:1}" | tr '[:lower:]' '[:upper:]')${FEATURE_NAME_LOWER:1}
+  # Convert to snake_case and PascalCase
+  local FEATURE_NAME_LOWER=$(to_snake_case "$FEATURE_NAME")
+  local FEATURE_NAME_CAPITALIZED=$(to_pascal_case "$FEATURE_NAME")
 
-  local USECASE_NAME_LOWER=$(echo "$USECASE_NAME" | tr '[:upper:]' '[:lower:]')
-  local USECASE_NAME_CAPITALIZED=$(echo "${USECASE_NAME_LOWER:0:1}" | tr '[:lower:]' '[:upper:]')${USECASE_NAME_LOWER:1}
+  local USECASE_NAME_LOWER=$(to_snake_case "$USECASE_NAME")
+  local USECASE_NAME_CAPITALIZED=$(to_pascal_case "$USECASE_NAME")
 
   # Base directory
   local BASE_DIR="lib/features/$FEATURE_NAME_LOWER"
@@ -46,5 +50,5 @@ class ${USECASE_NAME_CAPITALIZED} {
 }
 EOL
 
-  echo "Usecase created successfully!"
+  echo "Usecase $USECASE_NAME_LOWER ($USECASE_NAME_CAPITALIZED) created successfully!"
 }

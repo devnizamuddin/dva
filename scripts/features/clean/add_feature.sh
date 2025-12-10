@@ -1,17 +1,21 @@
 #!/bin/bash
 
+# Define the directory where this script resides to locate utilities relative to it
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Assuming the utils directory is two levels up -> ../../utils from scripts/features/clean
+# Or more robustly, use DVA_HOME or reference from known location if DVA_HOME not guaranteed.
+# Let's rely on standard path relative to this script for portability.
+# features/clean -> features -> scripts -> utils is ../../utils
+source "$SCRIPT_DIR/../../utils/text_utils.sh"
+
 function add_feature_structure() {
 
-  
-  
-  #* ╔==================================================================================================╗
-  #* ║                                      Start From Here                                             ║
-  #* ╚==================================================================================================╝
-  
-  #*
-  #* 🧾 Taking feature name as user Input
-  #*
-  
+  # * ╔==================================================================================================╗
+  # * ║                                      Start From Here                                             ║
+  # * ╚==================================================================================================╝
+
+  # * 🧾 Taking feature name as user Input
+
   read -p "Enter your desired feature name: " FEATURE_NAME
 
   if [ -z "$FEATURE_NAME" ]; then
@@ -19,19 +23,14 @@ function add_feature_structure() {
     return 1
   fi
 
-  
-  #*
-  #* 🧾 Convert to lowercase and capitalize first letter
-  #*
-  
-  local FEATURE_NAME_LOWER=$(echo "$FEATURE_NAME" | tr '[:upper:]' '[:lower:]')
-  local FEATURE_NAME_CAPITALIZED=$(echo "${FEATURE_NAME_LOWER:0:1}" | tr '[:lower:]' '[:upper:]')${FEATURE_NAME_LOWER:1}
+  # * 🧾 Convert to snake_case and PascalCase
+  local FEATURE_NAME_LOWER=$(to_snake_case "$FEATURE_NAME")
+  local FEATURE_NAME_CAPITALIZED=$(to_pascal_case "$FEATURE_NAME")
 
-  
   #*
   #* 🧾 Create folders
   #*
-  
+
   local BASE_DIR="lib/features/$FEATURE_NAME_LOWER"
 
   echo "Creating folder structure for feature: $FEATURE_NAME_LOWER"
@@ -48,11 +47,10 @@ function add_feature_structure() {
 
   echo "Folders created successfully!"
 
-  
   #* ╔==================================================================================================╗
-  #* ║                                      Domain Layer                                                ║
-  #* ╚==================================================================================================╝
-  
+  # * ║                                      Domain Layer                                                ║
+  # * ╚==================================================================================================╝
+
   cat <<EOL > "$BASE_DIR/domain/entities/${FEATURE_NAME_LOWER}_entity.dart"
 class ${FEATURE_NAME_CAPITALIZED}Entity {
   // Add properties and methods here
@@ -79,11 +77,10 @@ class Get${FEATURE_NAME_CAPITALIZED} {
 }
 EOL
 
-  
   #* ╔==================================================================================================╗
-  #* ║                                      Data Layer                                                  ║
-  #* ╚==================================================================================================╝
-  
+  # * ║                                      Data Layer                                                  ║
+  # * ╚==================================================================================================╝
+
   cat <<EOL > "$BASE_DIR/data/models/${FEATURE_NAME_LOWER}_model.dart"
 import '../../domain/entities/${FEATURE_NAME_LOWER}_entity.dart';
 
@@ -115,10 +112,9 @@ class ${FEATURE_NAME_CAPITALIZED}RepositoryImpl implements ${FEATURE_NAME_CAPITA
 }
 EOL
 
-
-#* ╔==================================================================================================╗
-#* ║                                      Presentation Layer                                          ║
-#* ╚==================================================================================================╝
+  #* ╔==================================================================================================╗
+  # * ║                                      Presentation Layer                                          ║
+  # * ╚==================================================================================================╝
 
   cat <<EOL > "$BASE_DIR/presentation/blocs/${FEATURE_NAME_LOWER}_bloc.dart"
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -168,6 +164,6 @@ class _${FEATURE_NAME_CAPITALIZED}PageState extends State<${FEATURE_NAME_CAPITAL
 }
 EOL
 
-  echo "Feature $FEATURE_NAME_LOWER structure created successfully!"
-}
+  echo "Feature $FEATURE_NAME_LOWER ($FEATURE_NAME_CAPITALIZED) structure created successfully!"
 
+}
