@@ -39,6 +39,10 @@ function commit_all_staged_files() {
     echo ""
     echo -e "👉 ${GREEN}Enter your choice (1-9)${RESET} || ${GOLDEN}✏️ Custom (Any)${RESET}: \c"
     read -r prefix_choice
+
+    if [[ -z "$prefix_choice" ]]; then
+      prefix_choice="2"
+    fi
     echo ""
 
     # Check if any files were selected
