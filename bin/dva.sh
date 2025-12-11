@@ -60,6 +60,7 @@ function show_help() {
   echo "  git        Git related tasks"
   echo "  commit     Commit all changes and push"
   echo "  merge      Merge branches"
+  echo "  sync       Sync branches (Pull & Push)"
   echo "  text       Text related tasks"
   echo "  help       Show this help"
   echo ""
@@ -114,6 +115,11 @@ case "${1:-}" in
   merge)
     shift
     merge_branches "$1" "$2"
+    ;;
+  sync)
+    shift
+    pull_current_branch
+    push_unpushed_commits
     ;;
   text)
     shift

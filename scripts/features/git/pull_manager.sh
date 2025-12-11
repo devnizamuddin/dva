@@ -27,3 +27,11 @@ function pull_from_choosen_branch() {
     line_gap
     git pull origin "${SELECTED_BRANCH}"
 }
+
+function pull_current_branch() {
+    branch_name=$(git rev-parse --abbrev-ref HEAD)
+    echo ""
+    echo -e "${BOLD}${CYAN}⬇️  Pulling changes from ${branch_name}...${RESET}"
+    echo ""
+    git pull origin "$branch_name"
+}
