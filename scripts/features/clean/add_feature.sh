@@ -63,13 +63,13 @@ abstract class ${FEATURE_NAME_CAPITALIZED}Repository {
 }
 EOL
 
-  cat <<EOL > "$BASE_DIR/domain/usecases/get_${FEATURE_NAME_LOWER}.dart"
+  cat <<EOL > "$BASE_DIR/domain/usecases/${FEATURE_NAME_LOWER}_usecase.dart"
 import '../repositories/${FEATURE_NAME_LOWER}_repository.dart';
 
-class Get${FEATURE_NAME_CAPITALIZED} {
+class ${FEATURE_NAME_CAPITALIZED}UseCase {
   final ${FEATURE_NAME_CAPITALIZED}Repository repository;
 
-  Get${FEATURE_NAME_CAPITALIZED}({required this.repository});
+  ${FEATURE_NAME_CAPITALIZED}UseCase({required this.repository});
 
   void call() {
     // Add logic here
