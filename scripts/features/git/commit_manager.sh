@@ -13,7 +13,7 @@ function commit_all_staged_files() {
 
     # Print the staged files
     echo -e "${BOLD}${CYAN}📂 Staged Files:${RESET}"
-    echo -e "${BOLD}${CYAN}═════════════════════════════════════════════════════════════════════${RESET}"
+    echo -e "${BOLD}${CYAN}════════════════════════════════════════════════════════════════════════════════════════${RESET}"
     echo ""
 
     while IFS= read -r file; do
@@ -24,22 +24,21 @@ function commit_all_staged_files() {
     # Prompt for commit prefix selection
     echo ""
     echo -e "\n📌${BOLD}${CYAN} Choose a commit prefix${RESET} || ${RED}0 → Back${RESET} \n"
-    echo -e "${BOLD}${CYAN}═══════════════════════════════════════════════════════════════════════════${RESET}"
+    echo -e "${BOLD}${CYAN}════════════════════════════════════════════════════════════════════════════════════════${RESET}"
     echo ""
-    echo "  1 → 🚀 Add       - New Implementation           2 → 🔧 Fix       - Bug Solving"
+    echo "  1 → 🆕 Feature   - New Feature                  2 → 🧩 Fix       - Bug Solving"
     echo ""
-    echo "  3 → 🔨 Refactor  - Better Implementation        4 → ⏪ Revert    - Back to Previous"
+    echo "  3 → 🌟 Refactor  - Improvement                  4 → ⏪ Revert    - Back to Previous"
     echo ""
-    echo "  5 → 🧹 Cleanup   - Formatting Code              6 → ⚙️  Config    - Project Config"
+    echo "  5 → 🔄 Cleanup   - Formatting Code              6 → ⚙️  Config    - Project Config"
     echo ""
-    echo "  7 → 📚 Docs      - Project Documentation        8 → ✅ Test      - Testing code"
+    echo "  7 → 📝 Docs      - Project Documentation        8 → 🔬 Test      - Testing code"
     echo ""
-    echo "  9 → 📲 Deploy    - Apps Deployment              * → © Custom     - Custom Prefix"
+    echo "  9 → 🚀 Deploy    - Apps Deployment              * → 🏷️  Custom     - Custom Prefix"
     echo ""
     echo ""
-    echo -e "👉 ${GREEN}Enter your choice (1-9)${RESET} || ${GOLDEN}✏️ Custom (Any)${RESET}: \c"
+    echo -e "👉 ${GREEN}Enter your choice (1-9)${RESET} || ${GOLDEN}🏷️ Custom (Any)${RESET}: \c"
     read -r prefix_choice
-
     if [[ -z "$prefix_choice" ]]; then
       prefix_choice="2"
     fi
@@ -54,17 +53,17 @@ function commit_all_staged_files() {
 
       # Set the prefix based on user choice
       case $prefix_choice in
-          1) prefix="🚀 Add" ;;
-          2) prefix="🔧 Fix" ;;
-          3) prefix="🔨 Refactor" ;;
+          1) prefix="🆕 Feature" ;;
+          2) prefix="🧩 Fix" ;;
+          3) prefix="🌟 Refactor" ;;
           4) prefix="⏪ Revert" ;;
-          5) prefix="🧹 Cleanup" ;;
+          5) prefix="🔄 Cleanup" ;;
           6) prefix="⚙️ Config" ;;
-          7) prefix="📚 Docs" ;;
-          8) prefix="✅ Test" ;;
-          9) prefix="📲 Deploy" ;;
+          7) prefix="📝 Docs" ;;
+          8) prefix="🔬 Test" ;;
+          9) prefix="🚀 Deploy" ;;
           *)
-            read -p "$(echo -e "\n${GOLDEN}✏️ Enter custom prefix: ${RESET}")" prefix
+            read -p "$(echo -e "\n${GOLDEN}🏷️ Enter custom prefix: ${RESET}")" prefix
             echo ""
             ;;
       esac
