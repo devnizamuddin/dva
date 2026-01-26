@@ -127,7 +127,7 @@ function launch_source() {
 
   # If branch provided, append to URL
   if [ -n "$BRANCH_NAME" ]; then
-    GIT_URL="${GIT_URL}/tree/${BRANCH_NAME}"
+    GIT_URL="${GIT_URL}/commits/${BRANCH_NAME}"
   fi
 
   echo "🌐 Opening: $GIT_URL"
