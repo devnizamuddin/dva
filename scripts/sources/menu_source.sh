@@ -10,4 +10,6 @@ source "$DVA_HOME/scripts/features/git/git_manager.sh"
 
 source "$DVA_HOME/scripts/features/note/notes_manager.sh"
 
+source "$DVA_HOME/scripts/features/custom_commands/custom_commands_manager.sh"
+
 source "$DVA_HOME/scripts/features/mac_os/mac_os_manager.sh"

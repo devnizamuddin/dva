@@ -1,6 +1,8 @@
 #!/bin/bash 
 
 source "$DVA_HOME/scripts/features/clean/clean_manager.sh"
+source "$DVA_HOME/scripts/components/menu_ui.sh"
+source "$DVA_HOME/scripts/features/custom_commands/custom_commands_manager.sh"
 
 # Truecolor Aurora gradient colors
 GRADIENT_BASE=(
@@ -20,12 +22,13 @@ options=("🐙  GIT"
          "💙 FLUTTER"
          "📝 NOTE BOOK"
          "🔠 CASE CONVERTER"
+         "✨ CUSTOM COMMANDS"
          "🍎 MacOS")
 
 selected=0
 shift_index=0  # For rotating gradient
 
-animate_menu() {
+function animate_menu(){
     local key=""
     while true; do
         clear
@@ -75,7 +78,8 @@ animate_menu() {
                 2) execute_flutter_menu ;;
                 3) run_note_menu ;;
                 4) run_text_case_converter ;;
-                5) run_mac_os_menu ;;
+                5) run_custom_commands ;;
+                6) run_mac_os_menu ;;
             esac
 
             printf "\nPress Enter to return to Main Menu..."
