@@ -78,10 +78,18 @@ function note_action_3() {
 
   # Show selected note
   local selected_note="${notes[$((choice-1))]}"
-  echo "📄 Content of '$(basename "$selected_note" .txt)':"
-  echo "-------------------------"
+  echo " "
+  echo " "
+  echo "========================================================="
+  echo " "
+  echo "🪧  $(basename "$selected_note")"
+  echo " "
+  echo "========================================================="
+  echo "⫸"
   cat "$selected_note"
-  echo "-------------------------"
+  echo " "
+  echo "⫷"
+  echo "----------------------------------------------------------------------------------------------------"
 }
 
 
