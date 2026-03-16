@@ -27,6 +27,9 @@ EOF
         while IFS= read -r file; do
             file_name=$(basename "$file")
 
+            # Skip macOS metadata files
+            [[ "$file_name" == ".DS_Store" ]] && continue
+
             # Remove extension → make camelCase
             base_name=$(echo "$file_name" | sed -E 's/\.[^.]+$//')
 
