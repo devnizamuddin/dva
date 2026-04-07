@@ -26,6 +26,21 @@ function draw_neumorphic_card_footer() {
     echo -e "   ${DIM}▝$(printf '▀%.0s' $(seq 1 $width))▘${NC}"
 }
 
+function ask_yes_no() {
+    local prompt="$1"
+    local default="${2:-yes}"
+    local options=("Yes" "No")
+    if [[ "$default" == "no" ]]; then
+        options=("No" "Yes")
+    fi
+    local choice=$(printf "%s\n" "${options[@]}" | fzf --prompt="  $prompt" --height=5 --border)
+    if [[ "$choice" == "Yes" ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 function audit_git_branches() {
     # 1. Set Defaults
     local DEFAULT_BRANCH1=$(git rev-parse --abbrev-ref HEAD)
@@ -41,31 +56,29 @@ function audit_git_branches() {
         line_gap
         animate_text "${BOLD}${CYAN}📊 Initializing Git Branch Audit...${NC}"
         echo -e "${DIM}Current Defaults: ${WHITE}BRANCH1=$DEFAULT_BRANCH1, BRANCH2=$DEFAULT_BRANCH2${NC}"
-        read -p "Use these defaults? (y/n): " choice
+        echo ""
         
-        if [[ "$choice" =~ ^[Yy]$ ]]; then
+        if ask_yes_no "Use these defaults? "; then
             BRANCH1=$DEFAULT_BRANCH1
             BRANCH2=$DEFAULT_BRANCH2
         else
             line_gap
-            echo -e "${BOLD}${MAGENTA}📂 Available branches:${NC}"
+            print_card "📂 Select branches to audit" "$MAGENTA"
             local branches=($(git branch --format="%(refname:short)"))
-            for i in "${!branches[@]}"; do
-                echo -e "  ${CYAN}$((i+1)))${NC} ${branches[$i]}"
-            done
 
-            line_gap
-            read -p "Select number for BRANCH1: " idx1
-            read -p "Select number for BRANCH2: " idx2
+            BRANCH1=$(printf "%s\n" "${branches[@]}" | fzf --prompt="BRANCH1 (Source): " --height=10 --border)
+            BRANCH2=$(printf "%s\n" "${branches[@]}" | fzf --prompt="BRANCH2 (Target): " --height=10 --border)
             
-            BRANCH1=${branches[$((idx1-1))]}
-            BRANCH2=${branches[$((idx2-1))]}
+            if [[ -z "$BRANCH1" || -z "$BRANCH2" ]]; then
+                print_status_info "Audit cancelled."
+                return 1
+            fi
         fi
     fi
 
     # Validation
     if ! git rev-parse --verify "$BRANCH1" >/dev/null 2>&1 || ! git rev-parse --verify "$BRANCH2" >/dev/null 2>&1; then
-        echo -e "${RED}❌ Error: One or both branches do not exist.${NC}"
+        print_status_error "Error: One or both branches do not exist."
         return 1
     fi
 
@@ -114,11 +127,10 @@ function audit_git_branches() {
     draw_neumorphic_card_footer
 
     line_gap
-    read -p "Would you like to see the names of all changed files? (y/n): " show_files
-    if [[ "$show_files" =~ ^[Yy]$ ]]; then
+    if ask_yes_no "View names of all changed files? " "no"; then
         line_gap
         echo -e "${BOLD}${MAGENTA}--- 📄 Changed Files List ---${NC}"
-        git diff --name-status "$BRANCH1" "$BRANCH2"
+        git diff --name-status "$BRANCH1" "$BRANCH2" | sed 's/^/  /'
         echo -e "${BOLD}${MAGENTA}----------------------------${NC}"
     fi
 
@@ -130,16 +142,14 @@ function audit_git_branches() {
         echo -e "${BOLD}${BLUE}🌐 GitHub Comparison:${NC}"
         echo -e "  $GH_URL"
         line_gap
-        read -p "  Open this comparison in browser? (y/n): " open_gh
-        if [[ "$open_gh" =~ ^[Yy]$ ]]; then
+        if ask_yes_no "Open this comparison in browser? " "no"; then
             if [[ "$OSTYPE" == "darwin"* ]]; then open "$GH_URL"; elif [[ "$OSTYPE" == "linux-gnu"* ]]; then xdg-open "$GH_URL"; fi
         fi
     fi
     line_gap
 
     # 6. Actionable Dashboard: Stale Branch Cleanup
-    read -p "  🧹 Would you like to check for and delete stale branches? (y/n): " clean_stale
-    if [[ "$clean_stale" =~ ^[Yy]$ ]]; then
+    if ask_yes_no "🧹 Check for and delete stale branches? " "no"; then
         echo ""
         print_status_info "Scanning for branches already merged into $BRANCH2..."
         
@@ -159,8 +169,7 @@ function audit_git_branches() {
             print_card "⚠️  Stale Branches Detected (Merged into $BRANCH2):\n\n$merged_list" "$YELLOW"
             
             echo ""
-            read -p "  Are you sure you want to DELETE all these branches? (y/N): " confirm_delete
-            if [[ "$confirm_delete" =~ ^[Yy]$ ]]; then
+            if ask_yes_no "🚨 DELETE all these stale branches? " "no"; then
                 for b in "${merged_branches[@]}"; do
                     b=$(echo "$b" | xargs)
                     git branch -d "$b" >/dev/null 2>&1

@@ -1,98 +1,73 @@
-# DVA CLI - Developer Workflow Automation
+# DVA CLI - Your Personal Developer Helper
 
-DVA CLI is a powerful command-line interface designed to streamline developer workflows, specifically tailored for Flutter development, Git management, and daily productivity tasks. Built with shell scripts, it provides a fast and efficient way to handle repetitive operations.
+DVA CLI (Developer Workflow Automation) is a powerful, premium command-line assistant designed to streamline developer workflows. Whether you're wrangling Git branches, managing Flutter deployments, or organizing your daily sticky notes, DVA provides a fast, aesthetic, and completely arrow-driven interface to accelerate your productivity.
 
 ## 🚀 Installation
 
-To install DVA CLI, simply run the installation script from the root of the repository:
+To install DVA CLI as a global command on your system, run the installation script from the root of this repository:
 
 ```bash
 ./install.sh
 ```
 
 This will:
-
-1.  Install DVA CLI into `~/.dva`.
-2.  Set up necessary directories and configurations.
-3.  Create a system-wide symlink (`dva`) in `/usr/local/bin` (requires `sudo` access if not writable).
+1. Copy the CLI into `~/.dva`.
+2. Securely create a system-wide symlink (`dva`) in `/usr/local/bin` (may require `sudo` if the directory is restricted).
 
 ## 📖 Usage
 
-Run the CLI using the `dva` command:
+DVA replaces slow typed menus with an interactive, arrow-navigable interface. Open it from anywhere:
 
 ```bash
-dva <command> [options]
+dva
 ```
-
-If you run `dva` without arguments, it will open the interactive main menu.
-
-## ✨ Features
-
-### 💙 Flutter Management
-
-Simplify your Flutter development process with dedicated commands for building, deploying, and asset management.
-
+Or, jump straight to a tool category:
 ```bash
-dva flutter [subcommand]
+dva <command>
 ```
 
-- **Builds**: Easily build for Web, APK, and iOS.
-- **Assets**: Generate asset references automatically.
-- **Deploy**: streamline deployment processes.
+---
 
-### 🗂️ Git Operation
+## ✨ Features Dashboard
 
-Automate your Git workflow with simplified commands.
+### 🐙 Git Operations
+Stop typing long git commands and dealing with pull conflict anxiety.
 
-```bash
-dva git [subcommand]
-```
+- **Sync**: `dva sync` - Intelligently auto-stashes your dirty state, pulls from your selected branch, and pops your stash safely.
+- **Commit**: `dva commit` - View staged files in a beautiful neumorphic card. Quick-select your commit prefixes (`🆕 Feature`, `🧩 Fix`, etc.) via an interactive `fzf` list.
+- **Audit**: `dva audit` - Evaluate differences between branches. Includes an interactive **Stale Branch Cleanup Dashboard** to instantly remove branches you've already merged!
 
-- **Commit**: `dva commit` - Stages all files, commits, and pushes in one go.
-- **Merge**: `dva merge <branch>` - Helper for merging branches.
-- **Branching & History**: Manage branches and view history easily.
+### 📱 Flutter Management
+Simplify your multi-platform Flutter development matrix.
 
-### 📝 Notes
+- **Builds**: Compile Web, APK, and iOS builds effortlessly.
+- **Deploy**: Wrapper commands for git-tagging and pushing new releases with smooth loading animations.
+- **Assets**: Safely generate asset constants.
 
-Keep track of your thoughts and tasks directly from the terminal.
+### 📝 Sticky Notes
+Keep your thoughts directly inside your terminal, formatted as authentic yellow sticky notes.
 
-```bash
-dva note
-```
-
-- Create, search, and manage notes efficiently.
+- Create dynamic notes with helpful syntax suggestions.
+- **Search**: `dva note` -> Search Notes. Quickly find any text snippet across all your existing notes.
 
 ### 🔠 Text Utilities
+Never leave the terminal to format strings.
 
-Quickly manipulate text directly from the command line.
+- **Case Conversion**: Interactively convert any text into `snake_case`, `camelCase`, `PascalCase`, etc., instantly copying the result to your clipboard!
+- **Comments Generator**: Instantly generate block comments with author and date signatures tailored to your git config.
 
-```bash
-dva text
-```
+---
 
-- **Case Conversion**: Convert text between snake_case, camelCase, PascalCase, etc.
-- **Comments**: Generate formatted comments.
+## 📂 Architecture
 
-### 🍎 MacOS Utilities
-
-Productivity scripts tailored for MacOS users.
-
-```bash
-dva mac_os
-```
-
-## 📂 Project Structure
-
-```
+```text
 dva/
-├── bin/            # Executable entry points
-├── scripts/        # Core logic and feature implementation
-│   ├── components/ # UI components (menus, prompts)
-│   ├── features/   # Feature-specific scripts (flutter, git, etc.)
-│   ├── sources/    # Shared sources and configurations
-│   ├── tasks/      # Task runners
-│   └── utils/      # Helper utilities
-└── install.sh      # Installation script
+├── bin/            # Executable entry point
+├── scripts/        # Core logic
+│   ├── components/ # Reusable Interactive UI (Cards, Spinners)
+│   ├── features/   # Command Implementations (Git, Flutter, Notes)
+│   └── utils/      # Printing and Styling Primitives
+└── install.sh      # Setup automation
 ```
 
 ## 📄 License

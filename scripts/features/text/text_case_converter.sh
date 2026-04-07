@@ -26,7 +26,7 @@ TEXT_CASE_OPTIONS=(
 
 function get_input() {
   echo ""
-  read -p "$(echo -e "  ${GREEN}🖌   Enter your text: ${NC}")" input
+  read -p "$(echo -e "  ${GREEN}🖌   Enter your text (e.g., \"make this relaxing\"): ${NC}")" input
   echo ""
 }
 

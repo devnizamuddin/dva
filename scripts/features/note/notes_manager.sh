@@ -30,8 +30,13 @@ function note_action_1() {
     print_card "📝 Create a New Note" "$CYAN"
 
     # Ask for note name
-    read -p "$(echo -e "  📌 ${BOLD}Enter note name:${NC} ")" note_name
+    read -p "$(echo -e "  📌 ${BOLD}Enter note name (e.g., \"api-plan\" or \"todo-list\"):${NC} ")" note_name
     echo ""
+
+    if [[ -z "$note_name" ]]; then
+       print_status_error "Note name cannot be empty."
+       return
+    fi
 
     # Ask for note content
     echo -e "  ✍️  ${BOLD}Enter note content (finish with Ctrl+D or Command+D):${NC}"
@@ -60,48 +65,46 @@ function note_action_2() {
 }
 
 function note_action_3() {
-  # Get list of notes
   shopt -s nullglob
   local notes=("$NOTES_DIR"/*.txt)
   shopt -u nullglob
   
-  # Check if any notes exist
   if [ ${#notes[@]} -eq 0 ]; then
     print_status_warning "No notes found!"
     return
   fi
 
   print_card "📝 Select a Note to View" "$CYAN"
-  local i=1
+  local note_names=()
   for note in "${notes[@]}"; do
-    echo -e "  ${YELLOW}$i)${NC} $(basename "$note" .txt)"
-    ((i++))
+    note_names+=("$(basename "$note" .txt)")
   done
-  echo ""
 
-  read -p "  Enter note number to view: " choice
-
-  # Validate input
-  if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#notes[@]} )); then
-    print_status_error "Invalid choice!"
+  local selected=$(printf "%s\n" "${note_names[@]}" | fzf --prompt="Select Note: " --height=10 --border)
+  
+  if [[ -z "$selected" ]]; then
+    print_status_info "Cancelled."
     return
   fi
 
-  # Show selected note
-  local selected_note="${notes[$((choice-1))]}"
+  local selected_note="$NOTES_DIR/$selected.txt"
   local note_content=$(cat "$selected_note")
   
   echo ""
-  # Use YELLOW for the "sticky note" look
-  print_card "🪧 $(basename "$selected_note" .txt)\n\n$note_content" "$YELLOW"
+  print_card "🪧 $selected\n\n$note_content" "$YELLOW"
   echo ""
 }
 
 function note_action_4() {
   print_card "🔍 Search Notes" "$CYAN"
-  read -p "$(echo -e "  🎯 ${BOLD}Enter keyword to search:${NC} ")" keyword
+  read -p "$(echo -e "  🎯 ${BOLD}Enter keyword (e.g., \"auth\" or \"bug\"):${NC} ")" keyword
   echo ""
   
+  if [[ -z "$keyword" ]]; then
+     print_status_error "Search keyword cannot be empty."
+     return
+  fi
+
   shopt -s nullglob
   local notes=("$NOTES_DIR"/*.txt)
   shopt -u nullglob
@@ -124,14 +127,30 @@ function note_action_4() {
 }
 
 function note_action_5() {
-  print_card "🗑️  Delete Note" "$RED"
-  read -p "$(echo -e "  🏷️  ${BOLD}Enter note name to delete:${NC} ")" note_name
-  if [[ -f "$NOTES_DIR/$note_name.txt" ]]; then
-    rm "$NOTES_DIR/$note_name.txt"
-    print_status_success "Note '$note_name' deleted!"
-  else
-    print_status_error "Note '$note_name' not found!"
+  shopt -s nullglob
+  local notes=("$NOTES_DIR"/*.txt)
+  shopt -u nullglob
+  
+  if [ ${#notes[@]} -eq 0 ]; then
+    print_status_warning "No notes found!"
+    return
   fi
+
+  print_card "🗑️  Delete a Note" "$RED"
+  local note_names=()
+  for note in "${notes[@]}"; do
+    note_names+=("$(basename "$note" .txt)")
+  done
+
+  local selected=$(printf "%s\n" "${note_names[@]}" | fzf --prompt="Note to delete: " --height=10 --border)
+  
+  if [[ -z "$selected" ]]; then
+    print_status_info "Cancelled."
+    return
+  fi
+
+  rm "$NOTES_DIR/$selected.txt"
+  print_status_success "Note '$selected' deleted!"
 }
 
 #* ┏==================================================================================================┓

@@ -4,21 +4,26 @@
 #* ┃                              📖 Comments Generator: Options & Actions                             ┃
 #* ┗==================================================================================================┛
 
+function get_author_info() {
+  AUTHOR_NAME=$(git config user.name 2>/dev/null || echo "Your Name")
+  AUTHOR_EMAIL=$(git config user.email 2>/dev/null || echo "your.email@example.com")
+}
+
 function print_generated_file_header() {
-  # Get current date in format "07 March 2025"
+  get_author_info
   current_date=$(date +"%d %B %Y")
-  
-  # Get current time in format "12:38:26 AM"
   current_time=$(date +"%I:%M:%S %p")
-  # Output the header
+  
+  local width=64
+  local name_pad=$((width - 25 - ${#AUTHOR_NAME}))
+  local email_pad=$((width - 25 - ${#AUTHOR_EMAIL}))
+  
   echo "/*"
   echo " * ╔═══════════════════════════════════════════════════════════════╗"
   echo " * ║                                                               ║"
-  echo " * ║ 🙎‍♂️ Author    : Nizam Uddin Shamrat                            ║"
+  printf " * ║ 🙎‍♂️ Author    : %s%*s║\n" "$AUTHOR_NAME" $name_pad ""
   echo " * ║                                                               ║"
-  echo " * ║ 📧 Email     : dev.nizamuddin@gmail.com                       ║"
-  echo " * ║                                                               ║"
-  echo " * ║ 🌍 Portfolio : https://devnizamuddin.github.io                ║"
+  printf " * ║ 📧 Email     : %s%*s║\n" "$AUTHOR_EMAIL" $email_pad ""
   echo " * ║                                                               ║"
   echo " * ║ 🗓️ Date      : $current_date        🕰 Time : $current_time       ║"
   echo " * ║                                                               ║"
@@ -33,21 +38,21 @@ function print_generated_file_header() {
 #
 
 function copy_generated_file_header() {
-  # Get current date in format "07 March 2025"
+  get_author_info
   current_date=$(date +"%d %B %Y")
-  
-  # Get current time in format "12:38:26 AM"
   current_time=$(date +"%I:%M:%S %p")
+  
+  local width=64
+  local name_pad=$((width - 25 - ${#AUTHOR_NAME}))
+  local email_pad=$((width - 25 - ${#AUTHOR_EMAIL}))
+
   {
-  # Output the header
   echo "/*"
   echo " * ╔═══════════════════════════════════════════════════════════════╗"
   echo " * ║                                                               ║"
-  echo " * ║ 🙎‍♂️ Author    : Nizam Uddin Shamrat                            ║"
+  printf " * ║ 🙎‍♂️ Author    : %s%*s║\n" "$AUTHOR_NAME" $name_pad ""
   echo " * ║                                                               ║"
-  echo " * ║ 📧 Email     : dev.nizamuddin@gmail.com                       ║"
-  echo " * ║                                                               ║"
-  echo " * ║ 🌍 Portfolio : https://devnizamuddin.github.io                ║"
+  printf " * ║ 📧 Email     : %s%*s║\n" "$AUTHOR_EMAIL" $email_pad ""
   echo " * ║                                                               ║"
   echo " * ║ 🗓️ Date      : $current_date        🕰 Time : $current_time       ║"
   echo " * ║                                                               ║"

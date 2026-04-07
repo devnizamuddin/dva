@@ -37,7 +37,7 @@ function custom_commands_action_1() {
   printf "\n${BOLD}✨ Add New Custom Command${NC}\n"
   printf "═══════════════════════════════════════════════════════════\n\n"
   
-  read -p "📝 Enter command name: " cmd_name
+  read -p "📝 Enter command name (e.g., \"start-dev\"): " cmd_name
   
   if [[ -z "$cmd_name" ]]; then
     printf "\n❌ Command name cannot be empty!\n"
@@ -50,7 +50,7 @@ function custom_commands_action_1() {
     return 1
   fi
   
-  read -p "📄 Enter command description: " cmd_desc
+  read -p "📄 Enter command description (e.g., \"Runs local development server\"): " cmd_desc
   
   printf "\n💡 Enter the command to execute (use Ctrl+D when done):\n"
   printf "   You can enter multiple lines for complex commands.\n\n"
@@ -116,28 +116,20 @@ function custom_commands_action_3() {
   
   # List available commands
   local commands=$(get_all_commands)
-  local index=1
-  local cmd_names=()
+  local cmd_list=()
   
   while IFS='|' read -r name desc content; do
-    printf "%d. %s - %s\n" "$index" "$name" "$desc"
-    cmd_names+=("$name")
-    ((index++))
+    cmd_list+=("$name - $desc")
   done <<< "$commands"
   
   printf "\n"
-  read -p "Enter command number to execute (or 0 to cancel): " choice
+  local selection=$(printf "%s\n" "${cmd_list[@]}" | fzf --prompt="Executed Command: " --height=10 --border)
   
-  if [[ "$choice" == "0" ]]; then
+  if [[ -z "$selection" ]]; then
     return 0
   fi
   
-  if [[ ! "$choice" =~ ^[0-9]+$ ]] || [[ $choice -lt 1 ]] || [[ $choice -gt $count ]]; then
-    printf "\n❌ Invalid selection!\n"
-    return 1
-  fi
-  
-  local cmd_name="${cmd_names[$((choice-1))]}"
+  local cmd_name=$(echo "$selection" | awk -F ' - ' '{print $1}')
   local cmd_content=$(get_command_content "$cmd_name")
   
   printf "\n🚀 Executing: %s\n" "$cmd_name"
@@ -165,28 +157,20 @@ function custom_commands_action_4() {
   
   # List available commands
   local commands=$(get_all_commands)
-  local index=1
-  local cmd_names=()
+  local cmd_list=()
   
   while IFS='|' read -r name desc content; do
-    printf "%d. %s - %s\n" "$index" "$name" "$desc"
-    cmd_names+=("$name")
-    ((index++))
+    cmd_list+=("$name - $desc")
   done <<< "$commands"
   
   printf "\n"
-  read -p "Enter command number to edit (or 0 to cancel): " choice
+  local selection=$(printf "%s\n" "${cmd_list[@]}" | fzf --prompt="Edit Command: " --height=10 --border)
   
-  if [[ "$choice" == "0" ]]; then
+  if [[ -z "$selection" ]]; then
     return 0
   fi
   
-  if [[ ! "$choice" =~ ^[0-9]+$ ]] || [[ $choice -lt 1 ]] || [[ $choice -gt $count ]]; then
-    printf "\n❌ Invalid selection!\n"
-    return 1
-  fi
-  
-  local old_name="${cmd_names[$((choice-1))]}"
+  local old_name=$(echo "$selection" | awk -F ' - ' '{print $1}')
   local old_desc=$(get_command_description "$old_name")
   local old_content=$(get_command_content "$old_name")
   
@@ -231,32 +215,24 @@ function custom_commands_action_5() {
   
   # List available commands
   local commands=$(get_all_commands)
-  local index=1
-  local cmd_names=()
+  local cmd_list=()
   
   while IFS='|' read -r name desc content; do
-    printf "%d. %s - %s\n" "$index" "$name" "$desc"
-    cmd_names+=("$name")
-    ((index++))
+    cmd_list+=("$name - $desc")
   done <<< "$commands"
   
   printf "\n"
-  read -p "Enter command number to delete (or 0 to cancel): " choice
+  local selection=$(printf "%s\n" "${cmd_list[@]}" | fzf --prompt="Delete Command: " --height=10 --border)
   
-  if [[ "$choice" == "0" ]]; then
+  if [[ -z "$selection" ]]; then
     return 0
   fi
   
-  if [[ ! "$choice" =~ ^[0-9]+$ ]] || [[ $choice -lt 1 ]] || [[ $choice -gt $count ]]; then
-    printf "\n❌ Invalid selection!\n"
-    return 1
-  fi
+  local cmd_name=$(echo "$selection" | awk -F ' - ' '{print $1}')
   
-  local cmd_name="${cmd_names[$((choice-1))]}"
+  local confirm=$(printf "No\nYes" | fzf --prompt="⚠️ Are you sure you want to delete '$cmd_name'? " --height=4 --border)
   
-  read -p "⚠️  Are you sure you want to delete '$cmd_name'? (y/N): " confirm
-  
-  if [[ "$confirm" =~ ^[Yy]$ ]]; then
+  if [[ "$confirm" == "Yes" ]]; then
     delete_command "$cmd_name"
     printf "\n✅ Command '%s' deleted successfully!\n" "$cmd_name"
   else

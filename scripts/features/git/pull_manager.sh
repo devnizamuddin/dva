@@ -35,22 +35,27 @@ __stash_and_pull() {
 }
 
 function pull_from_choosen_branch() {
-    show_all_active_branches
+    print_status_info "Fetching active branches..."
+    git fetch --prune >/dev/null 2>&1
 
-    echo ""
-    print_card "📝 Entering Branch Selection:" "$CYAN"
-    read -p "$(echo -e "  ${GREEN}🖌   Enter the branch number: ${RESET}")" choosen_branch
+    local BRANCHES=($(git branch -r | grep -v '\->' | sed 's/origin\///'))
 
-    if ! [[ "$choosen_branch" =~ ^[0-9]+$ ]] || [ "$choosen_branch" -lt 1 ] || [ "$choosen_branch" -gt "${#BRANCHES[@]}" ]; then
-        echo ""
-        print_status_error "Invalid selection! Please enter a valid number."
-        echo ""
-        exit 1
+    if [ ${#BRANCHES[@]} -eq 0 ]; then
+        print_status_error "No remote branches found!"
+        return 1
     fi
 
-    SELECTED_BRANCH="${BRANCHES[$((choosen_branch - 1))]}"
     echo ""
-    __stash_and_pull "$SELECTED_BRANCH"
+    print_card "📝 Select a branch to pull from" "$CYAN"
+    local selected_branch=$(printf "%s\n" "${BRANCHES[@]}" | fzf --prompt="Branch: " --height=10 --border)
+
+    if [[ -z "$selected_branch" ]]; then
+        print_status_info "Branch selection cancelled."
+        return 1
+    fi
+
+    echo ""
+    __stash_and_pull "$selected_branch"
 }
 
 function pull_current_branch() {

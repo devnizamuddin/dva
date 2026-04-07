@@ -61,8 +61,21 @@ function show_commit_changes() {
 
 function git_diff_branches() {
   print_card "🔄 Diff Between Branches" "$CYAN"
-  read -p "$(echo -e "  ${GREEN}🖌   Enter the source branch (e.g. master): ${RESET}")" source_branch
-  read -p "$(echo -e "  ${GREEN}🖌   Enter the target branch (e.g. feature): ${RESET}")" target_branch
+  
+  local branches=($(git branch --format="%(refname:short)"))
+  local source_branch=$(printf "%s\n" "${branches[@]}" | fzf --prompt="Source Branch: " --height=10 --border)
+  
+  if [[ -z "$source_branch" ]]; then
+      print_status_info "Diff cancelled."
+      return
+  fi
+
+  local target_branch=$(printf "%s\n" "${branches[@]}" | grep -v "^${source_branch}$" | fzf --prompt="Target Branch: " --height=10 --border)
+  
+  if [[ -z "$target_branch" ]]; then
+      print_status_info "Diff cancelled."
+      return
+  fi
 
   echo ""
   print_status_info "Showing diff between $source_branch and $target_branch..."
