@@ -1,8 +1,30 @@
-#!/bin/bash
-
 # * ┏==================================================================================================┓
-# * ┃                                   📖 Git Branch Audit                                            ┃
+# * ┃                                   💎 UI Helper Functions                                         ┃
 # * ┗==================================================================================================┛
+
+function animate_text() {
+    local text="$1"
+    local delay="${2:-0.01}"
+    for (( i=0; i<${#text}; i++ )); do
+        echo -n "${text:$i:1}"
+        sleep "$delay"
+    done
+    echo ""
+}
+
+function draw_neumorphic_card_header() {
+    local title="$1"
+    local width=70
+    echo -e "  ${WHITE}╭$(printf '─%.0s' $(seq 1 $width))╮${NC}"
+    echo -e "  ${WHITE}│${BOLD}${MAGENTA}  🚀 $title $(printf ' %.0s' $(seq 1 $((width - ${#title} - 6)))) ${NC}${WHITE}│${NC}"
+    echo -e "  ${WHITE}├$(printf '─%.0s' $(seq 1 $width))┤${NC}"
+}
+
+function draw_neumorphic_card_footer() {
+    local width=70
+    echo -e "  ${WHITE}╰$(printf '─%.0s' $(seq 1 $width))╯${NC}"
+    echo -e "   ${DIM}▝$(printf '▀%.0s' $(seq 1 $width))▘${NC}"
+}
 
 function audit_git_branches() {
     # 1. Set Defaults
@@ -16,16 +38,17 @@ function audit_git_branches() {
         BRANCH1=$1
         BRANCH2=$2
     else
-        echo -e "${CYAN}Current Defaults: BRANCH1=${BOLD}$DEFAULT_BRANCH1${NC}${CYAN}, BRANCH2=${BOLD}$DEFAULT_BRANCH2${NC}"
-        read -p "Do you want to use these defaults? (y/n): " choice
+        line_gap
+        animate_text "${BOLD}${CYAN}📊 Initializing Git Branch Audit...${NC}"
+        echo -e "${DIM}Current Defaults: ${WHITE}BRANCH1=$DEFAULT_BRANCH1, BRANCH2=$DEFAULT_BRANCH2${NC}"
+        read -p "Use these defaults? (y/n): " choice
         
         if [[ "$choice" =~ ^[Yy]$ ]]; then
             BRANCH1=$DEFAULT_BRANCH1
             BRANCH2=$DEFAULT_BRANCH2
         else
             line_gap
-            echo -e "${BOLD}${MAGENTA}Available branches:${NC}"
-            # List branches starting from index 1
+            echo -e "${BOLD}${MAGENTA}📂 Available branches:${NC}"
             local branches=($(git branch --format="%(refname:short)"))
             for i in "${!branches[@]}"; do
                 echo -e "  ${CYAN}$((i+1)))${NC} ${branches[$i]}"
@@ -47,59 +70,70 @@ function audit_git_branches() {
     fi
 
     line_gap
-    multi_line_divider
-    echo -e "${BOLD}${BLUE}Comparing: ${YELLOW}$BRANCH1${NC}${BOLD}${BLUE} vs ${YELLOW}$BRANCH2${NC}"
-    multi_line_divider
+    draw_neumorphic_card_header "AUDIT REPORT: $BRANCH1 vs $BRANCH2"
 
     # 3. File Change Breakdown
-    # A = Added, M = Modified, D = Deleted
     local NEW_FILES=$(git diff --name-only --diff-filter=A $BRANCH1 $BRANCH2 | wc -l | xargs)
     local MODIFIED_FILES=$(git diff --name-only --diff-filter=M $BRANCH1 $BRANCH2 | wc -l | xargs)
     local TOTAL_CHANGES=$((NEW_FILES + MODIFIED_FILES))
 
-    line_gap
-    echo -e "${BOLD}${GREEN}File Statistics:${NC}"
-    echo -e "  Total Files with Changes: ${BOLD}$TOTAL_CHANGES${NC}"
-    echo -e "  New Files:              ${BOLD}$NEW_FILES${NC}"
-    echo -e "  Modified Files:         ${BOLD}$MODIFIED_FILES${NC}"
-    line_gap
+    echo -e "  ${WHITE}│${NC}  ${BOLD}${GREEN}📈 Statistics:${NC}"
+    echo -e "  ${WHITE}│${NC}    Total Files Changed : ${GOLDEN}$TOTAL_CHANGES${NC}"
+    echo -e "  ${WHITE}│${NC}    New Files           : ${BOLD}$NEW_FILES${NC}"
+    echo -e "  ${WHITE}│${NC}    Modified Files      : ${BOLD}$MODIFIED_FILES${NC}"
+    echo -e "  ${WHITE}│${NC}"
 
+    # 4. Merge Safety Analysis (Lead Developer View)
+    echo -e "  ${WHITE}│${NC}  ${BOLD}${BLUE}🛡️  Merge Safety Analysis:${NC}"
+    
+    # Conflict Detection using git merge-tree
+    local MERGE_TREE_OUT=$(git merge-tree --write-tree "$BRANCH1" "$BRANCH2" 2>&1)
+    local MERGE_EXIT=$?
+    
+    if [ $MERGE_EXIT -eq 0 ]; then
+        echo -e "  ${WHITE}│${NC}    Status: ${BOLD}${BG_GREEN}  SAFE TO MERGE  ${NC} ✅"
+        echo -e "  ${WHITE}│${NC}    Detail: No structural conflicts detected."
+    else
+        echo -e "  ${WHITE}│${NC}    Status: ${BOLD}${BG_RED}  CONFLICT ALERT  ${NC} ⚠️"
+        echo -e "  ${WHITE}│${NC}    Detail: Potential conflicts found in the following files:"
+        # Extract conflicting files from merge-tree output
+        local CONFLICT_FILES=$(echo "$MERGE_TREE_OUT" | grep "CONFLICT" | awk '{print $NF}' | sort -u)
+        while read -r file; do
+            [ -n "$file" ] && echo -e "  ${WHITE}│${NC}      - ${RED}$file${NC}"
+        done <<< "$CONFLICT_FILES"
+    fi
+    echo -e "  ${WHITE}│${NC}"
+
+    # 5. Context
+    local MERGE_BASE=$(git merge-base "$BRANCH1" "$BRANCH2")
+    local BASE_SUBJECT=$(git log -1 --format=%s "$MERGE_BASE")
+    echo -e "  ${WHITE}│${NC}  ${BOLD}${CYAN}🔗 Merge Base Information:${NC}"
+    echo -e "  ${WHITE}│${NC}    Hash   : ${DIM}$MERGE_BASE${NC}"
+    echo -e "  ${WHITE}│${NC}    Subject: ${ITALIC}$BASE_SUBJECT${NC}"
+    
+    draw_neumorphic_card_footer
+
+    line_gap
     read -p "Would you like to see the names of all changed files? (y/n): " show_files
     if [[ "$show_files" =~ ^[Yy]$ ]]; then
         line_gap
-        echo -e "${BOLD}${MAGENTA}--- Changed Files List ---${NC}"
-        git diff --name-status $BRANCH1 $BRANCH2
-        echo -e "${BOLD}${MAGENTA}--------------------------${NC}"
+        echo -e "${BOLD}${MAGENTA}--- 📄 Changed Files List ---${NC}"
+        git diff --name-status "$BRANCH1" "$BRANCH2"
+        echo -e "${BOLD}${MAGENTA}----------------------------${NC}"
     fi
-
-    # 4. Common Point & GitHub Integration
-    local MERGE_BASE=$(git merge-base $BRANCH1 $BRANCH2)
-    local BASE_SUBJECT=$(git log -1 --format=%s $MERGE_BASE)
-
-    line_gap
-    echo -e "${BOLD}${CYAN}Last Common Point (Merge Base):${NC}"
-    echo -e "  Hash:    ${YELLOW}$MERGE_BASE${NC}"
-    echo -e "  Subject: ${DIM}$BASE_SUBJECT${NC}"
 
     # Generate GitHub URL
     local REMOTE_URL=$(git config --get remote.origin.url | sed 's/\.git$//' | sed 's/git@github.com:/https:\/\/github.com\//')
     if [[ $REMOTE_URL == *"github.com"* ]]; then
-        # Comparison URL: https://github.com/user/repo/compare/base...head
         local GH_URL="$REMOTE_URL/compare/$MERGE_BASE...$BRANCH1"
-        
         line_gap
-        read -p "Open comparison from Common Point on GitHub? (y/n): " open_gh
+        echo -e "${BOLD}${BLUE}🌐 GitHub Comparison:${NC}"
+        echo -e "  $GH_URL"
+        line_gap
+        read -p "Open this comparison in browser? (y/n): " open_gh
         if [[ "$open_gh" =~ ^[Yy]$ ]]; then
-            # Detect OS to open browser
-            if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-                xdg-open "$GH_URL"
-            elif [[ "$OSTYPE" == "darwin"* ]]; then
-                open "$GH_URL"
-            else
-                echo -e "${YELLOW}Please open manually: $GH_URL${NC}"
-            fi
+            if [[ "$OSTYPE" == "darwin"* ]]; then open "$GH_URL"; elif [[ "$OSTYPE" == "linux-gnu"* ]]; then xdg-open "$GH_URL"; fi
         fi
     fi
     line_gap
-    multi_line_divider
 }
