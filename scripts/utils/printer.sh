@@ -130,3 +130,39 @@ function multi_line_divider() {
     echo -e "============================================================================================="
 
 }
+
+#* ┏==================================================================================================┓
+#* ┃                                   📖 Premium UI Cards                                            ┃
+#* ┗==================================================================================================┛
+
+function print_card() {
+    local content="$1"
+    local color="${2:-$BLUE}"
+    
+    echo -e "  ${color}╭────────────────────────────────────────────────────────╮${NC}"
+    # Read multiline content and print with borders
+    while IFS= read -r line; do
+        # We use printf to ensure consistent width, padded to 54 chars
+        # Subtracting length of actual content could be tricky with ANSI codes, 
+        # so we'll just print it loosely or use a padded format.
+        # For simplicity, we just print the line with a bit of space.
+        echo -e "  ${color}│${NC}  ${line}"
+    done <<< "$content"
+    echo -e "  ${color}╰────────────────────────────────────────────────────────╯${NC}"
+}
+
+function print_status_info() {
+    echo -e "  ${BLUE}ℹ ${BOLD}$1${NC}"
+}
+
+function print_status_success() {
+    echo -e "  ${GREEN}✔ ${BOLD}$1${NC}"
+}
+
+function print_status_warning() {
+    echo -e "  ${YELLOW}⚠ ${BOLD}$1${NC}"
+}
+
+function print_status_error() {
+    echo -e "  ${RED}✖ ${BOLD}$1${NC}"
+}

@@ -17,6 +17,7 @@ NOTE_OPTIONS=(
   "Create Note"
   "List Notes"
   "View Note"
+  "Search Notes"
   "Delete Note"
 )
 
@@ -26,80 +27,110 @@ NOTE_OPTIONS=(
 #*
 
 function note_action_1() {
-    echo "📝 Create a New Note"
-    echo "───────────────────────────"
+    print_card "📝 Create a New Note" "$CYAN"
 
     # Ask for note name
-    read -p "📌 Enter note name: " note_name
+    read -p "$(echo -e "  📌 ${BOLD}Enter note name:${NC} ")" note_name
     echo ""
 
     # Ask for note content
-    echo "✍️  Enter note content (finish with Ctrl+D):"
-    echo "───────────────────────────"
+    echo -e "  ✍️  ${BOLD}Enter note content (finish with Ctrl+D or Command+D):${NC}"
+    echo -e "  ────────────────────────────────────────────────────────"
     note_content=$(</dev/stdin)
     echo ""
 
     # Save note
     echo "$note_content" > "$NOTES_DIR/$note_name.txt"
-    echo "✅ Note '$note_name' saved successfully!"
+    print_status_success "Note '$note_name' saved successfully!"
 }
 
 
 function note_action_2() {
-  echo "📝 Listing all notes:"
-  ls -1 "$NOTES_DIR"
+  print_card "📝 All Notes" "$CYAN"
+  local notes=("$NOTES_DIR"/*.txt)
+  
+  if [ -e "${notes[0]}" ]; then
+    for note in "${notes[@]}"; do
+      echo -e "  📄 ${GREEN}$(basename "$note" .txt)${NC}"
+    done
+  else
+    print_status_warning "No notes found."
+  fi
+  echo ""
 }
 
 function note_action_3() {
   # Get list of notes
+  shopt -s nullglob
   local notes=("$NOTES_DIR"/*.txt)
+  shopt -u nullglob
   
   # Check if any notes exist
   if [ ${#notes[@]} -eq 0 ]; then
-    echo "❌ No notes found!"
+    print_status_warning "No notes found!"
     return
   fi
 
-  echo "📝 Notes List:"
+  print_card "📝 Select a Note to View" "$CYAN"
   local i=1
   for note in "${notes[@]}"; do
-    echo "$i) $(basename "$note" .txt)"
+    echo -e "  ${YELLOW}$i)${NC} $(basename "$note" .txt)"
     ((i++))
   done
+  echo ""
 
-  # Prompt user to select by number
-  read -p "Enter note number to view: " choice
+  read -p "  Enter note number to view: " choice
 
   # Validate input
   if ! [[ "$choice" =~ ^[0-9]+$ ]] || (( choice < 1 || choice > ${#notes[@]} )); then
-    echo "❌ Invalid choice!"
+    print_status_error "Invalid choice!"
     return
   fi
 
   # Show selected note
   local selected_note="${notes[$((choice-1))]}"
-  echo " "
-  echo " "
-  echo "========================================================="
-  echo " "
-  echo "🪧  $(basename "$selected_note")"
-  echo " "
-  echo "========================================================="
-  echo "⫸"
-  cat "$selected_note"
-  echo " "
-  echo "⫷"
-  echo "----------------------------------------------------------------------------------------------------"
+  local note_content=$(cat "$selected_note")
+  
+  echo ""
+  # Use YELLOW for the "sticky note" look
+  print_card "🪧 $(basename "$selected_note" .txt)\n\n$note_content" "$YELLOW"
+  echo ""
 }
 
-
 function note_action_4() {
-  read -p "Enter note name to delete: " note_name
+  print_card "🔍 Search Notes" "$CYAN"
+  read -p "$(echo -e "  🎯 ${BOLD}Enter keyword to search:${NC} ")" keyword
+  echo ""
+  
+  shopt -s nullglob
+  local notes=("$NOTES_DIR"/*.txt)
+  shopt -u nullglob
+
+  local found=0
+  for note in "${notes[@]}"; do
+    if grep -ilq "$keyword" "$note"; then
+      echo -e "  📄 ${GREEN}$(basename "$note" .txt)${NC} contains matches:"
+      # show matched snippet
+      local snippet=$(grep -i "$keyword" "$note" | head -n 3 | sed 's/^/      > /')
+      echo -e "${DIM}$snippet${NC}"
+      ((found++))
+    fi
+  done
+  
+  if [ $found -eq 0 ]; then
+    print_status_warning "No matches found for '$keyword'."
+  fi
+  echo ""
+}
+
+function note_action_5() {
+  print_card "🗑️  Delete Note" "$RED"
+  read -p "$(echo -e "  🏷️  ${BOLD}Enter note name to delete:${NC} ")" note_name
   if [[ -f "$NOTES_DIR/$note_name.txt" ]]; then
     rm "$NOTES_DIR/$note_name.txt"
-    echo "🗑️  Note '$note_name' deleted!"
+    print_status_success "Note '$note_name' deleted!"
   else
-    echo "❌ Note '$note_name' not found!"
+    print_status_error "Note '$note_name' not found!"
   fi
 }
 

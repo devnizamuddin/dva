@@ -4,33 +4,34 @@ function push_unpushed_commits() {
 
   branch_name=$(git rev-parse --abbrev-ref HEAD)
 
-  git fetch origin
+  git fetch origin >/dev/null 2>&1
 
   changed_files=$(git log --name-only --oneline origin/"$branch_name".."$branch_name")
 
   #* Push the changes to the remote repository
-  git push origin "$branch_name"
+  show_progress_dots "Pushing commits to origin/$branch_name" git push origin "$branch_name"
 
   #* Show the files changed between local and remote branch
   echo ""
-  echo -e "${BOLD}${CYAN}📂 Files Changed in this Push :${RESET}"
-  echo ""
-  echo -e "${BOLD}${CYAN}═══════════════════════════════════════════════════════════════════════════${RESET}"
-  echo ""
-
+  
   if [ -z "$changed_files" ]; then
-    echo -e "${RED}No changes detected between the local and remote branches.${RESET}"
+    print_status_info "No changes detected between the local and remote branches."
   else
-    echo "$changed_files" | while read line; do
+    # Format changed files slightly
+    local formatted_changes=""
+    while IFS= read -r line; do
       if [[ "$line" =~ ^[a-f0-9]{7} ]]; then
-        echo -e "${BOLD}${WHITE}$line${RESET}"  
+        formatted_changes+="\n  ${BOLD}${WHITE}${line}${RESET}"  
       else
-        echo -e "${GREEN}$line${RESET}"
+        formatted_changes+="\n    ${GREEN}${line}${RESET}"
       fi
-    done
+    done <<< "$changed_files"
+
+    # Remove leading newline
+    formatted_changes="${formatted_changes#\\n}"
+
+    print_card "📂 Files Changed in this Push:\n\n$formatted_changes" "$CYAN"
   fi
 
   echo ""
-  echo ""
-
 }

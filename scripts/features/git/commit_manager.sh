@@ -6,47 +6,31 @@ function commit_all_staged_files() {
 
     # If no staged files, stop execution and exit the function
     if [[ -z "$staged_files" ]]; then
-      echo -e "${YELLOW}No staged files to commit.${RESET}"
+      print_status_warning "No staged files to commit."
       echo ""
       return 1
     fi
 
     # Print the staged files
-    echo -e "${BOLD}${CYAN}📂 Staged Files:${RESET}"
-    echo -e "${BOLD}${CYAN}════════════════════════════════════════════════════════════════════════════════════════${RESET}"
     echo ""
-
-    while IFS= read -r file; do
-      echo -e " - ${GREEN}$file${RESET}"
-      echo ""  # Add a blank line for better readability
-    done <<< "$staged_files"
+    print_card "📂 Staged Files:\n\n$staged_files" "$CYAN"
+    echo ""
 
     # Prompt for commit prefix selection
+    print_card "📌 Choose a Commit Prefix\n\n  1 → 🆕 Feature\n  2 → 🧩 Fix\n  3 → 🌟 Refactor\n  4 → ⏪ Revert\n  5 → 🔄 Cleanup\n  6 → ⚙️  Config\n  7 → 📝 Docs\n  8 → 🔬 Test\n  9 → 🚀 Deploy\n\n  0 → Back to Main" "$CYAN"
+    
     echo ""
-    echo -e "\n📌${BOLD}${CYAN} Choose a commit prefix${RESET} || ${RED}0 → Back${RESET} \n"
-    echo -e "${BOLD}${CYAN}-----------------------------------------------------------------------------------------${RESET}"
-    echo ""
-    echo "  1 → 🆕 Feature             2 → 🧩 Fix             3 → 🌟 Refactor"
-    echo ""
-    echo "  4 → ⏪ Revert              5 → 🔄 Cleanup         6 → ⚙️  Config"
-    echo ""
-    echo "  7 → 📝 Docs                8 → 🔬 Test            9 → 🚀 Deploy"
-    echo ""
-    echo -e "${BOLD}${CYAN}-----------------------------------------------------------------------------------------${RESET}"
-    echo ""
-    echo ""
-    echo -e "👉 ${GREEN}Enter your choice (1-9)${RESET} || ${GOLDEN}Press ⏎ for custom${RESET}: \c"
-    read -r prefix_choice
+    read -p "$(echo -e "  👉 ${GREEN}Enter your choice (0-9)${RESET} || ${GOLDEN}Press ⏎ for custom${RESET}: ")" prefix_choice
     if [[ -z "$prefix_choice" ]]; then
       prefix_choice="2"
     fi
     echo ""
 
-    # Check if any files were selected
-    if [ ${#prefix_choice[@]} -eq 0 ]; then
+    # Check if back was selected
+    if [[ "$prefix_choice" == "0" ]]; then
       echo ""
-      echo ""
-      echo -e "${BLUE}Back to Main...${RESET}"
+      print_status_info "Back to Main..."
+      return 0
     else
 
       # Set the prefix based on user choice
@@ -61,14 +45,14 @@ function commit_all_staged_files() {
           8) prefix="🔬 Test" ;;
           9) prefix="🚀 Deploy" ;;
           *)
-            read -p "$(echo -e "\n${GOLDEN}🏷️ Enter custom prefix: ${RESET}")" prefix
+            read -p "$(echo -e "  ${GOLDEN}🏷️ Enter custom prefix: ${RESET}")" prefix
             echo ""
             ;;
       esac
 
       # Get commit message
       if [ -z "$1" ]; then
-          read -p "$(echo -e "\n${BOLD}${GOLDEN} 🖋️  Enter commit message: ${RESET}")" commit_message
+          read -p "$(echo -e "  ${BOLD}${GOLDEN}🖋️  Enter commit message: ${RESET}")" commit_message
       else
           commit_message="$1"
       fi
@@ -78,27 +62,18 @@ function commit_all_staged_files() {
           commit_message="$prefix: $commit_message"
       fi
 
+      echo ""
       # Commit the changes
-      git commit -m "$commit_message"
-
-      echo -e "\n✅ Commit successful!\n"
+      if git commit -m "$commit_message" >/dev/null 2>&1; then
+          print_status_success "Commit successful!"
+      else
+          print_status_error "Commit failed."
+          return 1
+      fi
 
       # Display Staged Files (Already Staged)
-      echo -e "${BOLD}${CYAN}✅ Commited Files:${RESET}"
-      echo -e "${BOLD}${CYAN}═════════════════════════════════════════════════════════════════════${RESET}"
       echo ""
-      
-      if [[ -z "$staged_files" ]]; then
-          echo -e "${YELLOW}  No files commited.${RESET}"
-      else
-          i=1
-          for file in $staged_files; do
-              echo -e "${GREEN}  $i. $file${RESET}"
-              echo ""
-              staged_list+=("$file")
-              ((i++))
-          done
-      fi
+      print_card "✅ Committed Files:\n\n$staged_files" "$GREEN"
       echo ""
     fi
 }

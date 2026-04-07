@@ -1,83 +1,74 @@
 #!/bin/bash
 
-
 function show_commit_history() {
-  echo "Showing the commit history..."
-  # git log --pretty=oneline
-  git log --oneline --graph --decorate \
-  --pretty=format:"%C(yellow)%ad%Creset %C(cyan)$(git branch --contains | grep -v 'HEAD' | sed 's/^[[:space:]]*//')%Creset %C(green)* %an%n%n%Creset%s%n%n" --date=format:'%Y-%m-%d %I:%M %p'
+  echo ""
+  print_status_info "Showing the commit history..."
+  echo ""
+  # Add a padded border effect to the git log output
+  git log --graph --decorate --pretty=format:"%C(yellow)%ad%C(reset)  %C(cyan)%d%C(reset) %C(green)◉ %an%n   %C(white)%s%C(reset)%n" --date=format:'%Y-%m-%d %I:%M %p' -n 15 | while read line; do
+    echo -e "    $line"
+  done
+  echo ""
+  echo -e "    ${DIM}Press 'q' if paginated, or use 'dva log' ...${NC}"
+  echo ""
 }
-
 
 function showBranchUpdatesByComparingMine() {
-
   BRANCH=$1
-  
   echo ""
 
-  echo -e "${BOLD}${RED}Conflict files with ${BRANCH}:${RESET}"
-  echo -e "${BOLD}${RED}═════════════════════════════════════════════════════════════════════${RESET}"
-  echo ""
-  git diff --name-only --diff-filter=U origin/"$BRANCH"...HEAD | while read -r file; do
-    echo "- $file"
-    echo ""
-  done
-  echo ""
+  local conflict_files=$(git diff --name-only --diff-filter=U origin/"$BRANCH"...HEAD)
+  if [ -n "$conflict_files" ]; then
+    conflict_files=$(echo "$conflict_files" | sed 's/^/  - /')
+    print_card "🚨 Conflict Files with ${BRANCH}:\n\n$conflict_files" "$RED"
+  fi
 
-  echo -e "${BOLD}${CYAN}Changed files with ${BRANCH}:${RESET}"
-  echo -e "${BOLD}${CYAN}═════════════════════════════════════════════════════════════════════${RESET}"
-  echo ""
-  git diff --name-only --diff-filter=M origin/"$BRANCH"...HEAD | while read -r file; do
-      echo "- $file"
-      echo ""
-  done
-  echo ""
+  local changed_files=$(git diff --name-only --diff-filter=M origin/"$BRANCH"...HEAD)
+  if [ -n "$changed_files" ]; then
+    changed_files=$(echo "$changed_files" | sed 's/^/  - /')
+    print_card "📝 Changed Files with ${BRANCH}:\n\n$changed_files" "$CYAN"
+  fi
 
-  echo -e "${BOLD}${BLUE}New files with ${BRANCH}:${RESET}"
-  echo -e "${BOLD}${BLUE}═════════════════════════════════════════════════════════════════════${RESET}"
-  echo ""
-  git diff --name-only --diff-filter=A origin/"$BRANCH"...HEAD | while read -r file; do
-    echo "- $file"
-    echo ""
-  done
-  echo ""
-
+  local new_files=$(git diff --name-only --diff-filter=A origin/"$BRANCH"...HEAD)
+  if [ -n "$new_files" ]; then
+    new_files=$(echo "$new_files" | sed 's/^/  - /')
+    print_card "✨ New Files with ${BRANCH}:\n\n$new_files" "$BLUE"
+  fi
 
   echo ""
 }
 
-
 function show_commit_changes() {
-
   branch_name=$(git rev-parse --abbrev-ref HEAD)
 
-  #* Show the files changed in the last 5 commits
-  echo -e "${BOLD}${CYAN}📂 Files Changed in the last 5 commit :${RESET}"
-  echo ""
-  echo -e "${BOLD}${CYAN}═══════════════════════════════════════════════════════════════════════════${RESET}"
-  echo ""
-
-  git log -n 5 --name-only --oneline | while read line; do
+  local changes=$(git log -n 5 --name-only --oneline)
+  local formatted_changes=""
+  
+  while read line; do
     if [[ $line =~ ^[a-f0-9]{7} ]]; then
-      echo ""
-      echo -e "\n${BOLD}${WHITE}$line${RESET}"
-      echo -e "${WHITE}═══════════════════════════════════════════════════════════════════════════${RESET}"
+      formatted_changes+="\n\n  ${BOLD}${WHITE}${line}${RESET}"
     else
-      echo ""
-      echo -e "${GREEN}$line${RESET}"
+      formatted_changes+="\n    ${GREEN}${line}${RESET}"
     fi
-  done
-  echo ""
+  done <<< "$changes"
+
+  # Remove leading newlines
+  formatted_changes="${formatted_changes#\\n\\n}"
+
+  print_card "📂 Files Changed in the Last 5 Commits:\n\n$formatted_changes" "$CYAN"
   echo ""
 }
 
 function git_diff_branches() {
-  echo "Enter the source branch (e.g., master):"
-  read -r source_branch
-  echo "Enter the target branch (e.g., feature-branch):"
-  read -r target_branch
+  print_card "🔄 Diff Between Branches" "$CYAN"
+  read -p "$(echo -e "  ${GREEN}🖌   Enter the source branch (e.g. master): ${RESET}")" source_branch
+  read -p "$(echo -e "  ${GREEN}🖌   Enter the target branch (e.g. feature): ${RESET}")" target_branch
 
-  echo "Showing diff between $source_branch and $target_branch..."
-  git diff "$source_branch" "$target_branch"
+  echo ""
+  print_status_info "Showing diff between $source_branch and $target_branch..."
+  echo ""
+  git diff "$source_branch" "$target_branch" | while read -r line; do
+    echo "    $line"
+  done
+  echo ""
 }
-

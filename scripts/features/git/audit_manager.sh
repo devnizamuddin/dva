@@ -130,9 +130,45 @@ function audit_git_branches() {
         echo -e "${BOLD}${BLUE}🌐 GitHub Comparison:${NC}"
         echo -e "  $GH_URL"
         line_gap
-        read -p "Open this comparison in browser? (y/n): " open_gh
+        read -p "  Open this comparison in browser? (y/n): " open_gh
         if [[ "$open_gh" =~ ^[Yy]$ ]]; then
             if [[ "$OSTYPE" == "darwin"* ]]; then open "$GH_URL"; elif [[ "$OSTYPE" == "linux-gnu"* ]]; then xdg-open "$GH_URL"; fi
+        fi
+    fi
+    line_gap
+
+    # 6. Actionable Dashboard: Stale Branch Cleanup
+    read -p "  🧹 Would you like to check for and delete stale branches? (y/n): " clean_stale
+    if [[ "$clean_stale" =~ ^[Yy]$ ]]; then
+        echo ""
+        print_status_info "Scanning for branches already merged into $BRANCH2..."
+        
+        # Find branches merged into BRANCH2, excluding HEAD and BRANCH2 itself
+        local merged_branches=($(git branch --merged "$BRANCH2" | grep -v "\*" | grep -v "^[[:space:]]*$BRANCH2$"))
+        
+        if [ ${#merged_branches[@]} -eq 0 ]; then
+            print_status_success "No stale merged branches found. Your repo is clean!"
+        else
+            local merged_list=""
+            for b in "${merged_branches[@]}"; do
+                # Trim spaces
+                b=$(echo "$b" | xargs)
+                merged_list+="\n    🗑️  ${RED}$b${NC}"
+            done
+            merged_list="${merged_list#\\n}"
+            print_card "⚠️  Stale Branches Detected (Merged into $BRANCH2):\n\n$merged_list" "$YELLOW"
+            
+            echo ""
+            read -p "  Are you sure you want to DELETE all these branches? (y/N): " confirm_delete
+            if [[ "$confirm_delete" =~ ^[Yy]$ ]]; then
+                for b in "${merged_branches[@]}"; do
+                    b=$(echo "$b" | xargs)
+                    git branch -d "$b" >/dev/null 2>&1
+                    print_status_success "Deleted branch $b"
+                done
+            else
+                print_status_info "Branch deletion cancelled."
+            fi
         fi
     fi
     line_gap
