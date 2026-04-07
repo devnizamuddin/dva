@@ -16,6 +16,8 @@ source "$DVA_HOME/scripts/features/git/branch_manager.sh"
 
 source "$DVA_HOME/scripts/features/git/history_manager.sh"
 
+source "$DVA_HOME/scripts/features/git/audit_manager.sh"
+
 #* ┏==================================================================================================┓
 #* ┃                                  🔧 Git Menu: Options & Actions                                 ┃
 #* ┗==================================================================================================┛
@@ -34,6 +36,7 @@ GIT_OPTIONS=(
   "Push Commits" # MENU_6
   "Pull From Branch" # MENU_7
   "Commit History" # MENU_8
+  "Audit Branches" # MENU_9
 )
 
 #* ┏==================================================================================================┓
@@ -71,6 +74,10 @@ function git_action_7() {
 
 function git_action_8() {
   show_commit_history
+}
+
+function git_action_9() {
+  audit_git_branches
 }
 
 #* ┏==================================================================================================┓
