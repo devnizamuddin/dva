@@ -44,7 +44,27 @@ function text_case_action_2() {
 
 function text_case_action_3() {
   get_input
-  output=$(printf '%s\n' "$input" | perl -pe 's/\b(\w)/\u$1/g')
+  
+  # 1️⃣ Replace underscores and dashes with spaces
+  local temp="${input//[_-]/ }"
+
+  # 2️⃣ Split camelCase or PascalCase words
+  temp=$(echo "$temp" | sed -E 's/([a-z0-9])([A-Z])/\1 \2/g')
+
+  # 3️⃣ Normalize multiple spaces
+  temp=$(echo "$temp" | tr -s ' ')
+
+  local title_case=""
+
+  # 4️⃣ Capitalize each word
+  for word in $temp; do
+      title_case+=$(echo "$word" | awk '{print toupper(substr($0,1,1)) tolower(substr($0,2))}')
+      title_case+=" "
+  done
+
+  # 5️⃣ Trim trailing space
+  output=$(echo "${title_case%" "}")
+
   copy_and_print "$output"
 }
 
