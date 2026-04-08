@@ -3,6 +3,7 @@
 source "$DVA_HOME/scripts/features/clean/clean_manager.sh"
 source "$DVA_HOME/scripts/components/menu_ui.sh"
 source "$DVA_HOME/scripts/features/custom_commands/custom_commands_manager.sh"
+source "$DVA_HOME/scripts/features/disk/disk_manager.sh"
 
 # Truecolor Aurora gradient colors
 GRADIENT_BASE=(
@@ -23,7 +24,8 @@ options=("🐙  GIT"
          "📝 NOTE BOOK"
          "🔠 CASE CONVERTER"
          "✨ CUSTOM COMMANDS"
-         "🍎 MacOS")
+         "🍎 MacOS"
+         "💾 DISK DASHBOARD")
 
 selected=0
 shift_index=0  # For rotating gradient
@@ -80,6 +82,7 @@ function animate_menu(){
                 4) run_text_case_converter ;;
                 5) run_custom_commands ;;
                 6) run_mac_os_menu ;;
+                7) run_disk_manager ;;
             esac
 
             printf "\nPress Enter to return to Main Menu..."

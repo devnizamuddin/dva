@@ -42,6 +42,7 @@ mkdir -p "$DVA_FEATURES/flutter"
 mkdir -p "$DVA_FEATURES/note"
 mkdir -p "$DVA_FEATURES/text"
 mkdir -p "$DVA_FEATURES/mac_os"
+mkdir -p "$DVA_FEATURES/disk"
 #==================================================┃============================================================
 
 #*=======================================┃Source, Tasks, Utils, Logs┃============================================
@@ -125,6 +126,12 @@ cp scripts/features/text/*.sh "$DVA_HOME/scripts/features/text/" 2>/dev/null || 
 
 cp scripts/features/mac_os/*.sh "$DVA_HOME/scripts/features/mac_os/" 2>/dev/null || true
 
+#* ============================================= 💾 Disk Feature scripts ===========================================
+#*
+#* - Full-page CLI screens for disk functions
+# ==================================================================================================================
+
+cp scripts/features/disk/*.sh "$DVA_HOME/scripts/features/disk/" 2>/dev/null || true
 
 #*
 #* ✌️ Sources scripts
