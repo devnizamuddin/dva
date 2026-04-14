@@ -5,7 +5,7 @@
 # * ┗==================================================================================================┛
 
 # Commands storage file
-CUSTOM_COMMANDS_FILE="$DVA_HOME/.custom_commands.json"
+CUSTOM_COMMANDS_FILE="$DVA_DATA_DIR/custom_commands.json"
 
 # Initialize commands file if it doesn't exist
 function init_custom_commands_file() {

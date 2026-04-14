@@ -7,6 +7,20 @@
 # * ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 
 DVA_HOME="$HOME/.dva"
+export DVA_DATA_DIR="$DVA_HOME/data"
+
+# Ensure data directory exists
+mkdir -p "$DVA_DATA_DIR"
+
+# * ==========================> 🌍 Global Clean Up & Trap <========================== * #
+
+function clean_dva_exit() {
+    # Restore terminal state in case of unexpected exit (Ctrl+C during menu)
+    stty sane 2>/dev/null
+    printf "\033[?25h" 2>/dev/null
+}
+
+trap clean_dva_exit EXIT SIGINT SIGTERM
 
 # * ==========================> 🧾 All Source Files <========================== * #
 
@@ -26,7 +40,7 @@ clear
 # * ┗==================================================================================================┛
 
 # Metadata
-VERSION="1.0.5"
+VERSION="1.0.6"
 
 
 function run_script() {

@@ -49,7 +49,8 @@ mkdir -p "$DVA_FEATURES/disk"
 mkdir -p "$DVA_HOME/scripts/sources"
 mkdir -p "$DVA_HOME/scripts/tasks"
 mkdir -p "$DVA_HOME/scripts/utils"
-mkdir -p "$DVA_HOME/logs"
+mkdir -p "$DVA_HOME/data/logs"
+mkdir -p "$DVA_HOME/data/notes"
 #==================================================┃============================================================
 
 
@@ -169,10 +170,15 @@ chmod +x "$DVA_HOME/bin/dva.sh"
 #* ┗==================================================================================================┛
 #*
 
-if [ -w /usr/local/bin ]; then
+if [[ ":$PATH:" == *":$HOME/.local/bin:"* ]]; then
+    mkdir -p "$HOME/.local/bin"
+    ln -sf "$DVA_HOME/bin/dva.sh" "$HOME/.local/bin/dva"
+    echo "✅ Linked successfully in $HOME/.local/bin/dva"
+elif [ -w /usr/local/bin ]; then
     ln -sf "$DVA_HOME/bin/dva.sh" /usr/local/bin/dva
+    echo "✅ Linked successfully in /usr/local/bin/dva"
 else
-    echo "⚠️  /usr/local/bin requires sudo, creating symlink with sudo..."
+    echo "⚠️  Global installation requires sudo to write to /usr/local/bin..."
     sudo ln -sf "$DVA_HOME/bin/dva.sh" /usr/local/bin/dva
 fi
 

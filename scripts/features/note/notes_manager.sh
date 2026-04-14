@@ -6,7 +6,7 @@
 #*
 
 # Notes storage directory
-NOTES_DIR="$DVA_HOME/notes"
+NOTES_DIR="$DVA_DATA_DIR/notes"
 mkdir -p "$NOTES_DIR"
 
 # Menu Title

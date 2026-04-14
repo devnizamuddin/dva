@@ -8,7 +8,7 @@ BLUE="\033[1;34m"
 NC="\033[0m"
 
 # Logs
-LOG_FILE="$HOME/.dva/logs/dva.log"
+LOG_FILE="$DVA_DATA_DIR/logs/dva.log"
 mkdir -p "$(dirname "$LOG_FILE")"
 
 function log_task() {
