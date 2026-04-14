@@ -56,10 +56,7 @@ function custom_commands_action_1() {
   printf "   You can enter multiple lines for complex commands.\n\n"
   
   # Read multiline command
-  cmd_content=""
-  while IFS= read -r line; do
-    cmd_content+="$line"$'\n'
-  done
+  cmd_content=$(</dev/stdin)
   
   if [[ -z "$cmd_content" ]]; then
     printf "\n❌ Command content cannot be empty!\n"
@@ -80,22 +77,13 @@ function custom_commands_action_2() {
   
   local count=$(get_command_count)
   
-  if [[ $count -eq 0 ]]; then
+  if [[ $count -eq 0 || $count == "null" ]]; then
     printf "📭 No custom commands found.\n"
     printf "   Add your first command using 'Add New Command' option.\n"
     return 0
   fi
   
-  local commands=$(get_all_commands)
-  local index=1
-  
-  while IFS='|' read -r name desc content; do
-    printf "${BOLD}%d. %s${NC}\n" "$index" "$name"
-    printf "   📝 Description: %s\n" "$desc"
-    printf "   💻 Command:\n"
-    printf "   %s\n\n" "$(echo "$content" | head -n 3 | sed 's/^/      /')"
-    ((index++))
-  done <<< "$commands"
+  jq -r '.commands | to_entries[] | "\(.key + 1). \(.value.name)\n   📝 Description: \(.value.description)\n   💻 Command:\n\(.value.content | split("\n") | .[0:3] | map("      " + .) | join("\n"))\n"' "$CUSTOM_COMMANDS_FILE"
   
   printf "═══════════════════════════════════════════════════════════\n"
   printf "Total: %d command(s)\n" "$count"
@@ -115,12 +103,12 @@ function custom_commands_action_3() {
   fi
   
   # List available commands
-  local commands=$(get_all_commands)
+  local summaries=$(get_command_summaries)
   local cmd_list=()
   
-  while IFS='|' read -r name desc content; do
-    cmd_list+=("$name - $desc")
-  done <<< "$commands"
+  while IFS='|' read -r name desc; do
+    [[ -n "$name" ]] && cmd_list+=("$name - $desc")
+  done <<< "$summaries"
   
   printf "\n"
   local selection=$(printf "%s\n" "${cmd_list[@]}" | fzf --prompt="Executed Command: " --height=10 --border)
@@ -156,12 +144,12 @@ function custom_commands_action_4() {
   fi
   
   # List available commands
-  local commands=$(get_all_commands)
+  local summaries=$(get_command_summaries)
   local cmd_list=()
   
-  while IFS='|' read -r name desc content; do
-    cmd_list+=("$name - $desc")
-  done <<< "$commands"
+  while IFS='|' read -r name desc; do
+    [[ -n "$name" ]] && cmd_list+=("$name - $desc")
+  done <<< "$summaries"
   
   printf "\n"
   local selection=$(printf "%s\n" "${cmd_list[@]}" | fzf --prompt="Edit Command: " --height=10 --border)
@@ -186,10 +174,7 @@ function custom_commands_action_4() {
   printf "Enter new command (use Ctrl+D when done, or Ctrl+C to keep current):\n"
   
   # Read new command content
-  new_content=""
-  while IFS= read -r line; do
-    new_content+="$line"$'\n'
-  done
+  new_content=$(</dev/stdin)
   
   [[ -z "$new_content" ]] && new_content="$old_content"
   
@@ -214,12 +199,12 @@ function custom_commands_action_5() {
   fi
   
   # List available commands
-  local commands=$(get_all_commands)
+  local summaries=$(get_command_summaries)
   local cmd_list=()
   
-  while IFS='|' read -r name desc content; do
-    cmd_list+=("$name - $desc")
-  done <<< "$commands"
+  while IFS='|' read -r name desc; do
+    [[ -n "$name" ]] && cmd_list+=("$name - $desc")
+  done <<< "$summaries"
   
   printf "\n"
   local selection=$(printf "%s\n" "${cmd_list[@]}" | fzf --prompt="Delete Command: " --height=10 --border)
@@ -247,7 +232,7 @@ function custom_commands_action_5() {
 
 function command_exists() {
   local name="$1"
-  local exists=$(jq -r ".commands[] | select(.name==\"$name\") | .name" "$CUSTOM_COMMANDS_FILE" 2>/dev/null)
+  local exists=$(jq --arg name "$name" -r '.commands[] | select(.name==$name) | .name' "$CUSTOM_COMMANDS_FILE" 2>/dev/null)
   [[ -n "$exists" ]]
 }
 
@@ -256,12 +241,8 @@ function add_command() {
   local desc="$2"
   local content="$3"
   
-  # Escape special characters for JSON
-  content=$(echo "$content" | jq -Rs .)
-  desc=$(echo "$desc" | jq -Rs .)
-  name=$(echo "$name" | jq -Rs .)
-  
-  jq ".commands += [{\"name\": $name, \"description\": $desc, \"content\": $content}]" \
+  jq --arg name "$name" --arg desc "$desc" --arg content "$content" \
+    '.commands += [{"name": $name, "description": $desc, "content": $content}]' \
     "$CUSTOM_COMMANDS_FILE" > "${CUSTOM_COMMANDS_FILE}.tmp" && \
     mv "${CUSTOM_COMMANDS_FILE}.tmp" "$CUSTOM_COMMANDS_FILE"
 }
@@ -269,7 +250,7 @@ function add_command() {
 function delete_command() {
   local name="$1"
   
-  jq ".commands = [.commands[] | select(.name != \"$name\")]" \
+  jq --arg name "$name" '.commands = [.commands[] | select(.name != $name)]' \
     "$CUSTOM_COMMANDS_FILE" > "${CUSTOM_COMMANDS_FILE}.tmp" && \
     mv "${CUSTOM_COMMANDS_FILE}.tmp" "$CUSTOM_COMMANDS_FILE"
 }
@@ -278,18 +259,18 @@ function get_command_count() {
   jq -r '.commands | length' "$CUSTOM_COMMANDS_FILE" 2>/dev/null || echo "0"
 }
 
-function get_all_commands() {
-  jq -r '.commands[] | "\(.name)|\(.description)|\(.content)"' "$CUSTOM_COMMANDS_FILE" 2>/dev/null
+function get_command_summaries() {
+  jq -r '.commands[] | "\(.name)|\(.description)"' "$CUSTOM_COMMANDS_FILE" 2>/dev/null
 }
 
 function get_command_content() {
   local name="$1"
-  jq -r ".commands[] | select(.name==\"$name\") | .content" "$CUSTOM_COMMANDS_FILE" 2>/dev/null
+  jq --arg name "$name" -r '.commands[] | select(.name==$name) | .content' "$CUSTOM_COMMANDS_FILE" 2>/dev/null
 }
 
 function get_command_description() {
   local name="$1"
-  jq -r ".commands[] | select(.name==\"$name\") | .description" "$CUSTOM_COMMANDS_FILE" 2>/dev/null
+  jq --arg name "$name" -r '.commands[] | select(.name==$name) | .description' "$CUSTOM_COMMANDS_FILE" 2>/dev/null
 }
 
 

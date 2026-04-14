@@ -43,6 +43,7 @@ mkdir -p "$DVA_FEATURES/note"
 mkdir -p "$DVA_FEATURES/text"
 mkdir -p "$DVA_FEATURES/mac_os"
 mkdir -p "$DVA_FEATURES/disk"
+mkdir -p "$DVA_FEATURES/custom_commands"
 #==================================================┃============================================================
 
 #*=======================================┃Source, Tasks, Utils, Logs┃============================================
@@ -133,6 +134,13 @@ cp scripts/features/mac_os/*.sh "$DVA_HOME/scripts/features/mac_os/" 2>/dev/null
 # ==================================================================================================================
 
 cp scripts/features/disk/*.sh "$DVA_HOME/scripts/features/disk/" 2>/dev/null || true
+
+#* ============================================= ✨ Custom Commands Feature scripts =================================
+#*
+#* - Full-page CLI screens for custom commands functions
+# ==================================================================================================================
+
+cp scripts/features/custom_commands/*.sh "$DVA_HOME/scripts/features/custom_commands/" 2>/dev/null || true
 
 #*
 #* ✌️ Sources scripts
