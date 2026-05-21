@@ -16,11 +16,6 @@
 
 set -e
 
-# ===========================================================
-# * 💰 Importing Files                                             
-# ===========================================================
-source "$DVA_HOME/scripts/components/welcome_ui.sh"
-
 #*
 #* ┏==================================================================================================┓
 #* ┃                                   📖 Target installation folder                                  ┃
@@ -175,6 +170,11 @@ else
     echo "⚠️  Global installation requires sudo to write to /usr/local/bin..."
     sudo ln -sf "$DVA_HOME/bin/dva.sh" /usr/local/bin/dva
 fi
+
+# ===========================================================
+# * 💰 Importing Files                                             
+# ===========================================================
+source "$DVA_HOME/scripts/components/welcome_ui.sh"
 
 
 # ==============================================================================
