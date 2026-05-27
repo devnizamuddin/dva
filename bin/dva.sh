@@ -79,6 +79,7 @@ function show_help() {
   echo -e " ${BLUE}│${NC}  ${BOLD}${CYAN}📱 APP & DEPLOYMENT${NC}                        ${BLUE}│${NC}"
   echo -e " ${BLUE}│${NC}  ${GREEN}flutter${NC}  Manage Flutter Tasks              ${BLUE}│${NC}"
   echo -e " ${BLUE}│${NC}  ${GREEN}deploy${NC}   Build app [web, apk, ios]         ${BLUE}│${NC}"
+  echo -e " ${BLUE}│${NC}  ${GREEN}cleanup${NC}  Clean project [macos|android|ios|web] ${BLUE}│${NC}"
   echo -e " ${BLUE}├───────────────────────────────────────────────┤${NC}"
   echo -e " ${BLUE}│${NC}  ${BOLD}${YELLOW}🛠️  UTILITIES${NC}                              ${BLUE}│${NC}"
   echo -e " ${BLUE}│${NC}  ${GREEN}note${NC}     Manage Sticky Notes               ${BLUE}│${NC}"
@@ -130,6 +131,62 @@ case "${1:-}" in
         ;;
       *)
         echo "⚠️ Unknown build target. Available: web, apk, ios, macos, windows"
+        ;;
+    esac
+    ;;
+# ==============================
+# * Cleanup
+# ==============================
+  cleanup)
+    shift
+    _cleanup_flutter() {
+      local platform="$1"
+      echo ""
+      echo "=========================="
+      echo "Build deleted successfully ..."
+      echo "=========================="
+      echo ""
+
+      echo ""
+      echo "=========================="
+      echo "Cleaning Flutter project ..."
+      echo "=========================="
+      echo ""
+      flutter clean
+
+      echo ""
+      echo "=========================="
+      echo "Getting dependencies ..."
+      echo "=========================="
+      echo ""
+      flutter pub get
+
+      echo "=========================="
+      echo "=========================="
+      echo "Finished cleaning [$platform] successfully ..."
+      echo "=========================="
+      echo "=========================="
+    }
+    case "${1:-}" in
+      macos)
+        rm -rf build/macos/Build/Products/Debug/NUS\ Assistant.app
+        _cleanup_flutter "macos"
+        ;;
+      android)
+        rm -rf build/app/outputs
+        _cleanup_flutter "android"
+        ;;
+      ios)
+        rm -rf build/ios/iphoneos
+        rm -rf build/ios/Release-iphoneos
+        _cleanup_flutter "ios"
+        ;;
+      web)
+        rm -rf build/web
+        _cleanup_flutter "web"
+        ;;
+      *)
+        echo "⚠️ Unknown cleanup target. Available: macos, android, ios, web"
         ;;
     esac
     ;;
