@@ -18,6 +18,8 @@ source "$DVA_HOME/scripts/features/git/history_manager.sh"
 
 source "$DVA_HOME/scripts/features/git/audit_manager.sh"
 
+source "$DVA_HOME/scripts/features/git/merge_report_manager.sh"
+
 #* ┏==================================================================================================┓
 #* ┃                                  🔧 Git Menu: Options & Actions                                 ┃
 #* ┗==================================================================================================┛
@@ -37,6 +39,7 @@ GIT_OPTIONS=(
   "Pull From Branch" # MENU_7
   "Commit History" # MENU_8
   "Audit Branches" # MENU_9
+  "Merge Report" # MENU_10
 )
 
 #* ┏==================================================================================================┓
@@ -78,6 +81,10 @@ function git_action_8() {
 
 function git_action_9() {
   audit_git_branches
+}
+
+function git_action_10() {
+  run_merge_report
 }
 
 #* ┏==================================================================================================┓
