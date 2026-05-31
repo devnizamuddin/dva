@@ -19,7 +19,7 @@ NC="\033[0m"
 
 # Menu options
 options=("🐙  GIT"
-         "🗂️  CLEAN Architecture"
+         "🗂️  GENERATE CODE"
          "💙 FLUTTER"
          "📝 NOTE BOOK"
          "🔠 CASE CONVERTER"

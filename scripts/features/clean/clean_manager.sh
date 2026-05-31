@@ -8,10 +8,10 @@ source "$DVA_HOME/scripts/features/clean/add_feature.sh"
 source "$DVA_HOME/scripts/features/clean/add_usecase.sh"
 
 #* ┏==================================================================================================┓
-#* ┃                           📖 Clean Menu: Options & Actions                                      ┃
+#* ┃                           📖 Generate Code Menu: Options & Actions                                      ┃
 #* ┗==================================================================================================┛
 
-CLEAN_TITLE="CLEAN Architecture"
+CLEAN_TITLE="GENERATE CODE"
 
 CLEAN_OPTIONS=(
   "Add Feature"
@@ -56,7 +56,7 @@ function clean_action_7() {
 }
 
 #* ┏==================================================================================================┓
-#* ┃                                 📖 Clean Menu Loop                                               ┃
+#* ┃                                 📖 Generate Code Menu Loop                                               ┃
 #* ┗==================================================================================================┛
 
 function execute_clean_manager() {

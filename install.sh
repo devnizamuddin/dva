@@ -91,7 +91,7 @@ cp scripts/components/*.sh "$DVA_HOME/scripts/components/" 2>/dev/null || true
 cp scripts/features/*.sh "$DVA_HOME/scripts/features/" 2>/dev/null || true
 
 # =======================================
-# * 💙 CLEAN scripts
+# * 💬 Generate Code scripts
 # =======================================
 cp scripts/features/clean/*.sh "$DVA_HOME/scripts/features/clean/" 2>/dev/null || true
 

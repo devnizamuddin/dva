@@ -27,7 +27,7 @@ FLUTTER_OPTIONS=(
   "Upgrade Project Version"
   "Release Android App"
   "Release iOS App"
-  "Create Project In CLEAN Architecture"
+  "Create Project In Generate Code Architecture"
   "Create Project In MVVM Architecture"
   "Create Asset Constants"
 )
@@ -52,7 +52,7 @@ function flutter_action_4() {
   echo "🍎 Releasing iOS app..."; }
 
 function flutter_action_5() { 
-  echo "📂 Creating CLEAN Architecture project..."; }
+  echo "📂 Creating Generate Code Architecture project..."; }
 
 function flutter_action_6() { 
   echo "📂 Creating MVVM Architecture project..."; }
