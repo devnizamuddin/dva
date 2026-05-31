@@ -6,6 +6,7 @@
 
 source "$DVA_HOME/scripts/features/clean/add_feature.sh"
 source "$DVA_HOME/scripts/features/clean/add_usecase.sh"
+source "$DVA_HOME/scripts/features/clean/new_bloc.sh"
 
 #* ┏==================================================================================================┓
 #* ┃                           📖 Generate Code Menu: Options & Actions                                      ┃
@@ -21,6 +22,7 @@ CLEAN_OPTIONS=(
   "Add Shared"
   "Add UI"
   "Add Asset Constants"
+  "New Bloc"
 )
 
 #* ┏==================================================================================================┓
@@ -53,6 +55,10 @@ function clean_action_6() {
 
 function clean_action_7() {
   echo "Add Asset Constants"
+}
+
+function clean_action_8() {
+  new_bloc
 }
 
 #* ┏==================================================================================================┓
