@@ -7,6 +7,7 @@
 source "$DVA_HOME/scripts/features/clean/add_feature.sh"
 source "$DVA_HOME/scripts/features/clean/add_usecase.sh"
 source "$DVA_HOME/scripts/features/clean/new_bloc.sh"
+source "$DVA_HOME/scripts/features/clean/generate_entity_model.sh"
 
 #* ┏==================================================================================================┓
 #* ┃                           📖 Generate Code Menu: Options & Actions                                      ┃
@@ -23,6 +24,7 @@ CLEAN_OPTIONS=(
   "Add UI"
   "Add Asset Constants"
   "New Bloc"
+  "Entity and Model"
 )
 
 #* ┏==================================================================================================┓
@@ -59,6 +61,9 @@ function clean_action_7() {
 
 function clean_action_8() {
   new_bloc
+}
+function clean_action_9() {
+  generate_dart_classes
 }
 
 #* ┏==================================================================================================┓
