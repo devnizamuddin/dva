@@ -14,6 +14,7 @@ _DVA_MAIN_LOADED=1
 # * 💰 Importing Bootstrap                                             
 # * ===========================================================
 source "$DVA_HOME/lib/core/bootstrap.sh"
+source "$DVA_HOME/lib/cli.sh"
 clear
 
 
