@@ -1,11 +1,7 @@
 #!/bin/bash
 
-# Colors
-GREEN="\033[1;32m"
-YELLOW="\033[1;33m"
-RED="\033[1;31m"
-BLUE="\033[1;34m"
-NC="\033[0m"
+[[ -n "${_DVA_LOGGER_LOADED+x}" ]] && return 0
+_DVA_LOGGER_LOADED=1
 
 # Logs
 LOG_FILE="$DVA_DATA_DIR/logs/dva.log"

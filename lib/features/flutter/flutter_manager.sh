@@ -1,5 +1,8 @@
 #!/bin/bash
 
+[[ -n "${_DVA_FLUTTER_MANAGER_LOADED+x}" ]] && return 0
+_DVA_FLUTTER_MANAGER_LOADED=1
+
 
 # * ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
 # * ║                                   💰 Imported Files                                              ║
@@ -7,10 +10,11 @@
 
 
 
-source "$DVA_HOME/scripts/features/flutter/file_manager.sh"
-source "$DVA_HOME/scripts/features/flutter/asset_manager.sh"
-source "$DVA_HOME/scripts/features/flutter/release_application.sh"
-source "$DVA_HOME/scripts/features/flutter/config_manager.sh"
+source "$DVA_HOME/lib/features/flutter/file_manager.sh"
+source "$DVA_HOME/lib/features/flutter/asset_manager.sh"
+source "$DVA_HOME/lib/features/flutter/release_application.sh"
+source "$DVA_HOME/lib/features/flutter/config_manager.sh"
+
 
 #* ┏==================================================================================================┓
 #* ┃                           📖 Flutter Menu: Options & Actions                                    ┃

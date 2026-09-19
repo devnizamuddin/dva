@@ -1,76 +1,69 @@
 #!/bin/bash
 
+[[ -n "${_DVA_MAC_OS_MANAGER_LOADED+x}" ]] && return 0
+_DVA_MAC_OS_MANAGER_LOADED=1
+
 #* ╔══════════════════════════════════════════════════════════════════════════════════════════════════╗
 #* ║                                   💰 Imported Files                                              ║
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 
-source "$DVA_HOME/scripts/features/clean/add_feature.sh"
-source "$DVA_HOME/scripts/features/clean/add_usecase.sh"
-source "$DVA_HOME/scripts/features/clean/new_bloc.sh"
-source "$DVA_HOME/scripts/features/clean/generate_entity_model.sh"
+source "$DVA_HOME/lib/features/mac_os/icloud_manager.sh"
 
 #* ┏==================================================================================================┓
-#* ┃                           📖 Generate Code Menu: Options & Actions                                      ┃
+#* ┃                                       🍎 MacOS: Options & Actions                                ┃
 #* ┗==================================================================================================┛
+#*
 
-CLEAN_TITLE="GENERATE CODE"
 
-CLEAN_OPTIONS=(
-  "Add Feature"
-  "Add UseCase"
-  "Add Domain"
-  "Add Presentation"
-  "Add Shared"
-  "Add UI"
-  "Add Asset Constants"
-  "New Bloc"
-  "Entity and Model"
+# Menu Title
+MAC_OS_PAGE_TITLE="Mac Operating System"
+
+# Menu Options
+MAC_OS_OPTIONS=(
+  "SYNC Folder With iCloud"
+  "Show All Reminders"
+  "Add New Reminder"
+  "Delete Specific Reminder"
+  "Delete All Completed Reminders"
 )
 
-#* ┏==================================================================================================┓
-#* ┃                                   📖 Fuction for Options                                         ┃
-#* ┗==================================================================================================┛
-
-function clean_action_1() {
-  add_feature_structure
-}
-
-function clean_action_2() {
-  add_usecase_structure
-}
-
-function clean_action_3() {
-  echo "Add Domain"
-}
-
-function clean_action_4() {
-  echo "Add Presentation"
-}
-
-function clean_action_5() {
-  echo "Add Shared"
-}
-
-function clean_action_6() {
-  echo "Add UI"
-}
-
-function clean_action_7() {
-  echo "Add Asset Constants"
-}
-
-function clean_action_8() {
-  new_bloc
-}
-function clean_action_9() {
-  generate_dart_classes
-}
 
 #* ┏==================================================================================================┓
-#* ┃                                 📖 Generate Code Menu Loop                                               ┃
+#* ┃                              📖 MacOS Action Functions                                          ┃
 #* ┗==================================================================================================┛
+#*
 
-function execute_clean_manager() {
-  local ACTION_PREFIX="clean"
-  menu_loop "$ACTION_PREFIX" "$CLEAN_TITLE" "${CLEAN_OPTIONS[@]}"
+function mac_os_action_1() {
+  sync_with_icloud
+}
+
+function mac_os_action_2() {
+  echo "Showing all reminders..."
+  # Add your logic to show all reminders here
+}
+
+function mac_os_action_3() {
+  echo "Adding new reminder..."
+  # Add your logic to add a new reminder here
+}
+
+function mac_os_action_4() {
+  echo "Deleting specific reminder..."
+  # Add your logic to delete a specific reminder here
+}
+
+function mac_os_action_5() {
+  echo "Deleting all completed reminders..."
+  # Add your logic to delete all completed reminders here
+}
+
+
+#* ┏==================================================================================================┓
+#* ┃                               📖 Text Case Menu Loop                                            ┃
+#* ┗==================================================================================================┛
+#*
+
+function run_mac_os_menu() {
+  local ACTION_PREFIX="mac_os"
+  menu_loop "$ACTION_PREFIX" "$MAC_OS_PAGE_TITLE" "${MAC_OS_OPTIONS[@]}"
 }

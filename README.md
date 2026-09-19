@@ -41,6 +41,17 @@ DVA CLI is packed with features accessible via the interactive main menu (`dva`)
 | `CUSTOM COMMANDS`     | 💻 System      | *Main Menu* ➔ Manage and execute custom saved commands.                 |
 | `MacOS`               | 💻 System      | *Main Menu* ➔ MacOS-specific tools and utilities.                       |
 
+## 📂 Project Structure
+
+DVA CLI uses a modular architecture for ease of maintenance and extensibility.
+
+- `bin/`: Contains the main entrypoint (`dva.sh`).
+- `lib/core/`: Contains core initialization files (`bootstrap.sh`, `constants.sh`).
+- `lib/features/`: Contains domain-specific modules (git, flutter, etc.).
+- `lib/ui/`: Contains interactive UI components (menus, boxes).
+- `lib/utils/`: Contains helper scripts (logger, printer, stylings).
+- `tests/`: Contains test scripts and sandbox files.
+
 ## 📄 License
 
 This project is licensed under the MIT License.

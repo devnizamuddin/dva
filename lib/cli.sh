@@ -1,9 +1,7 @@
 #!/bin/bash 
 
-source "$DVA_HOME/scripts/features/clean/clean_manager.sh"
-source "$DVA_HOME/scripts/components/menu_ui.sh"
-source "$DVA_HOME/scripts/features/custom_commands/custom_commands_manager.sh"
-source "$DVA_HOME/scripts/features/disk/disk_manager.sh"
+[[ -n "${_DVA_CLI_LOADED+x}" ]] && return 0
+_DVA_CLI_LOADED=1
 
 # Truecolor Aurora gradient colors
 GRADIENT_BASE=(
@@ -14,8 +12,6 @@ GRADIENT_BASE=(
   "255;0;128"   # pink
 )
 
-BOLD="\033[1m"
-NC="\033[0m"
 
 # Menu options
 options=("🐙  GIT"

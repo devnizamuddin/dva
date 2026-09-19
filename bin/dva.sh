@@ -7,32 +7,13 @@ export DVA_DATA_DIR="$DVA_HOME/data"
 # * ===========================================================
 # * ⚙️ Configuration CLI                                         
 # * ===========================================================
-VERSION="1.0.6"
-# * Ensure data directory
-mkdir -p "$DVA_DATA_DIR"
-
+[[ -n "${_DVA_MAIN_LOADED+x}" ]] && return 0
+_DVA_MAIN_LOADED=1
 
 # * ===========================================================
-# * 🌍 Global Clean Up & Trap
+# * 💰 Importing Bootstrap                                             
 # * ===========================================================
-function clean_dva_exit() {
-    stty sane 2>/dev/null
-    printf "\033[?25h" 2>/dev/null
-}
-trap clean_dva_exit EXIT SIGINT SIGTERM
-
-
-# * ===========================================================
-# * 💰 Importing Files                                             
-# * ===========================================================
-# * Utils Import 
-source "$DVA_HOME/scripts/sources/utils_source.sh"
-# * Components Import
-source "$DVA_HOME/scripts/components/menu_ui.sh"
-# * Components Import
-source "$DVA_HOME/scripts/sources/menu_source.sh"
-# * Main CLI Import
-source "$DVA_HOME/scripts/dva_cli.sh"
+source "$DVA_HOME/lib/core/bootstrap.sh"
 clear
 
 
@@ -139,34 +120,6 @@ case "${1:-}" in
 # ==============================
   cleanup)
     shift
-    _cleanup_flutter() {
-      local platform="$1"
-      echo ""
-      echo "=========================="
-      echo "Build deleted successfully ..."
-      echo "=========================="
-      echo ""
-
-      echo ""
-      echo "=========================="
-      echo "Cleaning Flutter project ..."
-      echo "=========================="
-      echo ""
-      flutter clean
-
-      echo ""
-      echo "=========================="
-      echo "Getting dependencies ..."
-      echo "=========================="
-      echo ""
-      flutter pub get
-
-      echo "=========================="
-      echo "=========================="
-      echo "Finished cleaning [$platform] successfully ..."
-      echo "=========================="
-      echo "=========================="
-    }
     case "${1:-}" in
       macos)
         rm -rf build/macos/Build/Products/Debug/NUS\ Assistant.app

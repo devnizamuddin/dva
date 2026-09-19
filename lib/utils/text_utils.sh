@@ -1,5 +1,8 @@
 #!/bin/bash
 
+[[ -n "${_DVA_TEXT_UTILS_LOADED+x}" ]] && return 0
+_DVA_TEXT_UTILS_LOADED=1
+
 # Convert to snake_case (e.g., "User Profile" -> "user_profile")
 function to_snake_case() {
   echo "$1" | tr '[:upper:]' '[:lower:]' | tr ' ' '_' | tr '-' '_'

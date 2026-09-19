@@ -23,10 +23,15 @@ set -e
 #*
 
 DVA_HOME="$HOME/.dva"
-DVA_SCRIPTS="$DVA_HOME/scripts"
-DVA_FEATURES="$DVA_SCRIPTS/features"
+DVA_LIB="$DVA_HOME/lib"
+DVA_FEATURES="$DVA_LIB/features"
 echo "🚀 Installing DVA CLI into $DVA_HOME..."
 
+# Remove old scripts directory if present
+if [ -d "$DVA_HOME/scripts" ]; then
+    echo "🧹 Cleaning up old scripts directory..."
+    rm -rf "$DVA_HOME/scripts"
+fi
 
 #*
 #* ┏==================================================================================================┓
@@ -35,12 +40,13 @@ echo "🚀 Installing DVA CLI into $DVA_HOME..."
 #*
 
 # =======================================
-# * Bin, Scripts, Components, Features
+# * Bin, Lib, UI, Features, Core
 # =======================================
 mkdir -p "$DVA_HOME/bin"
-mkdir -p "$DVA_HOME/scripts"
-mkdir -p "$DVA_HOME/scripts/components"
-mkdir -p "$DVA_HOME/scripts/features"
+mkdir -p "$DVA_HOME/lib"
+mkdir -p "$DVA_HOME/lib/ui"
+mkdir -p "$DVA_HOME/lib/features"
+mkdir -p "$DVA_HOME/lib/core"
 
 # =======================================
 # * Feature Folders
@@ -55,13 +61,13 @@ mkdir -p "$DVA_FEATURES/disk"
 mkdir -p "$DVA_FEATURES/custom_commands"
 
 # =======================================
-# * Sources, Tasks, Utils, Logs
+# * Tasks, Utils, Logs
 # =======================================
-mkdir -p "$DVA_HOME/scripts/sources"
-mkdir -p "$DVA_HOME/scripts/tasks"
-mkdir -p "$DVA_HOME/scripts/utils"
+mkdir -p "$DVA_HOME/lib/tasks"
+mkdir -p "$DVA_HOME/lib/utils"
 mkdir -p "$DVA_HOME/data/logs"
 mkdir -p "$DVA_HOME/data/notes"
+mkdir -p "$DVA_HOME/tests"
 
 #*
 #* ┏==================================================================================================┓
@@ -77,75 +83,79 @@ cp bin/dva.sh "$DVA_HOME/bin/"
 # =======================================
 # * ✌️ General helper scripts
 # =======================================
-cp scripts/*.sh "$DVA_HOME/scripts/" 2>/dev/null || true
+cp lib/*.sh "$DVA_HOME/lib/" 2>/dev/null || true
 
 # =======================================
-# * ✌️ Component scripts
+# * ✌️ UI scripts
 # =======================================
-cp scripts/components/*.sh "$DVA_HOME/scripts/components/" 2>/dev/null || true
+cp lib/ui/*.sh "$DVA_HOME/lib/ui/" 2>/dev/null || true
 
+# =======================================
+# * ✌️ Core scripts
+# =======================================
+cp lib/core/*.sh "$DVA_HOME/lib/core/" 2>/dev/null || true
 
 # =======================================
 # * ✌️ Feature scripts
 # =======================================
-cp scripts/features/*.sh "$DVA_HOME/scripts/features/" 2>/dev/null || true
+cp lib/features/*.sh "$DVA_HOME/lib/features/" 2>/dev/null || true
 
 # =======================================
 # * 💬 Generate Code scripts
 # =======================================
-cp scripts/features/clean/*.sh "$DVA_HOME/scripts/features/clean/" 2>/dev/null || true
+cp lib/features/clean/*.sh "$DVA_HOME/lib/features/clean/" 2>/dev/null || true
 
 # =======================================
 # * 💙 Flutter scripts
 # =======================================
-cp scripts/features/flutter/*.sh "$DVA_HOME/scripts/features/flutter/" 2>/dev/null || true
+cp lib/features/flutter/*.sh "$DVA_HOME/lib/features/flutter/" 2>/dev/null || true
 
 # =======================================
 # * 🗂️ GIT scripts
 # =======================================
-cp scripts/features/git/*.sh "$DVA_HOME/scripts/features/git/" 2>/dev/null || true
+cp lib/features/git/*.sh "$DVA_HOME/lib/features/git/" 2>/dev/null || true
 
 # ==============================================================================
 # *                          📝 Note Feature scripts
 # ==============================================================================
-cp scripts/features/note/*.sh "$DVA_HOME/scripts/features/note/" 2>/dev/null || true
+cp lib/features/note/*.sh "$DVA_HOME/lib/features/note/" 2>/dev/null || true
 
 # ==============================================================================
 # *                          🔠 Text Feature scripts
 # ==============================================================================
-cp scripts/features/text/*.sh "$DVA_HOME/scripts/features/text/" 2>/dev/null || true
+cp lib/features/text/*.sh "$DVA_HOME/lib/features/text/" 2>/dev/null || true
 
 # ==============================================================================
 # *                          🍎 MacOS Feature scripts
 # ==============================================================================
-cp scripts/features/mac_os/*.sh "$DVA_HOME/scripts/features/mac_os/" 2>/dev/null || true
+cp lib/features/mac_os/*.sh "$DVA_HOME/lib/features/mac_os/" 2>/dev/null || true
 
 # ==============================================================================
 # *                          💾 Disk Feature scripts
 # ==============================================================================
-cp scripts/features/disk/*.sh "$DVA_HOME/scripts/features/disk/" 2>/dev/null || true
+cp lib/features/disk/*.sh "$DVA_HOME/lib/features/disk/" 2>/dev/null || true
 
 # ==============================================================================
 # *                          ✨ Custom Commands Feature scripts
 # ==============================================================================
 
-cp scripts/features/custom_commands/*.sh "$DVA_HOME/scripts/features/custom_commands/" 2>/dev/null || true
-
-# ==============================================================================
-# *                              ✌️ Sources scripts
-# ==============================================================================
-cp scripts/sources/*.sh "$DVA_HOME/scripts/sources/" 2>/dev/null || true
+cp lib/features/custom_commands/*.sh "$DVA_HOME/lib/features/custom_commands/" 2>/dev/null || true
 
 # ==============================================================================
 # *                               ✌️ Task scripts
 # ==============================================================================
-cp scripts/tasks/*.sh "$DVA_HOME/scripts/tasks/" 2>/dev/null || true
+cp lib/tasks/*.sh "$DVA_HOME/lib/tasks/" 2>/dev/null || true
 
 
 # ==============================================================================
 # *                              ✌️ Utility scripts
 # ==============================================================================
-cp scripts/utils/*.sh "$DVA_HOME/scripts/utils/" 2>/dev/null || true
+cp lib/utils/*.sh "$DVA_HOME/lib/utils/" 2>/dev/null || true
+
+# ==============================================================================
+# *                              ✌️ Test scripts
+# ==============================================================================
+cp tests/*.sh "$DVA_HOME/tests/" 2>/dev/null || true
 
 
 # ==============================================================================
@@ -174,7 +184,9 @@ fi
 # ===========================================================
 # * 💰 Importing Files                                             
 # ===========================================================
-source "$DVA_HOME/scripts/components/welcome_ui.sh"
+source "$DVA_HOME/lib/utils/style.sh"
+source "$DVA_HOME/lib/utils/printer.sh"
+source "$DVA_HOME/lib/ui/welcome_ui.sh"
 
 
 # ==============================================================================
