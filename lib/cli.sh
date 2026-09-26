@@ -21,7 +21,8 @@ options=("🐙  GIT"
          "🔠 CASE CONVERTER"
          "✨ CUSTOM COMMANDS"
          "🍎 MacOS"
-         "💾 DISK DASHBOARD")
+         "💾 DISK DASHBOARD"
+         "🤖 AI MODEL REFRESH")
 
 selected=0
 shift_index=0  # For rotating gradient
@@ -79,6 +80,7 @@ function animate_menu(){
                 5) run_custom_commands ;;
                 6) run_mac_os_menu ;;
                 7) run_disk_manager ;;
+                8) run_ai_model_refresh_interval_menu ;;
             esac
 
             printf "\nPress Enter to return to Main Menu..."
