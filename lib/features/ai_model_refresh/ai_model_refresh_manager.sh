@@ -37,8 +37,8 @@ function _amri_get_count() {
 }
 
 function _amri_get_all_summaries() {
-  # Outputs lines: "INDEX|account|model|days|hours|minutes"
-  jq -r '.intervals | to_entries[] | "\(.key)|\(.value.account)|\(.value.model)|\(.value.days)|\(.value.hours)|\(.value.minutes)"' \
+  # Outputs lines: "INDEX|account|model|days|hours|minutes|created_at|updated_at"
+  jq -r '.intervals | to_entries[] | "\(.key)|\(.value.account)|\(.value.model)|\(.value.days)|\(.value.hours)|\(.value.minutes)|\(.value.created_at // "")|\(.value.updated_at // "")"' \
     "$AI_MODEL_REFRESH_FILE" 2>/dev/null
 }
 
@@ -48,14 +48,17 @@ function _amri_add() {
   local days="$3"
   local hours="$4"
   local minutes="$5"
+  local created_at
+  created_at=$(date +%s)
 
   jq \
-    --arg account "$account" \
-    --arg model   "$model"   \
-    --argjson days    "$days"    \
-    --argjson hours   "$hours"   \
-    --argjson minutes "$minutes" \
-    '.intervals += [{"account": $account, "model": $model, "days": $days, "hours": $hours, "minutes": $minutes}]' \
+    --arg account    "$account"    \
+    --arg model      "$model"      \
+    --argjson days       "$days"       \
+    --argjson hours      "$hours"      \
+    --argjson minutes    "$minutes"    \
+    --argjson created_at "$created_at" \
+    '.intervals += [{"account": $account, "model": $model, "days": $days, "hours": $hours, "minutes": $minutes, "created_at": $created_at, "updated_at": null}]' \
     "$AI_MODEL_REFRESH_FILE" > "${AI_MODEL_REFRESH_FILE}.tmp" && \
     mv "${AI_MODEL_REFRESH_FILE}.tmp" "$AI_MODEL_REFRESH_FILE"
 }
@@ -67,15 +70,18 @@ function _amri_update() {
   local days="$4"
   local hours="$5"
   local minutes="$6"
+  local updated_at
+  updated_at=$(date +%s)
 
   jq \
-    --argjson idx     "$index"   \
-    --arg account "$account" \
-    --arg model   "$model"   \
-    --argjson days    "$days"    \
-    --argjson hours   "$hours"   \
-    --argjson minutes "$minutes" \
-    '.intervals[$idx] = {"account": $account, "model": $model, "days": $days, "hours": $hours, "minutes": $minutes}' \
+    --argjson idx        "$index"      \
+    --arg account    "$account"    \
+    --arg model      "$model"      \
+    --argjson days       "$days"       \
+    --argjson hours      "$hours"      \
+    --argjson minutes    "$minutes"    \
+    --argjson updated_at "$updated_at" \
+    '.intervals[$idx] = (.intervals[$idx] | {"account": $account, "model": $model, "days": $days, "hours": $hours, "minutes": $minutes, "created_at": .created_at, "updated_at": $updated_at})' \
     "$AI_MODEL_REFRESH_FILE" > "${AI_MODEL_REFRESH_FILE}.tmp" && \
     mv "${AI_MODEL_REFRESH_FILE}.tmp" "$AI_MODEL_REFRESH_FILE"
 }
@@ -111,7 +117,81 @@ function _amri_format_duration() {
   echo "${parts[*]}"
 }
 
-# Prints a table of all configured intervals.
+# Calculates the next refresh epoch from a base timestamp + interval.
+# Usage: _amri_calc_next_refresh <base_epoch> <days> <hours> <minutes>
+# Outputs: epoch timestamp of next refresh
+function _amri_calc_next_refresh_epoch() {
+  local base_epoch="$1"
+  local days="$2"
+  local hours="$3"
+  local minutes="$4"
+
+  local interval_seconds=$(( (days * 86400) + (hours * 3600) + (minutes * 60) ))
+  echo $(( base_epoch + interval_seconds ))
+}
+
+# Formats an epoch timestamp into a human-readable date string.
+# Usage: _amri_format_epoch <epoch>
+# Outputs: e.g., "Sep 28, 2026 08:30 AM"
+function _amri_format_epoch() {
+  local epoch="$1"
+  if [[ -z "$epoch" || "$epoch" == "null" ]]; then
+    echo "N/A"
+    return
+  fi
+  date -r "$epoch" '+%b %d, %Y %I:%M %p' 2>/dev/null || echo "N/A"
+}
+
+# Calculates the time remaining until next refresh as a human-readable string.
+# Usage: _amri_calc_time_remaining <next_refresh_epoch>
+# Outputs: e.g., "2d 5h 30m" or "Overdue" or "N/A"
+function _amri_calc_time_remaining() {
+  local next_epoch="$1"
+  if [[ -z "$next_epoch" || "$next_epoch" == "null" ]]; then
+    echo "N/A"
+    return
+  fi
+
+  local now
+  now=$(date +%s)
+  local diff=$(( next_epoch - now ))
+
+  if [[ "$diff" -le 0 ]]; then
+    echo "Overdue"
+    return
+  fi
+
+  local r_days=$(( diff / 86400 ))
+  local r_hours=$(( (diff % 86400) / 3600 ))
+  local r_mins=$(( (diff % 3600) / 60 ))
+  local parts=()
+
+  [[ "$r_days" -gt 0 ]]  && parts+=("${r_days}d")
+  [[ "$r_hours" -gt 0 ]] && parts+=("${r_hours}h")
+  [[ "$r_mins" -gt 0 ]]  && parts+=("${r_mins}m")
+  [[ ${#parts[@]} -eq 0 ]] && parts+=("<1m")
+
+  local IFS=" "
+  echo "${parts[*]}"
+}
+
+# Determines the base epoch for next-refresh calculation.
+# Uses updated_at if present, otherwise created_at.
+# Usage: _amri_get_base_epoch <created_at> <updated_at>
+function _amri_get_base_epoch() {
+  local created_at="$1"
+  local updated_at="$2"
+
+  if [[ -n "$updated_at" && "$updated_at" != "null" && "$updated_at" != "" ]]; then
+    echo "$updated_at"
+  elif [[ -n "$created_at" && "$created_at" != "null" && "$created_at" != "" ]]; then
+    echo "$created_at"
+  else
+    echo ""
+  fi
+}
+
+# Prints a table of all configured intervals with next-refresh countdown.
 function _amri_print_table() {
   local count
   count=$(_amri_get_count)
@@ -124,17 +204,40 @@ function _amri_print_table() {
   fi
 
   printf "\n"
-  printf "  ${BOLD}${CYAN}%-4s  %-20s  %-25s  %-20s${NC}\n" \
-    "#" "Account" "Model" "Refresh Interval"
-  printf "  ${CYAN}%-4s  %-20s  %-25s  %-20s${NC}\n" \
-    "────" "────────────────────" "─────────────────────────" "────────────────────"
+  printf "  ${BOLD}${CYAN}%-4s  %-15s  %-18s  %-10s  %-22s  %-12s${NC}\n" \
+    "#" "Account" "Model" "Interval" "Next Refresh" "Remaining"
+  printf "  ${CYAN}%-4s  %-15s  %-18s  %-10s  %-22s  %-12s${NC}\n" \
+    "────" "───────────────" "──────────────────" "──────────" "──────────────────────" "────────────"
 
   local idx=0
-  while IFS='|' read -r i account model days hours minutes; do
+  while IFS='|' read -r i account model days hours minutes created_at updated_at; do
     local duration
     duration=$(_amri_format_duration "$days" "$hours" "$minutes")
-    printf "  ${WHITE}%-4s  %-20s  %-25s  %-20s${NC}\n" \
-      "$((i+1))." "$account" "$model" "$duration"
+
+    local base_epoch next_epoch next_date remaining
+    base_epoch=$(_amri_get_base_epoch "$created_at" "$updated_at")
+
+    if [[ -n "$base_epoch" ]]; then
+      next_epoch=$(_amri_calc_next_refresh_epoch "$base_epoch" "$days" "$hours" "$minutes")
+      next_date=$(_amri_format_epoch "$next_epoch")
+      remaining=$(_amri_calc_time_remaining "$next_epoch")
+    else
+      next_date="N/A"
+      remaining="N/A"
+    fi
+
+    # Color the remaining column: red if overdue, green otherwise
+    local remaining_display
+    if [[ "$remaining" == "Overdue" ]]; then
+      remaining_display="${RED}${BOLD}${remaining}${NC}"
+    elif [[ "$remaining" == "N/A" ]]; then
+      remaining_display="${DIM}${remaining}${NC}"
+    else
+      remaining_display="${GREEN}${remaining}${NC}"
+    fi
+
+    printf "  ${WHITE}%-4s  %-15s  %-18s  %-10s  %-22s${NC}  %b\n" \
+      "$((i+1))." "$account" "$model" "$duration" "$next_date" "$remaining_display"
     ((idx++))
   done < <(_amri_get_all_summaries)
 
@@ -142,19 +245,32 @@ function _amri_print_table() {
 }
 
 # Prints a single interval as a formatted summary card.
-# Usage: _amri_print_summary_card <account> <model> <days> <hours> <minutes>
+# Usage: _amri_print_summary_card <account> <model> <days> <hours> <minutes> [created_at] [updated_at]
 function _amri_print_summary_card() {
   local account="$1"
   local model="$2"
   local days="$3"
   local hours="$4"
   local minutes="$5"
+  local created_at="${6:-}"
+  local updated_at="${7:-}"
   local duration
   duration=$(_amri_format_duration "$days" "$hours" "$minutes")
 
+  local next_line=""
+  local base_epoch
+  base_epoch=$(_amri_get_base_epoch "$created_at" "$updated_at")
+  if [[ -n "$base_epoch" ]]; then
+    local next_epoch next_date remaining
+    next_epoch=$(_amri_calc_next_refresh_epoch "$base_epoch" "$days" "$hours" "$minutes")
+    next_date=$(_amri_format_epoch "$next_epoch")
+    remaining=$(_amri_calc_time_remaining "$next_epoch")
+    next_line="$(printf "\n  ${BOLD}Next    :${NC} %-s  ${DIM}(%s)${NC}" "$next_date" "$remaining")"
+  fi
+
   local content
-  content="$(printf "  ${BOLD}Account :${NC} %-s\n  ${BOLD}Model   :${NC} %-s\n  ${BOLD}Interval:${NC} %-s" \
-    "$account" "$model" "$duration")"
+  content="$(printf "  ${BOLD}Account :${NC} %-s\n  ${BOLD}Model   :${NC} %-s\n  ${BOLD}Interval:${NC} %-s%s" \
+    "$account" "$model" "$duration" "$next_line")"
   print_card "$content" "$CYAN"
 }
 
@@ -283,7 +399,7 @@ function ai_model_refresh_interval_action_1() {
   read -r confirm
   echo ""
 
-  case "${confirm,,}" in
+  case "$(echo "$confirm" | tr '[:upper:]' '[:lower:]')" in
     yes|y)
       _amri_add "$account" "$model" "$days" "$hours" "$minutes"
       print_status_success "Interval for '${account} / ${model}' saved successfully!"
@@ -335,16 +451,18 @@ function ai_model_refresh_interval_action_2() {
   local idx=$(( choice - 1 ))
 
   # ── Fetch existing values ─────────────────────────────────────
-  local old_account old_model old_days old_hours old_minutes
-  old_account=$(jq -r --argjson i "$idx" '.intervals[$i].account'  "$AI_MODEL_REFRESH_FILE")
-  old_model=$(  jq -r --argjson i "$idx" '.intervals[$i].model'    "$AI_MODEL_REFRESH_FILE")
-  old_days=$(   jq -r --argjson i "$idx" '.intervals[$i].days'     "$AI_MODEL_REFRESH_FILE")
-  old_hours=$(  jq -r --argjson i "$idx" '.intervals[$i].hours'    "$AI_MODEL_REFRESH_FILE")
-  old_minutes=$(jq -r --argjson i "$idx" '.intervals[$i].minutes'  "$AI_MODEL_REFRESH_FILE")
+  local old_account old_model old_days old_hours old_minutes old_created_at old_updated_at
+  old_account=$(jq -r --argjson i "$idx" '.intervals[$i].account'     "$AI_MODEL_REFRESH_FILE")
+  old_model=$(  jq -r --argjson i "$idx" '.intervals[$i].model'       "$AI_MODEL_REFRESH_FILE")
+  old_days=$(   jq -r --argjson i "$idx" '.intervals[$i].days'        "$AI_MODEL_REFRESH_FILE")
+  old_hours=$(  jq -r --argjson i "$idx" '.intervals[$i].hours'       "$AI_MODEL_REFRESH_FILE")
+  old_minutes=$(jq -r --argjson i "$idx" '.intervals[$i].minutes'     "$AI_MODEL_REFRESH_FILE")
+  old_created_at=$(jq -r --argjson i "$idx" '.intervals[$i].created_at // ""' "$AI_MODEL_REFRESH_FILE")
+  old_updated_at=$(jq -r --argjson i "$idx" '.intervals[$i].updated_at // ""' "$AI_MODEL_REFRESH_FILE")
 
   printf "${BOLD}${YELLOW}📋  Current Configuration${NC}\n"
   printf "───────────────────────────────────────────────────────────\n"
-  _amri_print_summary_card "$old_account" "$old_model" "$old_days" "$old_hours" "$old_minutes"
+  _amri_print_summary_card "$old_account" "$old_model" "$old_days" "$old_hours" "$old_minutes" "$old_created_at" "$old_updated_at"
   printf "\n${DIM}  Leave a field blank and press Enter to keep the current value.${NC}\n\n"
   printf "───────────────────────────────────────────────────────────\n\n"
 
@@ -389,7 +507,7 @@ function ai_model_refresh_interval_action_2() {
   read -r confirm
   echo ""
 
-  case "${confirm,,}" in
+  case "$(echo "$confirm" | tr '[:upper:]' '[:lower:]')" in
     yes|y)
       _amri_update "$idx" "$new_account" "$new_model" "$new_days" "$new_hours" "$new_minutes"
       print_status_success "Interval updated successfully!"
@@ -441,16 +559,18 @@ function ai_model_refresh_interval_action_3() {
   local idx=$(( choice - 1 ))
 
   # ── Show selected interval ────────────────────────────────────
-  local del_account del_model del_days del_hours del_minutes
-  del_account=$(jq -r --argjson i "$idx" '.intervals[$i].account'  "$AI_MODEL_REFRESH_FILE")
-  del_model=$(  jq -r --argjson i "$idx" '.intervals[$i].model'    "$AI_MODEL_REFRESH_FILE")
-  del_days=$(   jq -r --argjson i "$idx" '.intervals[$i].days'     "$AI_MODEL_REFRESH_FILE")
-  del_hours=$(  jq -r --argjson i "$idx" '.intervals[$i].hours'    "$AI_MODEL_REFRESH_FILE")
-  del_minutes=$(jq -r --argjson i "$idx" '.intervals[$i].minutes'  "$AI_MODEL_REFRESH_FILE")
+  local del_account del_model del_days del_hours del_minutes del_created_at del_updated_at
+  del_account=$(jq -r --argjson i "$idx" '.intervals[$i].account'     "$AI_MODEL_REFRESH_FILE")
+  del_model=$(  jq -r --argjson i "$idx" '.intervals[$i].model'       "$AI_MODEL_REFRESH_FILE")
+  del_days=$(   jq -r --argjson i "$idx" '.intervals[$i].days'        "$AI_MODEL_REFRESH_FILE")
+  del_hours=$(  jq -r --argjson i "$idx" '.intervals[$i].hours'       "$AI_MODEL_REFRESH_FILE")
+  del_minutes=$(jq -r --argjson i "$idx" '.intervals[$i].minutes'     "$AI_MODEL_REFRESH_FILE")
+  del_created_at=$(jq -r --argjson i "$idx" '.intervals[$i].created_at // ""' "$AI_MODEL_REFRESH_FILE")
+  del_updated_at=$(jq -r --argjson i "$idx" '.intervals[$i].updated_at // ""' "$AI_MODEL_REFRESH_FILE")
 
   printf "${BOLD}${RED}⚠️   Interval Selected for Deletion${NC}\n"
   printf "───────────────────────────────────────────────────────────\n"
-  _amri_print_summary_card "$del_account" "$del_model" "$del_days" "$del_hours" "$del_minutes"
+  _amri_print_summary_card "$del_account" "$del_model" "$del_days" "$del_hours" "$del_minutes" "$del_created_at" "$del_updated_at"
 
   # ── Explicit confirmation ─────────────────────────────────────
   printf "\n  ${BOLD}${RED}Are you sure you want to delete this interval?${NC} ${DIM}(yes/no)${NC}\n  → "
@@ -458,7 +578,7 @@ function ai_model_refresh_interval_action_3() {
   read -r confirm
   echo ""
 
-  case "${confirm,,}" in
+  case "$(echo "$confirm" | tr '[:upper:]' '[:lower:]')" in
     yes|y)
       _amri_delete "$idx"
       print_status_success "Interval for '${del_account} / ${del_model}' deleted successfully!"
