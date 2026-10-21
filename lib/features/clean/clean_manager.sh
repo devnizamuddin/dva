@@ -7,6 +7,7 @@ _DVA_CLEAN_MANAGER_LOADED=1
 #* ║                                   💰 Imported Files                                              ║
 #* ╚══════════════════════════════════════════════════════════════════════════════════════════════════╝
 
+source "$DVA_HOME/lib/features/flutter/asset_manager.sh"
 source "$DVA_HOME/lib/features/clean/add_feature.sh"
 source "$DVA_HOME/lib/features/clean/add_usecase.sh"
 source "$DVA_HOME/lib/features/clean/new_bloc.sh"
@@ -59,7 +60,7 @@ function clean_action_6() {
 }
 
 function clean_action_7() {
-  echo "Add Asset Constants"
+  create_asset_constants
 }
 
 function clean_action_8() {
